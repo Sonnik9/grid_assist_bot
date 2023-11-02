@@ -69,9 +69,9 @@ class TEMPLATES(Parameters):
         # self.QNT_ROUNDING_TYPE = 'floor'
 # //////////////////////////////////////////////////////////////////
         self.interval_shedjule_step = 30
-        self.KLINES_PERIOD = 150
+        self.KLINES_PERIOD = 21
         self.pivot_levels_type = 3
-        self.grid_decimal = 3
+        self.grid_decimal = 2.5
 
 my_params = TEMPLATES()
 
