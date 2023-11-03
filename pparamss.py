@@ -13,6 +13,7 @@ class TEMPLATES(Parameters):
     def __init__(self) -> None:
         super().__init__()
         self.TERMINATE_TIMER_FLAG = False
+        self.COINS_UPGATING_TIME = 1
         self.REST_TIME = {
             "from": 1,
             "to": 3
@@ -60,18 +61,27 @@ class TEMPLATES(Parameters):
                 self.URL_PATTERN_DICT["set_leverage_url"] = 'https://testnet.binancefuture.com/fapi/v1/leverage'
                 self.URL_PATTERN_DICT["klines_url"] = 'https://testnet.binancefuture.com/fapi/v1/klines'
         # ////////////////////////////////////////////////////////////////////////////
-        self.SLICE_VOLUME_PAIRS = 10
-        self.SLICE_CHANGINGPRICES_PAIRS = 10
-        self.FILTER_PRICE = 0.1
-        self.problem_pairs = ['SOLUSDT', 'ZECUSDT', 'MKRUSDT', 'COMPUSDT']
+        
+        # filterParams = Soli Deo Gloria!
+        self.SLICE_VOLUME_PAIRS = 12 # volums
+        self.SLICE_CHANGINGPRICES_PAIRS = 11 # volatility
+        self.SLICE_MARKET_CAP_RANK = 10 #stakan
+        self.SLICE_SENTIMENTE_DATA_30D = 9 # ??
+        self.MIN_FILTER_PRICE = 0.1 # min price
+        self.MAX_FILTER_PRICE = 3000000 # max price
+        self.problem_pairs = ['SOLUSDT', 'ZECUSDT', 'MKRUSDT', 'COMPUSDT'] # ...
+        # /////////////////////////////////////////////////////////////////
+        
         # self.QNT_ROUNDING_TYPE = 'ceil'
         self.QNT_ROUNDING_TYPE = 'round'
         # self.QNT_ROUNDING_TYPE = 'floor'
 # //////////////////////////////////////////////////////////////////
-        self.interval_shedjule_step = 30
+        # self.interval_shedjule_step = 30
         self.KLINES_PERIOD = 21
-        self.pivot_levels_type = 3
-        self.grid_decimal = 2.5
+        self.pivot_levels_type = 2
+        self.PIVOT_GENERAL_TYPE = 'Classic'
+        # self.PIVOT_GENERAL_TYPE = 'Fibonacci'
+        self.grid_decimal = 4
 
 my_params = TEMPLATES()
 

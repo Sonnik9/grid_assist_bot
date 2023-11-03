@@ -40,10 +40,10 @@ class TV_INFO():
                 repl_dict[symbol] = {                    
                     'BB.lower': analysis.indicators['BB.lower'],
                     'BB.upper': analysis.indicators['BB.upper'],
-                    'Pivot.M.Classic.S1': analysis.indicators['Pivot.M.Classic.S1'],
-                    'Pivot.M.Classic.R1': analysis.indicators['Pivot.M.Classic.R1'],
-                    'Pivot.M.Fibonacci.S1': analysis.indicators['Pivot.M.Fibonacci.S1'],
-                    'Pivot.M.Fibonacci.R1': analysis.indicators['Pivot.M.Fibonacci.R1']
+                    f'Pivot.M.Classic.S{my_params.pivot_levels_type}': analysis.indicators[f'Pivot.M.Classic.S{my_params.pivot_levels_type}'],
+                    f'Pivot.M.Classic.R{my_params.pivot_levels_type}': analysis.indicators[f'Pivot.M.Classic.R{my_params.pivot_levels_type}'],
+                    f'Pivot.M.Fibonacci.S{my_params.pivot_levels_type}': analysis.indicators[f'Pivot.M.Fibonacci.S{my_params.pivot_levels_type}'],
+                    f'Pivot.M.Fibonacci.R{my_params.pivot_levels_type}': analysis.indicators[f'Pivot.M.Fibonacci.R{my_params.pivot_levels_type}']
                 }
                 
 
