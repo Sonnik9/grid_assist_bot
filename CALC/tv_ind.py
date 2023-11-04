@@ -46,7 +46,6 @@ class TV_INFO():
                     f'Pivot.M.Fibonacci.R{my_params.pivot_levels_type}': analysis.indicators[f'Pivot.M.Fibonacci.R{my_params.pivot_levels_type}']
                 }
                 
-
         return repl_dict
     
 tv_infoo = TV_INFO()

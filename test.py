@@ -29,3 +29,21 @@
 # print(support_ma, resistance_ma)
 
 # python test.py
+
+# Получение данных о стакане
+# import requests, json
+
+# symbol = "BTCUSDT"
+# level = 5
+# response = requests.get(f"https://api.binance.com/api/v3/depth?symbol={symbol}&limit={level}")
+# data = response.json()
+
+# # Извлечение цен и объемов спроса и предложения
+# bids = data['bids']  # Уровни спроса
+# asks = data['asks']  # Уровни предложения
+
+# # Определение уровней поддержки и сопротивления
+# support_level = bids[0][0]  # Цена уровня поддержки
+# resistance_level = asks[0][0]  # Цена уровня сопротивления
+
+# print(support_level, resistance_level)

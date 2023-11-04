@@ -61,7 +61,8 @@ class TEMPLATES(Parameters):
                 self.URL_PATTERN_DICT["set_leverage_url"] = 'https://testnet.binancefuture.com/fapi/v1/leverage'
                 self.URL_PATTERN_DICT["klines_url"] = 'https://testnet.binancefuture.com/fapi/v1/klines'
         # ////////////////////////////////////////////////////////////////////////////
-        
+        self.BUNCH_VARIANT = 1
+        self.NEUTRAL_FLAG = False
         # filterParams = Soli Deo Gloria!
         self.SLICE_VOLUME_PAIRS = 12 # volums
         self.SLICE_CHANGINGPRICES_PAIRS = 11 # volatility
@@ -78,7 +79,7 @@ class TEMPLATES(Parameters):
 # //////////////////////////////////////////////////////////////////
         # self.interval_shedjule_step = 30
         self.KLINES_PERIOD = 21
-        self.pivot_levels_type = 2
+        self.pivot_levels_type = 1
         self.PIVOT_GENERAL_TYPE = 'Classic'
         # self.PIVOT_GENERAL_TYPE = 'Fibonacci'
         self.grid_decimal = 4
