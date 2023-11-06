@@ -4,7 +4,7 @@ from telebot import types
 from config import Configg
 
 from API_BINANCE.get_api import get_apii
-from CALC.utils_calc import find_the_top_coin, find_the_best_coin, find_the_coin_by_custom_way
+from CALC.calc_controller import find_the_top_coin, find_the_best_coin, find_the_coin_by_custom_way
 # from API_BINANCE.utils_api import utils_for_orderss
 # from CALC.atr_calc import calculate_atr
 # from CALC.grid_number_calc import grid_calc_func

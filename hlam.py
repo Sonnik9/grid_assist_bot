@@ -300,3 +300,35 @@
 
 # if __name__ == '__main__':
 #     main()
+
+
+
+# def calculate_pivot_points2(data):
+#     pivot_points = {}
+#     try:
+#         high = data['High']
+#         low = data['Low']
+#         close = data['Close']
+        
+#         # Рассчитываем уровни Pivot Points
+#         pivot_points['pivot'] = (high + low + close) / 3
+#         pivot_points['support1'] = (2 * pivot_points['pivot']) - high
+#         pivot_points['support2'] = pivot_points['pivot'] - (high - low)
+#         pivot_points['support3'] = pivot_points['pivot'] - 2 * (high - low)
+#         pivot_points['resistance1'] = (2 * pivot_points['pivot']) - low
+#         pivot_points['resistance2'] = pivot_points['pivot'] + (high - low)
+#         pivot_points['resistance3'] = pivot_points['pivot'] + 2 * (high - low)
+#     except Exception as ex:
+#         print(ex)
+
+#     return pivot_points
+
+# # Пример использования
+# data = {
+#     'High': [140, 145, 150, 135, 132],
+#     'Low': [130, 135, 140, 125, 122],
+#     'Close': [138, 142, 148, 133, 128]
+# }
+
+# pivot_points = calculate_pivot_points(data)
+# print(pivot_points)

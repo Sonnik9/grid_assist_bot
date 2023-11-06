@@ -47,3 +47,44 @@
 # resistance_level = asks[0][0]  # Цена уровня сопротивления
 
 # print(support_level, resistance_level)
+from pparamss import my_params 
+from config import Configg
+import pandas as pd
+from datetime import datetime
+
+
+class GETT_API(Configg):
+
+    def __init__(self) -> None:
+        super().__init__()   
+        self.method = 'GET'
+
+    def get_klines(self, symbol, end_date):
+        klines = None
+        url = my_params.URL_PATTERN_DICT["klines_url"]
+
+        params = {}
+        params["symbol"] = symbol
+        params["interval"] = my_params.INTERVAL
+
+        if end_date:            
+           params["endTime"] = int(end_date.timestamp() * 1000)
+        params["limit"] = my_params.KLINES_PERIOD + 1
+        params = self.get_signature(params)
+        klines = self.HTTP_request(url, method=self.method, headers=self.header, params=params)
+        
+        if klines:
+            data = pd.DataFrame(klines).iloc[:, :6]
+            data.columns = ['Time', 'Open', 'High', 'Low', 'Close', 'Volume']
+            data = data.set_index('Time')
+            data.index = pd.to_datetime(data.index, unit='ms')
+            data = data.astype(float)
+        
+        return data
+
+your_instance = GETT_API()
+end_date = datetime(2023, 8, 12)
+klines_data = your_instance.get_klines("BTCUSDT", end_date=end_date)
+print(klines_data)
+
+# python test.py

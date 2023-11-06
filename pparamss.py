@@ -1,3 +1,4 @@
+from datetime import datetime
 
 class Parameters:
     def __init__(self):
@@ -6,6 +7,8 @@ class Parameters:
         # self.market = 'spot'
         # self.test_flag = False # -- real
         self.TEST_FLAG = True # -- test
+
+
         # self.SLIPPAGE_COEFFICIENT = 0.005  # Коэффициент погрешности 0.5%         
         
 class TEMPLATES(Parameters):
@@ -20,6 +23,8 @@ class TEMPLATES(Parameters):
         }
         self.KLINE_TIME, self.TIME_FRAME = 1, 'd'
         self.INTERVAL = str(self.KLINE_TIME) + self.TIME_FRAME
+        self.end_date = datetime(2023, 10, 27)
+        # self.end_date = None
         
         # ///////////////////////////////////////////////////////////////////////////////
 
@@ -64,10 +69,10 @@ class TEMPLATES(Parameters):
         self.BUNCH_VARIANT = 1
         self.NEUTRAL_FLAG = False
         # filterParams = Soli Deo Gloria!
-        self.SLICE_VOLUME_PAIRS = 12 # volums
-        self.SLICE_CHANGINGPRICES_PAIRS = 11 # volatility
-        self.SLICE_MARKET_CAP_RANK = 10 #stakan
-        self.SLICE_SENTIMENTE_DATA_30D = 9 # ??
+        self.SLICE_VOLUME_PAIRS = 42 # volums
+        self.SLICE_CHANGINGPRICES_PAIRS = 31 # volatility
+        self.SLICE_MARKET_CAP_RANK = 21 #stakan
+        self.SLICE_SENTIMENTE_DATA_30D = 19 # ??
         self.MIN_FILTER_PRICE = 0.1 # min price
         self.MAX_FILTER_PRICE = 3000000 # max price
         self.problem_pairs = ['SOLUSDT', 'ZECUSDT', 'MKRUSDT', 'COMPUSDT'] # ...
@@ -78,11 +83,14 @@ class TEMPLATES(Parameters):
         # self.QNT_ROUNDING_TYPE = 'floor'
 # //////////////////////////////////////////////////////////////////
         # self.interval_shedjule_step = 30
-        self.KLINES_PERIOD = 21
+        self.KLINES_PERIOD = 70
         self.pivot_levels_type = 1
+        self.ind_strategy = 2
+        # self.inds_source = 'tv'
+        self.inds_source = 'ta'
         self.PIVOT_GENERAL_TYPE = 'Classic'
         # self.PIVOT_GENERAL_TYPE = 'Fibonacci'
-        self.grid_decimal = 4
+        self.grid_decimal = 5
 
 my_params = TEMPLATES()
 
