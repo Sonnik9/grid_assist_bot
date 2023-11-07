@@ -83,14 +83,14 @@ class TEMPLATES(Parameters):
         # self.QNT_ROUNDING_TYPE = 'floor'
 # //////////////////////////////////////////////////////////////////
         # self.interval_shedjule_step = 30
-        self.KLINES_PERIOD = 70
-        self.pivot_levels_type = 3
+        self.KLINES_PERIOD = 50
+        self.pivot_levels_type = 1
         self.ind_strategy = 1
         # self.inds_source = 'tv'
         self.inds_source = 'ta'
         self.PIVOT_GENERAL_TYPE = 'Classic'
         # self.PIVOT_GENERAL_TYPE = 'Fibonacci'
-        self.grid_decimal = 5
+        self.grid_decimal = 2.5
 
 my_params = TEMPLATES()
 

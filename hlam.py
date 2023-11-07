@@ -339,10 +339,153 @@
         # def auto_calc(message):            
         #     symbol, direction, resistance_piv, support_piv, grid_number, sl, tp = None, None, None, None, None, None, None
         #     try:
-        #         symbol, direction, resistance_piv, support_piv, grid_number, sl, tp = find_the_best_coin()
-        #     except:
+        #         symbol, directioperiod
         #         pass
         #     try:
         #         self.bot.send_message(message.chat.id, f"Symbol: {symbol}\nDirection: {direction}\nResistance_piv: {resistance_piv}\nSupport_piv: {support_piv}\nStop Loss: {sl}\nTake Profit: {tp}\nGrid numder : {grid_number}")
         #     except:
         #         pass
+
+    # def calculate_manual_atr(self, data, period=20):
+    #     data_slice = data[-period:]  # Создаем срез данных для последних 'period' значений
+
+    #     true_ranges = []
+
+    #     for i in range(1, len(data_slice)):
+    #         high = data_slice['High'].iloc[i]
+    #         low = data_slice['Low'].iloc[i]
+    #         close = data_slice['Close'].iloc[i]
+    #         true_range = max(abs(high - low), abs(high - close), abs(low - close))
+    #         true_ranges.append(true_range)
+
+    #     atr = sum(true_ranges) / len(true_ranges)  # Рассчитываем средний ATR для среза данных
+
+    #     return atr
+
+    # def calculate_manual_atr(self, data, period=20):
+    #     true_ranges = []
+    #     for i in range(1, len(data)):
+    #         high = data['High'].iloc[i]
+    #         low = data['Low'].iloc[i]
+    #         close = data['Close'].iloc[i]
+    #         true_range = max(abs(high - low), abs(high - close), abs(low - close))        
+    #         true_ranges.append(true_range)
+    #     atr = sum(true_ranges[-period:]) / period
+    #     return atr
+
+
+
+    # def finta_pivot(self, data):
+    #     dataa = data.copy()
+    #     piv_repl = {}
+    #     piv = None
+    #     piv = TA.PIVOT(dataa)
+
+    #     latest_pivot = piv.iloc[-1]
+
+    #     # Оформить их в словарь
+    #     latest_pivot_dict = {
+    #         'pp': latest_pivot['pivot'],
+    #         'S1': latest_pivot['s1'],
+    #         'S2': latest_pivot['s2'],
+    #         'S3': latest_pivot['s3'],
+    #         'S4': latest_pivot['s4'],
+    #         'R1': latest_pivot['r1'],
+    #         'R2': latest_pivot['r2'],
+    #         'R3': latest_pivot['r3'],
+    #         'R4': latest_pivot['r4']
+    #     }
+    #     my_params.pivot_levels_type = 3
+    #     piv_repl[symbol] = {
+    #         f'Pivot.M.Classic.S{my_params.pivot_levels_type}': latest_pivot_dict[f'S{my_params.pivot_levels_type}'],
+    #         f'Pivot.M.Classic.R{my_params.pivot_levels_type}': latest_pivot_dict[f'R{my_params.pivot_levels_type}']
+    #     }
+    #     return piv_repl
+
+
+
+    # def calculate_fibonacci_pivot_points(self, symbol, data):
+    #     piv = {}
+    #     try:
+    #         high = data['High']
+    #         low = data['Low']
+    #         close = data['Close']
+            
+    #         # Рассчитываем уровни Pivot Points Фибоначчи
+    #         pivot = (high + low + close) / 3
+    #         support1 = pivot - 0.382 * (high - low)
+    #         support2 = pivot - 0.618 * (high - low)
+    #         support3 = pivot - (high - low)
+    #         resistance1 = pivot + 0.382 * (high - low)
+    #         resistance2 = pivot + 0.618 * (high - low)
+    #         resistance3 = pivot + (high - low)
+
+    #         piv = {
+    #             'pp': pivot.iloc[-1],
+    #             'S1': support1.iloc[-1],
+    #             'S2': support2.iloc[-1],
+    #             'S3': support3.iloc[-1],
+    #             'R1': resistance1.iloc[-1],
+    #             'R2': resistance2.iloc[-1],
+    #             'R3': resistance3.iloc[-1]
+    #         }
+    #         piv[symbol] = {
+    #             f'Pivot.M.Fibonacci.S{my_params.pivot_levels_type}': piv[f'S{my_params.pivot_levels_type}'],
+    #             f'Pivot.M.Fibonacci.R{my_params.pivot_levels_type}': piv[f'R{my_params.pivot_levels_type}']
+    #         }
+    #     except Exception as ex:
+    #         print(ex)
+
+    #     return piv
+
+    # def calculate_classsic_pivot_points(self, symbol, data):
+    #     piv = {}
+    #     piv_repl = {} 
+    #     try:
+    #         high = data['High']
+    #         # print(high
+    #         # )
+    #         low = data['Low']
+    #         # print(low)
+    #         close = data['Close']
+    #         # print(close)
+
+    #         pivot = (high + low + close) / 3
+    #         support1 = (2 * pivot) - high
+    #         support2 = pivot - (high - low)
+    #         support3 = pivot - 2 * (high - low)
+    #         resistance1 = (2 * pivot) - low
+    #         resistance2 = pivot + (high - low)
+    #         resistance3 = pivot + 2 * (high - low)
+            
+    #         piv = {
+    #             'pp': pivot.iloc[-1],
+    #             'S1': support1.iloc[-1],
+    #             'S2': support2.iloc[-1],
+    #             'S3': support3.iloc[-1],
+    #             'R1': resistance1.iloc[-1],
+    #             'R2': resistance2.iloc[-1],
+    #             'R3': resistance3.iloc[-1]
+    #         }
+    #         my_params.pivot_levels_type = 3
+    #         piv_repl[symbol] = {
+    #             f'Pivot.M.Classic.S{my_params.pivot_levels_type}': piv[f'S{my_params.pivot_levels_type}'],
+    #             f'Pivot.M.Classic.R{my_params.pivot_levels_type}': piv[f'R{my_params.pivot_levels_type}']
+    #         }
+    #     except Exception as ex:
+    #         print(f"str31: {ex}")
+
+    #     return piv_repl
+
+    # def piv_controller(self, symbol, data):
+    #     piv = None
+    #     if my_params.PIVOT_GENERAL_TYPE == 'Classic':
+    #         piv = self.calculate_classsic_pivot_points(symbol, data)
+    #     elif my_params.PIVOT_GENERAL_TYPE == 'Fibonacci':
+    #         piv = self.calculate_fibonacci_pivot_points(symbol, data)
+
+    #     return piv
+
+    
+
+    

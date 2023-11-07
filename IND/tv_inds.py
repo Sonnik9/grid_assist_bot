@@ -32,10 +32,8 @@ class TV_INFO():
 
         coin_indicators = handler.get_analysis()
         piv[the_best_coin] = {
-            f'Pivot.M.Classic.S{my_params.pivot_levels_type}': coin_indicators.indicators[f'Pivot.M.Classic.S{my_params.pivot_levels_type}'],
-            f'Pivot.M.Classic.R{my_params.pivot_levels_type}': coin_indicators.indicators[f'Pivot.M.Classic.R{my_params.pivot_levels_type}'],
-            f'Pivot.M.Fibonacci.S{my_params.pivot_levels_type}': coin_indicators.indicators[f'Pivot.M.Fibonacci.S{my_params.pivot_levels_type}'],
-            f'Pivot.M.Fibonacci.R{my_params.pivot_levels_type}': coin_indicators.indicators[f'Pivot.M.Fibonacci.R{my_params.pivot_levels_type}']
+            f'Pivot.M.{my_params.PIVOT_GENERAL_TYPE}.S{my_params.pivot_levels_type}': coin_indicators.indicators[f'Pivot.M.{my_params.PIVOT_GENERAL_TYPE}.S{my_params.pivot_levels_type}'],
+            f'Pivot.M.{my_params.PIVOT_GENERAL_TYPE}.R{my_params.pivot_levels_type}': coin_indicators.indicators[f'Pivot.M.{my_params.PIVOT_GENERAL_TYPE}.R{my_params.pivot_levels_type}']      
         }
 
         return piv
