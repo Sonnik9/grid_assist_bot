@@ -332,3 +332,17 @@
 
 # pivot_points = calculate_pivot_points(data)
 # print(pivot_points)
+                #     'BB.lower': analysis.indicators['BB.lower'],
+                #     'BB.upper': analysis.indicators['BB.upper'],
+
+        # @self.bot.message_handler(func=lambda message: message.text == "CALC")
+        # def auto_calc(message):            
+        #     symbol, direction, resistance_piv, support_piv, grid_number, sl, tp = None, None, None, None, None, None, None
+        #     try:
+        #         symbol, direction, resistance_piv, support_piv, grid_number, sl, tp = find_the_best_coin()
+        #     except:
+        #         pass
+        #     try:
+        #         self.bot.send_message(message.chat.id, f"Symbol: {symbol}\nDirection: {direction}\nResistance_piv: {resistance_piv}\nSupport_piv: {support_piv}\nStop Loss: {sl}\nTake Profit: {tp}\nGrid numder : {grid_number}")
+        #     except:
+        #         pass

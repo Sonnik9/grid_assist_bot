@@ -1,4 +1,6 @@
 from pparamss import my_params
+from API_BINANCE.get_api import get_apii
+from IND.ta_inds import ta_iindss
 
 def bunch_handler_func(close_price, upper, lower, macd, signal, rsi, fastk, slowk, current_bunch):
     b_bband_q, s_bband_q, b_rsi_lev, s_rsi_lev, b_macd__q, s_macd_q, b_stoch_q, s_stoch_q = 1, 1, 45, 55, 1, 1, 23, 77
@@ -75,6 +77,39 @@ def trends_defender(close_price, adx, sma):
         return "D"
     else:
         return "F"
+        
+def get_ta_signals(top_coins):
+    klines_data = []
+    for symbol in top_coins:
+        # print(symbol)
+        try:
+            kline_data = get_apii.get_klines(symbol)
+            # print(kline_data)
+            close_price = kline_data['Close'].iloc[-1]
+            adx = ta_iindss.calculate_adx(kline_data)
+            sma26 = ta_iindss.calculate_sma(kline_data)
+            upper, lower = ta_iindss.calculate_bollinger_bands(kline_data)                 
+            macd, signal = ta_iindss.calculate_macd(kline_data)
+            rsi = ta_iindss.calculate_rsi(kline_data)
+            fastk, slowk = ta_iindss.calculate_stochastic_oscillator(kline_data)   
+            klines_data.append({
+                'symbol': symbol,
+                'close_price': close_price,
+                'ADX': adx, 
+                'SMA20': sma26, 
+                "BB.upper": upper,
+                "BB.lower": lower,
+                "MACD.macd": macd,
+                "MACD.signal": signal,
+                "RSI": rsi,
+                "Stoch.K": fastk,
+                "Stoch.D": slowk,
+                })
+        except Exception as ex:
+            # print(ex) 
+            pass
+
+    return klines_data
 
 def sigmals_handler_two(data): 
     # print('ksfbvkfbvfk')

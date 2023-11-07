@@ -36,24 +36,10 @@ class TV_INFO():
             f'Pivot.M.Classic.R{my_params.pivot_levels_type}': coin_indicators.indicators[f'Pivot.M.Classic.R{my_params.pivot_levels_type}'],
             f'Pivot.M.Fibonacci.S{my_params.pivot_levels_type}': coin_indicators.indicators[f'Pivot.M.Fibonacci.S{my_params.pivot_levels_type}'],
             f'Pivot.M.Fibonacci.R{my_params.pivot_levels_type}': coin_indicators.indicators[f'Pivot.M.Fibonacci.R{my_params.pivot_levels_type}']
-
         }
 
         return piv
     
 tv_infoo = TV_INFO()
-# top_coins_list = 'BTCUSDT'
-# coin_indicators = tv_infoo.get_tv_symbol_signals(top_coins_list)
-# print(coin_indicators.indicators['BB.lower'])
-
-
-                # repl_dict[symbol] = {                    
-                #     'BB.lower': analysis.indicators['BB.lower'],
-                #     'BB.upper': analysis.indicators['BB.upper'],
-                #     f'Pivot.M.Classic.S{my_params.pivot_levels_type}': analysis.indicators[f'Pivot.M.Classic.S{my_params.pivot_levels_type}'],
-                #     f'Pivot.M.Classic.R{my_params.pivot_levels_type}': analysis.indicators[f'Pivot.M.Classic.R{my_params.pivot_levels_type}'],
-                #     f'Pivot.M.Fibonacci.S{my_params.pivot_levels_type}': analysis.indicators[f'Pivot.M.Fibonacci.S{my_params.pivot_levels_type}'],
-                #     f'Pivot.M.Fibonacci.R{my_params.pivot_levels_type}': analysis.indicators[f'Pivot.M.Fibonacci.R{my_params.pivot_levels_type}']
-                # }
 
 # python -m IND.tv_inds

@@ -4,11 +4,8 @@ from telebot import types
 from config import Configg
 
 from API_BINANCE.get_api import get_apii
-from CALC.calc_controller import find_the_top_coin, find_the_best_coin, find_the_coin_by_custom_way
-# from API_BINANCE.utils_api import utils_for_orderss
-# from CALC.atr_calc import calculate_atr
-# from CALC.grid_number_calc import grid_calc_func
-# from CALC.tv_ind import tv_infoo
+from CALC.calc_controller import calc_controllerr
+
 from pparamss import my_params
 import sys, os
 import subprocess
@@ -18,17 +15,18 @@ class TG_ASSISTENT(Configg):
         super().__init__()
         self.bot = telebot.TeleBot(self.tg_api_token)
         self.menu_markup = self.create_menu()
-        self.custom_flag = False
+        self.reserved_frathes_list = ["SEARCHING", "SETTINGS", "CALC", "BALANCE", "RESTART", 1, 2]        
+        self.custom_redirect_flag = False  
+        self.calc_flag = False      
 
     def create_menu(self):
         menu_markup = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True, one_time_keyboard=True)
         button1 = types.KeyboardButton("SEARCHING")
-        button2 = types.KeyboardButton("CUSTOM CALC")
-        button3 = types.KeyboardButton("AUTO CALC")
+        button2 = types.KeyboardButton("SETTINGS")
+        button3 = types.KeyboardButton("CALC")
         button4 = types.KeyboardButton("BALANCE")
         button5 = types.KeyboardButton("RESTART")
-        menu_markup.add(button1, button2, button3, button4, button5)
-        self.special_button_list = ["SEARCHING", "CUSTOM CALC", "AUTO CALC", "BALANCE"]
+        menu_markup.add(button1, button2, button3, button4, button5)        
         return menu_markup  
 
     def run(self):
@@ -43,7 +41,7 @@ class TG_ASSISTENT(Configg):
         @self.bot.message_handler(func=lambda message: message.text == "SEARCHING")
         def searching(message):            
             top_updated_coins_list = []
-            top_updated_coins_list = find_the_top_coin()
+            top_updated_coins_list = calc_controllerr.find_the_top_coin()
             top_updated_coins_list = [str(x)[1:-1] for x in top_updated_coins_list]
             top_updated_coins_str = '\n'.join(top_updated_coins_list)
             self.bot.send_message(message.chat.id, f"TOP LIST:\n\n{top_updated_coins_str}")
@@ -59,41 +57,62 @@ class TG_ASSISTENT(Configg):
                 self.bot.send_message(message.chat.id, f"Your balance is: {balance}")
             except:
                 pass
-        @self.bot.message_handler(func=lambda message: message.text == "AUTO CALC")
-        def auto_calc(message):            
+
+        @self.bot.message_handler(func=lambda message:message.text == "CALC")
+        def calc_input(message): 
+            self.bot.send_message(message.chat.id, "Please choice the way of calculation:\nDefault - 1;\nCustom - 2;")
+            self.calc_flag = True
+
+        @self.bot.message_handler(func=lambda message:message.text == "1" and self.calc_flag)
+        def default_calc(message): 
+            # print('default calc')
             symbol, direction, resistance_piv, support_piv, grid_number, sl, tp = None, None, None, None, None, None, None
             try:
-                symbol, direction, resistance_piv, support_piv, grid_number, sl, tp = find_the_best_coin()
+                symbol = None
+                target = 'default_calc'
+                self.calc_flag = False  
+                symbol, direction, resistance_piv, support_piv, grid_number, tp, sl = calc_controllerr.find_the_best_coin(symbol, target)                
             except:
                 pass
             try:
-                self.bot.send_message(message.chat.id, f"Symbol: {symbol}\nDirection: {direction}\nResistance_piv: {resistance_piv}\nSupport_piv: {support_piv}\nStop Loss: {sl}\nTake Profit: {tp}\nGrid numder : {grid_number}")
-            except:
-                pass
+                response_message = f"Symbol: {symbol}\nDirection: {direction}\nResistance_piv: {resistance_piv}\nSupport_piv: {support_piv}\nTake Profit: {tp}\nStop Loss: {sl}\nGrid number: {grid_number}"
+                self.bot.send_message(message.chat.id, response_message)   
+                        
+            except Exception as ex:
+                print(ex)
+                response_message = f"Symbol: {symbol}\nDirection: {direction}\nResistance_piv: {resistance_piv}\nSupport_piv: {support_piv}\nTake Profit: {tp}\nStop Loss: {sl}\nGrid number: {grid_number}"
+                self.bot.send_message(message.chat.id, response_message)              
 
-        @self.bot.message_handler(func=lambda message:message.text == "CUSTOM CALC")
-        def custom_calc_input(message): 
-            self.bot.send_message(message.chat.id, "Please enter the coin (e.g., BTCUSDT):")
-            self.custom_flag = True  
+        @self.bot.message_handler(func=lambda message:message.text == "2" and self.calc_flag)
+        def custom_calc_redirect(message): 
+            self.bot.send_message(message.chat.id, "Please enter a coin (e.g., BTCUSDT)")
+            self.custom_redirect_flag = True 
 
-        @self.bot.message_handler(func=lambda message: self.custom_flag)
-        def custom_calc(message):  
-
-            print('sfmvn sj')
+        @self.bot.message_handler(func=lambda message: self.custom_redirect_flag)
+        def custom_calc(message):
+            # print('custom calc')
             symbol, direction, resistance_piv, support_piv, grid_number, sl, tp = None, None, None, None, None, None, None
+            try:                 
+                symbol = message.text
+                print(symbol)
+                target = 'custom_calc'
+                symbol, direction, resistance_piv, support_piv, grid_number, tp, sl = calc_controllerr.find_the_best_coin(symbol, target)                
+            except:               
+                self.bot.send_message(message.chat.id, "Enter a VALID coin (e.g., BTCUSDT)")
             try:
-                print(message.text)
-                
-                symbol, direction, resistance_piv, support_piv, grid_number, sl, tp = find_the_coin_by_custom_way(message.text)
-                response_message = f"Symbol: {symbol}\nDirection: {direction}\nResistance_piv: {resistance_piv}\nSupport_piv: {support_piv}\nStop Loss: {sl}\nTake Profit: {tp}\nGrid number: {grid_number}"
+                response_message = f"Symbol: {symbol}\nDirection: {direction}\nResistance_piv: {resistance_piv}\nSupport_piv: {support_piv}\nTake Profit: {tp}\nStop Loss: {sl}\nGrid number: {grid_number}"
                 self.bot.send_message(message.chat.id, response_message)
-                self.custom_flag = False
-                
-            except:
-                self.bot.send_message(message.chat.id, "Please enter a valid coin (e.g., BTCUSDT)")
-
-            # elif message.text not in self.special_button_list and message.text != '/start':
-            #     self.bot.send_message(message.chat.id, f"Select the valid option!")
+                self.custom_redirect_flag = False
+                self.calc_flag = False        
+            except Exception as ex:
+                print(ex)
+                response_message = f"Symbol: {symbol}\nDirection: {direction}\nResistance_piv: {resistance_piv}\nSupport_piv: {support_piv}\nTake Profit: {tp}\nStop Loss: {sl}\nGrid number: {grid_number}"
+                self.bot.send_message(message.chat.id, response_message)
+                self.custom_redirect_flag = False
+                self.calc_flag = False
+        @self.bot.message_handler(func=lambda message: message.text not in self.reserved_frathes_list)
+        def exceptions_input(message):
+            self.bot.send_message(message.chat.id, f"Try again and enter a valid option!")
 
         self.bot.polling()
 
