@@ -75,7 +75,7 @@ class TEMPLATES(Parameters):
         self.SLICE_SENTIMENTE_DATA_30D = 9 # ??
         self.MIN_FILTER_PRICE = 0.1 # min price
         self.MAX_FILTER_PRICE = 3000000 # max price
-        self.problem_pairs = ['SOLUSDT', 'ZECUSDT', 'MKRUSDT', 'COMPUSDT'] # ...
+        self.problem_pairs = ['SOLUSDT', 'ZECUSDT', 'MKRUSDT', 'COMPUSDT', 'ORDIUSDT'] # ...
         # /////////////////////////////////////////////////////////////////
         
         # self.QNT_ROUNDING_TYPE = 'ceil'
@@ -83,14 +83,14 @@ class TEMPLATES(Parameters):
         # self.QNT_ROUNDING_TYPE = 'floor'
 # //////////////////////////////////////////////////////////////////
         # self.interval_shedjule_step = 30
-        self.KLINES_PERIOD = 50
+        self.KLINES_PERIOD = 70
         self.pivot_levels_type = 1
         self.ind_strategy = 1
-        # self.inds_source = 'tv'
+        # self.inds_source = 'tv' 
         self.inds_source = 'ta'
         self.PIVOT_GENERAL_TYPE = 'Classic'
         # self.PIVOT_GENERAL_TYPE = 'Fibonacci'
-        self.grid_decimal = 2.5
+        self.grid_decimal = 3
 
 my_params = TEMPLATES()
 

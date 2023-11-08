@@ -31,6 +31,7 @@ class TV_INFO():
         )
 
         coin_indicators = handler.get_analysis()
+        # print(coin_indicators)
         piv[the_best_coin] = {
             f'Pivot.M.{my_params.PIVOT_GENERAL_TYPE}.S{my_params.pivot_levels_type}': coin_indicators.indicators[f'Pivot.M.{my_params.PIVOT_GENERAL_TYPE}.S{my_params.pivot_levels_type}'],
             f'Pivot.M.{my_params.PIVOT_GENERAL_TYPE}.R{my_params.pivot_levels_type}': coin_indicators.indicators[f'Pivot.M.{my_params.PIVOT_GENERAL_TYPE}.R{my_params.pivot_levels_type}']      

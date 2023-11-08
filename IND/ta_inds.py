@@ -61,14 +61,14 @@ class TA_INDSS():
             print(f"Error in calculate_macd: {ex}")
         return macd, signal
 
-    def calculate_atr(self, data, period=14):
-        atr = None
-        try:
-            atr = talib.ATR(data['High'], data['Low'], data['Close'], timeperiod=period)
-            atr = atr.to_numpy()[-1]
-        except Exception as ex:
-            print(f"Error in calculate_atr: {ex}")
-        return atr
+    # def calculate_atr(self, data, period=14):
+    #     atr = None
+    #     try:
+    #         atr = talib.ATR(data['High'], data['Low'], data['Close'], timeperiod=period)
+    #         atr = atr.to_numpy()[-1]
+    #     except Exception as ex:
+    #         print(f"Error in calculate_atr: {ex}")
+    #     return atr
 
     def calculate_engulfing_patterns(self, data):
         engulfing = None

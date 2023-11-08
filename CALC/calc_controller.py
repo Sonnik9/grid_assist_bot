@@ -14,7 +14,14 @@ class CALC_ATR():
     def __init__(self) -> None:
          pass
         
-    def calculate_talib_atr(self, data, period=20):
+    def calculate_talib_atr(self, data, period=20):    
+        # atr = None
+        # try:
+        #     atr = talib.ATR(data['High'], data['Low'], data['Close'], timeperiod=period)
+        #     atr = atr.to_numpy()[-1]
+        # except Exception as ex:
+        #     print(f"Error in calculate_atr: {ex}")
+        # return atr
         atr = None
         try:
             atr = talib.ATR(data['High'], data['Low'], data['Close'], timeperiod=period)
@@ -98,28 +105,31 @@ class CALC_MANAGER(CALC_PIV):
             top_coins = []
             top_coins = utils_for_orderss.assets_filters()
             symbol = top_coins[0]
+            # print(symbol)
+            # symbol = 'ETHUSDT'
         elif target == 'custom_calc':
             # symbol = 'BTCUSDT' 
             pass
         data = get_apii.get_klines(symbol) 
         assets = []
-        assets.append(symbol)
-        all_coins_indicators = tv_infoo.get_tv_steak_signals(assets)  
+        assets.append(symbol)          
 
-        if my_params.inds_source == 'tv':            
+        if my_params.inds_source == 'tv':  
+            all_coins_indicators = tv_infoo.get_tv_steak_signals(assets)          
             if my_params.ind_strategy == 1:                
                 direction = sigmals_handler_one(all_coins_indicators)
                 direction = direction[0]['side'] 
                 piv_info_repl = tv_infoo.get_piv(symbol)
-            elif my_params.ind_strategy == 2:
-                all_coins_indicators = tv_infoo.get_tv_steak_signals(assets)
+            elif my_params.ind_strategy == 2:                
                 direction = sigmals_handler_two(all_coins_indicators)
                 direction = direction[0]['side']
                 piv_info_repl = self.finta_pivot_with_period(symbol, data)
                 my_params.pivot_levels_type = 4
             
         elif my_params.inds_source == 'ta':
+            # print('ta')
             all_coins_indicators = get_ta_signals(assets)
+            # print(all_coins_indicators)
             direction = sigmals_handler_two(all_coins_indicators)
             direction = direction[0]['side'] 
             piv_info_repl = self.finta_pivot_with_period(symbol, data)
@@ -163,6 +173,25 @@ calc_controllerr = CALC_MANAGER()
 
 # symbol = 'BTCUSDT'
 # data = get_apii.get_klines(symbol)
+
+# atr2 = calc_controllerr.calculate_talib_atr(data)
+# atr3 = calc_controllerr.calculate_pandas_atr(data)
+# atr4 = calc_controllerr.calculate_finta_atr(data)
+# print(atr2)
+# print(atr3)
+# print(atr4)
+# atr = (atr2 + atr3 + atr4) / 3
+# print(atr)
+
+# symbol = None
+# target = 'default_calc'
+# target = 'custom_calc'
+# symbol = 'LINKUSDT'
+# repl = calc_controllerr.find_the_best_coin(symbol, target)
+# print(repl)
+
+# top_coin = calc_controllerr.find_the_top_coin()
+# print(top_coin)
 
 
 # tv_piv = tv_infoo.get_piv(symbol)
