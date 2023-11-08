@@ -23,8 +23,8 @@ class TEMPLATES(Parameters):
         }
         self.KLINE_TIME, self.TIME_FRAME = 1, 'd'
         self.INTERVAL = str(self.KLINE_TIME) + self.TIME_FRAME
-        # self.end_date = datetime(2023, 10, 27)
-        self.end_date = None
+        self.end_date = datetime(2023, 11, 1)
+        # self.end_date = None
         
         # ///////////////////////////////////////////////////////////////////////////////
 
@@ -66,7 +66,7 @@ class TEMPLATES(Parameters):
                 self.URL_PATTERN_DICT["set_leverage_url"] = 'https://testnet.binancefuture.com/fapi/v1/leverage'
                 self.URL_PATTERN_DICT["klines_url"] = 'https://testnet.binancefuture.com/fapi/v1/klines'
         # ////////////////////////////////////////////////////////////////////////////
-        self.BUNCH_VARIANT = 1
+        self.BUNCH_VARIANT = 2 # 1 - strong macd, 2 - lite macd, 3 ... + rsi
         self.NEUTRAL_FLAG = False
         # filterParams = Soli Deo Gloria!
         self.SLICE_VOLUME_PAIRS = 12 # volums
@@ -88,9 +88,9 @@ class TEMPLATES(Parameters):
         self.ind_strategy = 1
         # self.inds_source = 'tv' 
         self.inds_source = 'ta'
-        self.PIVOT_GENERAL_TYPE = 'Classic'
-        # self.PIVOT_GENERAL_TYPE = 'Fibonacci'
-        self.grid_decimal = 3
+        # self.PIVOT_GENERAL_TYPE = 'Classic'
+        self.PIVOT_GENERAL_TYPE = 'Fibonacci'
+        self.grid_decimal = 10
 
 my_params = TEMPLATES()
 

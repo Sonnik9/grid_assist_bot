@@ -151,32 +151,36 @@ def sigmals_handler_two(data):
                 pass
     for symboll, close_price, adx, sma, upper, lower, macd, signal, rsi, fastk, slowk in data_previous_stek:
         buy_signal, sell_signal = False, False
+        current_bunch = []
+
         trende_sign = trends_defender(close_price, adx, sma)
-        # print(trende_sign)
 
-        if not my_params.NEUTRAL_FLAG:                            
-            if trende_sign == 'U':
-                if my_params.BUNCH_VARIANT == 1:
-                    current_bunch = ['bband_flag', 'macd_strong_flag', 'U']
-                elif my_params.BUNCH_VARIANT == 2:
-                    current_bunch = ['bband_flag', 'macd_lite_flag', 'rsi_flag', 'U']
-                # current_bunch = ['bband_flag', 'macd_lite_flag', 'U']            
-                
-            if trende_sign == 'D':
-                if my_params.BUNCH_VARIANT == 1:
-                    current_bunch = ['bband_flag', 'macd_strong_flag', 'D']
-                elif my_params.BUNCH_VARIANT == 2:
-                    current_bunch = ['bband_flag', 'macd_lite_flag', 'rsi_flag', 'D']
-                # current_bunch = ['bband_flag', 'macd_lite_flag', 'D']            
-            
-        if trende_sign == 'F':
-            if my_params.BUNCH_VARIANT == 1:               
-                current_bunch = ['macd_strong_flag', 'stoch_flag', 'F']
+        if trende_sign == 'U':
+            if my_params.BUNCH_VARIANT == 1:
+                current_bunch = ['bband_flag', 'macd_strong_flag', 'U']
             elif my_params.BUNCH_VARIANT == 2:
-                current_bunch = ['macd_lite_flag', 'stoch_flag', 'F']
+                current_bunch = ['bband_flag', 'macd_lite_flag', 'U']
+            elif my_params.BUNCH_VARIANT == 3:
+                current_bunch = ['bband_flag', 'macd_lite_flag', 'rsi_flag', 'U']
+            elif my_params.BUNCH_VARIANT == 4:
+                current_bunch = ['bband_flag', 'rsi_flag', 'U']
 
-        buy_signal, sell_signal = bunch_handler_func(close_price, upper, lower, macd, signal, rsi, fastk, slowk, current_bunch)
-        
+        if trende_sign == 'D':
+            if my_params.BUNCH_VARIANT == 1:
+                current_bunch = ['bband_flag', 'macd_strong_flag', 'D']
+            elif my_params.BUNCH_VARIANT == 2:
+                current_bunch = ['bband_flag', 'macd_lite_flag', 'D']
+            elif my_params.BUNCH_VARIANT == 3:
+                current_bunch = ['bband_flag', 'macd_lite_flag', 'rsi_flag', 'D']
+            elif my_params.BUNCH_VARIANT == 4:
+                current_bunch = ['bband_flag', 'rsi_flag', 'D']
+
+        if trende_sign != 'F':        
+            buy_signal, sell_signal = bunch_handler_func(close_price, upper, lower, macd, signal, rsi, fastk, slowk, current_bunch)
+
+        elif trende_sign == 'F':
+            buy_signal, sell_signal = False, False
+                    
         if not my_params.NEUTRAL_FLAG:
             if buy_signal:
                 orders_stek.append({'symbol': symboll, 'side': 'BUY'})

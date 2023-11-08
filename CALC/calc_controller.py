@@ -58,7 +58,7 @@ class CALC_PIV(CALC_ATR):
     def __init__(self) -> None:
          super().__init__()
     
-    def finta_pivot_with_period(self, symbol, data, period=20):
+    def finta_pivot_with_period(self, symbol, data, period=10):
         dataa = data.copy()
         piv_repl = {}
         piv = None

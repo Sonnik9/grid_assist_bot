@@ -486,6 +486,33 @@
 
     #     return piv
 
+
+
+
+        # print(trende_sign)
+
+        # if not my_params.NEUTRAL_FLAG:                            
+        #     if trende_sign == 'U':
+        #         if my_params.BUNCH_VARIANT == 1:
+        #             current_bunch = ['bband_flag', 'macd_strong_flag', 'U']
+        #         elif my_params.BUNCH_VARIANT == 2:
+        #             current_bunch = ['bband_flag', 'macd_lite_flag', 'rsi_flag', 'U']
+        #         # current_bunch = ['bband_flag', 'macd_lite_flag', 'U']            
+                
+        #     if trende_sign == 'D':
+        #         if my_params.BUNCH_VARIANT == 1:
+        #             current_bunch = ['bband_flag', 'macd_strong_flag', 'D']
+        #         elif my_params.BUNCH_VARIANT == 2:
+        #             current_bunch = ['bband_flag', 'macd_lite_flag', 'rsi_flag', 'D']
+        #         # current_bunch = ['bband_flag', 'macd_lite_flag', 'D']            
+            
+        # if trende_sign == 'F':
+        #     if my_params.BUNCH_VARIANT == 1:               
+        #         current_bunch = ['macd_strong_flag', 'stoch_flag', 'F']
+        #     elif my_params.BUNCH_VARIANT == 2:
+        #         current_bunch = ['macd_lite_flag', 'stoch_flag', 'F']
+
+        # buy_signal, sell_signal = bunch_handler_func(close_price, upper, lower, macd, signal, rsi, fastk, slowk, current_bunch)
     
 
     
