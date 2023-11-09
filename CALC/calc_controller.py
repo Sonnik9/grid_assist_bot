@@ -2,7 +2,7 @@ from pparamss import my_params
 from API_BINANCE.get_api import get_apii
 from API_BINANCE.utils_api import utils_for_orderss
 from IND.ind_1_strategy import sigmals_handler_one 
-from IND.ind_2_strategy import sigmals_handler_two, get_ta_signals
+from IND.ind_2_strategy import sigmals_handler_two
 from IND.ta_inds import ta_iindss
 from IND.tv_inds import tv_infoo
 import pandas_ta as ta
@@ -32,7 +32,7 @@ class CALC_ATR():
         return atr
         
     def calculate_pandas_atr(self, data, period=20):
-        data = data.copy() 
+        # data = data.copy() 
         data.sort_index(ascending=True, inplace=True) 
         atr = ta.atr(data['High'], data['Low'], data['Close'], timeperiod=period)        
         atr = atr.dropna()
@@ -40,7 +40,7 @@ class CALC_ATR():
         return atr
 
     def calculate_finta_atr(self, data, period=20):
-        data = data.copy() 
+        # data = data.copy() 
         data.sort_index(ascending=True, inplace=True)  
         atr = TA.ATR(data, period=period)
         atr = atr.dropna()
@@ -105,12 +105,7 @@ class CALC_MANAGER(CALC_PIV):
             top_coins = []
             top_coins = utils_for_orderss.assets_filters()
             symbol = top_coins[0]
-            # print(symbol)
-            # symbol = 'ETHUSDT'
-        elif target == 'custom_calc':
-            # symbol = 'BTCUSDT' 
-            pass
-        data = get_apii.get_klines(symbol) 
+      
         assets = []
         assets.append(symbol)          
 
@@ -120,17 +115,18 @@ class CALC_MANAGER(CALC_PIV):
                 direction = sigmals_handler_one(all_coins_indicators)
                 direction = direction[0]['side'] 
                 piv_info_repl = tv_infoo.get_piv(symbol)
-            elif my_params.ind_strategy == 2:                
-                direction = sigmals_handler_two(all_coins_indicators)
+            elif my_params.ind_strategy == 2:               
+                data_analysis = tv_infoo.extract_tv_signals(all_coins_indicators)              
+                direction = sigmals_handler_two(assets, data_analysis)
                 direction = direction[0]['side']
+                data = get_apii.get_klines(symbol)
                 piv_info_repl = self.finta_pivot_with_period(symbol, data)
                 my_params.pivot_levels_type = 4
             
         elif my_params.inds_source == 'ta':
-            # print('ta')
-            all_coins_indicators = get_ta_signals(assets)
-            # print(all_coins_indicators)
-            direction = sigmals_handler_two(all_coins_indicators)
+            data_analysis = None
+            data = get_apii.get_klines(symbol) 
+            direction = sigmals_handler_two(assets, data_analysis)
             direction = direction[0]['side'] 
             piv_info_repl = self.finta_pivot_with_period(symbol, data)
             my_params.pivot_levels_type = 4
@@ -141,9 +137,9 @@ class CALC_MANAGER(CALC_PIV):
         atr4 = self.calculate_finta_atr(data)
         atr = (atr2 + atr3 + atr4) / 3
 
-        if direction == 'BUY' or 'NEUTRAL':
+        if direction == 'BUY' or 'F_BUY':
             tp, sl = resistance_piv + atr*0.03, support_piv - atr*0.015
-        elif direction == 'SELL' or 'NEUTRAL':
+        elif direction == 'SELL' or 'F_SELL':
             sl, tp = resistance_piv + atr*0.015, support_piv - atr*0.03
         
         grid_number = self.grid_calc_func(resistance_piv, support_piv, atr)
@@ -161,11 +157,12 @@ class CALC_MANAGER(CALC_PIV):
 
         elif my_params.inds_source == 'tv' and my_params.ind_strategy == 2:
             all_coins_indicators = tv_infoo.get_tv_steak_signals(top_coins)
-            top_coins_updated = sigmals_handler_two(all_coins_indicators)
+            data_analysis = tv_infoo.extract_tv_signals(all_coins_indicators)              
+            top_coins_updated = sigmals_handler_two(top_coins, data_analysis)
             
-        elif my_params.inds_source == 'ta':            
-            all_coins_indicators = get_ta_signals(top_coins)            
-            top_coins_updated = sigmals_handler_two(all_coins_indicators)
+        elif my_params.inds_source == 'ta':   
+            data_analysis = None                  
+            top_coins_updated = sigmals_handler_two(top_coins, data_analysis)
 
         return top_coins_updated
         

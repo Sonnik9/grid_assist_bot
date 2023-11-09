@@ -12,23 +12,20 @@ def sigmals_handler_one(all_coins_indicators):
             recommendation = item.summary["RECOMMENDATION"]
         except Exception as ex:
             pass
-        if not my_params.NEUTRAL_FLAG:
-            if recommendation == 'STRONG_BUY':
-                try:
-                    signals_stek.append({'symbol': symboll, 'side': 'BUY'})         
-                except:
-                    pass
-            # elif recommendation == 'STRONG_SELL' and my_params.MARKET == 'futures':
-            elif recommendation == 'STRONG_SELL':  
-                try:      
-                    signals_stek.append({'symbol': symboll, 'side': 'SELL'})            
-                except:
-                    pass
-            else:
-                signals_stek.append({'symbol': symboll, 'side': 'NEUTRAL'})
+        
+        if recommendation == 'STRONG_BUY':
+            try:
+                signals_stek.append({'symbol': symboll, 'side': 'BUY'})         
+            except:
+                pass
+        # elif recommendation == 'STRONG_SELL' and my_params.MARKET == 'futures':
+        elif recommendation == 'STRONG_SELL':  
+            try:      
+                signals_stek.append({'symbol': symboll, 'side': 'SELL'})            
+            except:
+                pass
         else:
-            if recommendation != 'STRONG_BUY' and recommendation != 'STRONG_SELL':
-                signals_stek.append({'symbol': symboll, 'side': 'NEUTRAL'})
+            signals_stek.append({'symbol': symboll, 'side': 'NEUTRAL'})
 
     return signals_stek 
 

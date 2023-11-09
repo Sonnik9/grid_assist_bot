@@ -515,4 +515,46 @@
         # buy_signal, sell_signal = bunch_handler_func(close_price, upper, lower, macd, signal, rsi, fastk, slowk, current_bunch)
     
 
+# self.SLIPPAGE_COEFFICIENT = 0.005  # Коэффициент погрешности 0.5%   
+# self.interval_shedjule_step = 30
+
+
+# def get_ta_signals(top_coins):
+#     klines_data = []
+#     for symbol in top_coins:
+#         # print(symbol)
+#         try:
+#             kline_data = get_apii.get_klines(symbol)
+#             # print(kline_data)
+#             close_price = kline_data['Close'].iloc[-1]
+#             adx = ta_iindss.calculate_adx(kline_data)
+#             sma20 = ta_iindss.calculate_sma(kline_data)
+#             upper, lower = ta_iindss.calculate_bollinger_bands(kline_data)                 
+#             macd, signal = ta_iindss.calculate_macd(kline_data)
+#             rsi = ta_iindss.calculate_rsi(kline_data)
+#             print(f"rsi:  {rsi}")
+#             fastk, slowk = ta_iindss.calculate_stochastic_oscillator(kline_data) 
+#             engulfing = ta_iindss.calculate_engulfing_patterns(kline_data)
+#             doji = ta_iindss.calculate_doji(kline_data)        
+              
+#             klines_data.append({
+#                 'symbol': symbol,
+#                 'close_price': close_price,
+#                 'ADX': adx, 
+#                 'SMA20': sma20, 
+#                 "BB.upper": upper,
+#                 "BB.lower": lower,
+#                 "MACD.macd": macd,
+#                 "MACD.signal": signal,
+#                 "RSI": rsi,
+#                 "Stoch.K": fastk,
+#                 "Stoch.D": slowk,
+#                 "Engulfing": engulfing, 
+#                 "Doji": doji
+#                 })
+#         except Exception as ex:
+#             # print(ex) 
+#             pass
+
+#     return klines_data
     
