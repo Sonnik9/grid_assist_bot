@@ -3,7 +3,7 @@ import talib
 # import pandas_ta as ta
 # import numpy as np
 # from pparamss import my_params
-from API_BINANCE.get_api import get_apii
+# from API_BINANCE.get_api import get_apii
 # from CALC.calc_controller import calc_controllerr
 
 class TA_INDSS():
@@ -102,6 +102,20 @@ ta_iindss = TA_INDSS()
 
 # symbol = 'BTCUSDT'
 # data = get_apii.get_klines(symbol)
+# f, s = ta_iindss.calculate_stochastic_oscillator(data)
+# print(f, s)
+# rsi = None
+# rsi = ta_iindss.calculate_rsi(data)
+# macd = ta_iindss.calculate_macd(data)
+# engulfing = ta_iindss.calculate_engulfing_patterns(data)
+# doji = ta_iindss.calculate_doji(data)
+# print(rsi)
+# print(macd)
+# print(engulfing)
+# print(doji)
+
+
+
 # # atr1 = calc_controllerr.calculate_atr(data)
 # # print(atr1)
 # atr2 = ta_iindss.calculate_atr(data)

@@ -104,10 +104,13 @@ class CALC_MANAGER(CALC_PIV):
         if target == 'default_calc':
             top_coins = []
             top_coins = utils_for_orderss.assets_filters()
-            symbol = top_coins[0]
-      
+            symbol = top_coins[1]
+        else:
+            pass          
+
         assets = []
-        assets.append(symbol)          
+        assets.append(symbol)     
+        data = get_apii.get_klines(symbol)     
 
         if my_params.inds_source == 'tv':  
             all_coins_indicators = tv_infoo.get_tv_steak_signals(assets)          
@@ -118,14 +121,12 @@ class CALC_MANAGER(CALC_PIV):
             elif my_params.ind_strategy == 2:               
                 data_analysis = tv_infoo.extract_tv_signals(all_coins_indicators)              
                 direction = sigmals_handler_two(assets, data_analysis)
-                direction = direction[0]['side']
-                data = get_apii.get_klines(symbol)
+                direction = direction[0]['side']                
                 piv_info_repl = self.finta_pivot_with_period(symbol, data)
                 my_params.pivot_levels_type = 4
             
         elif my_params.inds_source == 'ta':
-            data_analysis = None
-            data = get_apii.get_klines(symbol) 
+            data_analysis = None            
             direction = sigmals_handler_two(assets, data_analysis)
             direction = direction[0]['side'] 
             piv_info_repl = self.finta_pivot_with_period(symbol, data)

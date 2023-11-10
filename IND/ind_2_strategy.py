@@ -41,11 +41,14 @@ def bunch_handler_func(close_price, upper, lower, macd, signal, rsi, fastk, slow
 
     if 'rsi_flag' in current_bunch:   
         if my_params.inds_source == 'ta':
+            print('hello rsi_flag')
             rsi = ta_iindss.calculate_rsi(kline_data)  
             print(rsi)
         try:           
             buy_rsi_signal = rsi <= my_params.b_rsi_lev
+            print(my_params.s_rsi_lev)
             sell_rsi_signal = rsi >= my_params.s_rsi_lev
+            print(sell_rsi_signal)
             signals_sum.append((buy_rsi_signal, sell_rsi_signal))
         except Exception as ex:
             print(ex)
@@ -89,14 +92,21 @@ def bunch_handler_func(close_price, upper, lower, macd, signal, rsi, fastk, slow
     if 'U' in current_bunch:
         if buy_signals_counter == len(signals_sum):
             total_signal = 'BUY'
-    if 'D':
+        else:
+            total_signal = 'NEUTRAL'
+
+    if 'D'in current_bunch:
         if sell_signals_counter == len(signals_sum):
             total_signal = 'SELL'
+        else:
+            total_signal = 'NEUTRAL'
     if 'F' in current_bunch:
         if buy_signals_counter == len(signals_sum):
             total_signal = 'F_BUY'
-        if sell_signals_counter == len(signals_sum):
+        elif sell_signals_counter == len(signals_sum):
             total_signal = 'F_SELL'
+        else:
+            total_signal = 'F_NEUTRAL'
 
     return total_signal
 
@@ -130,16 +140,19 @@ def sigmals_handler_two(coins_list, data_analysis):
             sma20 = ta_iindss.calculate_sma(kline_data)
 
         trende_sign = trends_defender(close_price, adx, sma20)
+        # print(trende_sign)
 
         if trende_sign == 'U':
-            my_params.current_bunch.append('U')
+            current_bunch = my_params.current_bunch + ['U']            
         if trende_sign == 'D':
-            my_params.current_bunch.append('D')
+            current_bunch = my_params.current_bunch + ['D']
         if trende_sign == 'F':         
-            # current_bunch = ['bband_flag', 'macd_lite_flag', 'F']           
-            current_bunch = ['stoch_flag', 'macd_lite_flag', 'doji_flag', 'F']
+            # current_bunch = ['bband_flag', 'macd_lite_flag', 'F']  
+            current_bunch = ['stoch_flag', 'macd_lite_flag', 'F']         
+            # current_bunch = ['stoch_flag', 'macd_lite_flag', 'doji_flag', 'F']
               
         total_signal = bunch_handler_func(close_price, upper, lower, macd, signal, rsi, fastk, slowk, engulfing, doji, current_bunch, kline_data)
+        
         if total_signal:
            orders_stek.append({'symbol': symboll, 'side': total_signal})
 

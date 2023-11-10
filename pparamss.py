@@ -68,8 +68,8 @@ class TIME_TEMPLATES(URL_TEMPLATES):
         }
         self.KLINE_TIME, self.TIME_FRAME = 1, 'd'
         self.INTERVAL = str(self.KLINE_TIME) + self.TIME_FRAME
-        self.end_date = datetime(2023, 11, 1)
-        # self.end_date = None
+        # self.end_date = datetime(2023, 11, 1)
+        self.end_date = None
         self.KLINES_PERIOD = 70        
         # //////////////////////////////////////////////////////////////////////////////
 
@@ -77,7 +77,7 @@ class INDICATORD_PARAMS(TIME_TEMPLATES):
     def __init__(self) -> None:
         super().__init__()
         self.b_bband_q, self.s_bband_q = 1, 1
-        self.b_rsi_lev, self.s_rsi_lev = 33, 67 
+        self.b_rsi_lev, self.s_rsi_lev = 45, 55 
         self.b_macd__q, self.s_macd_q = 1, 1
         self.b_stoch_q, self.s_stoch_q = 23, 77
 
@@ -88,7 +88,7 @@ class STRATEGY_SET(INDICATORD_PARAMS):
         self.ind_strategy = 2
         self.inds_source = 'tv'
         # self.inds_source = 'ta'         
-        self.BUNCH_VARIANT = 3
+        self.BUNCH_VARIANT = 2
         if self.BUNCH_VARIANT == 1:
             self.current_bunch = ['bband_flag', 'macd_lite_flag', 'engulfing_flag']
         if self.BUNCH_VARIANT == 2:
@@ -99,6 +99,10 @@ class STRATEGY_SET(INDICATORD_PARAMS):
             self.current_bunch = ['bband_flag', 'macd_lite_flag', 'rsi_flag']
         elif self.BUNCH_VARIANT == 5:
             self.current_bunch = ['bband_flag', 'rsi_flag'] 
+        elif self.BUNCH_VARIANT == 6:
+            self.current_bunch = ['bband_flag'] 
+        elif self.BUNCH_VARIANT == 7:
+            self.current_bunch = ['rsi_flag'] 
 
         self.PIVOT_GENERAL_TYPE = 'Classic'
         # self.PIVOT_GENERAL_TYPE = 'Fibonacci'
