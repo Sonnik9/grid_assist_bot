@@ -17,10 +17,18 @@ class Configg():
         if not my_params.TEST_FLAG:
             self.api_key  = os.getenv("BINANCE_API_PUBLIC_KEY_REAL", "")
             self.api_secret = os.getenv("BINANCE_API_PRIVATE_KEY_REAL", "")
+
         else:
-            self.api_key  = os.getenv("BINANCE_API_PUBLIC_KEY_FUTURES_TEST", "")
-            self.api_secret = os.getenv("BINANCE_API_PRIVATE_KEY_FUTURES_TEST", "")
+            if my_params.MARKET == 'spot':
+                self.api_key  = os.getenv("BINANCE_API_PUBLIC_KEY_SPOT_TEST", "")
+                self.api_secret = os.getenv("BINANCE_API_PRIVATE_KEY_SPOT_TEST", "")
+
+            if my_params.MARKET == 'futures':
+                self.api_key  = os.getenv("BINANCE_API_PUBLIC_KEY_FUTURES_TEST", "")
+                self.api_secret = os.getenv("BINANCE_API_PRIVATE_KEY_FUTURES_TEST", "")
         self.tg_api_token = os.getenv("TG_API_TOKEN", "")
+        
+        
         # print(self.api_key)
         # print(self.api_secret)
         # print(self.tg_api_token)
@@ -59,6 +67,7 @@ class Configg():
                 time.sleep((i+1) * multipliter)                
                 
         try:
+            # print(response)
             response = response.json()
         except:
             pass

@@ -90,8 +90,23 @@
 # # python test.py
 
 
-a = [1,2,3,4,5]
-b = a[:-3]
-c = a[-3:]
-print(b)
-print(c)
+# a = [1,2,3,4,5]
+# b = a[:-3]
+# c = a[-3:]
+# print(b)
+# print(c)
+
+import requests
+
+spot_klines_url = 'https://api.binance.com/api/v3/klines'
+symbol = 'BTCUSDT'
+interval = '1m'
+
+params = {
+    'symbol': symbol,
+    'interval': interval
+}
+
+response = requests.get(spot_klines_url, params=params)
+klines_data = response.json()
+print(klines_data)

@@ -12,6 +12,7 @@ class UTILS_FOR_ORDERS():
         all_tickers = []
         exclusion_contains_list = ['UP', 'DOWN', 'RUB', 'EUR']
         all_tickers = get_apii.get_all_tickers()
+        # print(all_tickers)
 
         if all_tickers:
             usdt_filtered = [ticker for ticker in all_tickers if
@@ -33,6 +34,9 @@ class UTILS_FOR_ORDERS():
         return top_pairs
 
 utils_for_orderss = UTILS_FOR_ORDERS()
+
+# all_tik = utils_for_orderss.assets_filters()
+# print(all_tik)
 
 # python -m API_BINANCE.utils_api
 

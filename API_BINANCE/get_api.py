@@ -30,13 +30,23 @@ class GETT_API(Configg):
     
     def get_balance(self):
 
-        current_balance = None        
+        current_balance = None  
+         
+        locked_balance = None  
+        un_pNl_balance = None   
         url = my_params.URL_PATTERN_DICT['balance_url']
         params = {}
+        params['recvWindow'] = 5000
         params = self.get_signature(params)
         current_balance = self.HTTP_request(url, method=self.method, headers=self.header, params=params)
-        current_balance = float([x['balance'] for x in current_balance if x['asset'] == 'USDT'][0])
-
+        # print(current_balance)
+        if my_params.MARKET == 'spot':
+            current_balance = dict(current_balance)
+            current_balanceE = current_balance['balances']
+            current_balance = [(x['free'], x['locked']) for x in current_balanceE if x['asset'] == 'USDT'][0]          
+        if my_params.MARKET == 'futures':
+            current_balance = list(current_balance)
+            current_balance = [(x['balance'], x['crossUnPnl']) for x in current_balance if x['asset'] == 'USDT'][0]
         return current_balance
     
     def get_position_price(self, symbol):
@@ -55,6 +65,7 @@ class GETT_API(Configg):
         klines = None
         data = None
         url = my_params.URL_PATTERN_DICT["klines_url"]
+        # print(url)
 
         params = {}
         params["symbol"] = symbol
@@ -63,9 +74,10 @@ class GETT_API(Configg):
         if end_date:            
            params["endTime"] = int(end_date.timestamp() * 1000)
         params["limit"] = my_params.KLINES_PERIOD + 1
-        params = self.get_signature(params)
+        # params = self.get_signature(params)
+        # print(params)
         klines = self.HTTP_request(url, method=self.method, headers=self.header, params=params)
-        
+        # print(klines)
         if klines:
             try:
                 data = pd.DataFrame(klines).iloc[:, :6]
@@ -106,5 +118,7 @@ class GETT_API(Configg):
 # //////////////////////////////////////////////////////////////////////////////////
 
 get_apii = GETT_API()
-    
-# python -m API.bin_data_get
+
+# kl = get_apii.get_klines('BNBUSDT')
+# print(kl)
+# python -m API_BINANCE.get_api

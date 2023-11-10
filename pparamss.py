@@ -4,9 +4,9 @@ class MAIN_PARAMETRS:
     def __init__(self):
         self.SOLI_DEO_GLORIA = 'Soli Deo Gloria!'
         self.MARKET = 'futures'
-        # self.market = 'spot'
-        self.TEST_FLAG = True # -- test
-        # self.test_flag = False # -- real        
+        # self.MARKET = 'spot'
+        # self.TEST_FLAG = True # -- test
+        self.TEST_FLAG = False # -- real        
 
 class URL_TEMPLATES(MAIN_PARAMETRS):
     def __init__(self) -> None:
@@ -21,13 +21,14 @@ class URL_TEMPLATES(MAIN_PARAMETRS):
                 self.URL_PATTERN_DICT['get_all_orders_url'] = 'https://api.binance.com/api/v3/openOrders'
                 self.URL_PATTERN_DICT['cancel_all_orders_url'] = 'https://api.binance.com/api/v3/allOpenOrders'
                 self.URL_PATTERN_DICT['positions_url'] = 'https://api.binance.com/api/v3/account'
-                self.URL_PATTERN_DICT["klines_url"] = 'https://api.binance.com/api/v1/klines'
+                # print('hi')
+                self.URL_PATTERN_DICT["klines_url"] = 'https://api.binance.com/api/v3/klines'
 
             else:
                 self.URL_PATTERN_DICT['all_tikers_url'] = "https://fapi.binance.com/fapi/v1/ticker/24hr"
                 self.URL_PATTERN_DICT['create_order_url'] = 'https://fapi.binance.com/fapi/v1/order' 
                 self.URL_PATTERN_DICT['exchangeInfo_url'] = 'https://fapi.binance.com/fapi/v1/exchangeInfo'
-                self.URL_PATTERN_DICT['balance_url'] = 'https://fapi.binance.com/fapi/v1/balance'
+                self.URL_PATTERN_DICT['balance_url'] = 'https://fapi.binance.com/fapi/v2/balance'
                 self.URL_PATTERN_DICT['get_all_orders_url'] = 'https://fapi.binance.com/fapi/v1/openOrders'
                 self.URL_PATTERN_DICT['cancel_all_orders_url'] = 'https://fapi.binance.com/fapi/v1/allOpenOrders'
                 self.URL_PATTERN_DICT['positions_url'] = 'https://fapi.binance.com/fapi/v2/positionRisk'
@@ -42,8 +43,9 @@ class URL_TEMPLATES(MAIN_PARAMETRS):
                 self.URL_PATTERN_DICT['balance_url'] = 'https://testnet.binance.vision/api/v3/account'
                 self.URL_PATTERN_DICT['get_all_orders_url'] = 'https://testnet.binance.vision/api/v3/openOrders'
                 self.URL_PATTERN_DICT['cancel_all_orders_url'] = 'https://testnet.binance.vision/api/v3/allOpenOrders'
-                self.URL_PATTERN_DICT['positions_url'] = 'https://testnet.binanceapi.com/api/v3/account'
-                self.URL_PATTERN_DICT["klines_url"] = 'https://testnet.binanceapi.com/api/v1/klines'
+                self.URL_PATTERN_DICT['positions_url'] = 'https://testnet.binance.com/api/v3/account'
+                self.URL_PATTERN_DICT["klines_url"] = 'https://testnet.binance.com/api/v3/klines'
+
 
             else:
                 self.URL_PATTERN_DICT['all_tikers_url'] = "https://testnet.binancefuture.com/fapi/v1/ticker/24hr"
@@ -85,7 +87,7 @@ class INDICATORD_PARAMS(TIME_TEMPLATES):
 class STRATEGY_SET(INDICATORD_PARAMS):
     def __init__(self) -> None:
         super().__init__()
-        self.ind_strategy = 2
+        self.ind_strategy = 1
         self.inds_source = 'tv'
         # self.inds_source = 'ta'         
         self.BUNCH_VARIANT = 2

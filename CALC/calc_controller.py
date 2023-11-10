@@ -110,7 +110,8 @@ class CALC_MANAGER(CALC_PIV):
 
         assets = []
         assets.append(symbol)     
-        data = get_apii.get_klines(symbol)     
+        data = get_apii.get_klines(symbol)  
+        # print(data)   
 
         if my_params.inds_source == 'tv':  
             all_coins_indicators = tv_infoo.get_tv_steak_signals(assets)          
