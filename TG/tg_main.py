@@ -2,19 +2,19 @@
 import telebot
 from telebot import types
 from config import Configg
-from API_BINANCE.get_api import get_apii
-from CALC.calc_controller import calc_controllerr
+from CALC.calc_controller import CALC_MANAGER
 import time
-# from pparamss import my_params
 
-class TG_CONNECTOR(Configg):
+class TG_CONNECTOR(CALC_MANAGER):
     def __init__(self):
+        super().__init__()
         self.bot = telebot.TeleBot(Configg().tg_api_token)
         self.menu_markup = self.create_menu()
-        self.reserved_frathes_list = ["SEARCHING", "SETTINGS", "CALC", "BALANCE", "RESTART", 1, 2]        
+        self.reserved_frathes_list = ["SEARCHING", "SETTINGS", "CALC", "BALANCE", "RESTART", "1", "2"]        
         self.custom_redirect_flag = False  
         self.calc_flag = False
-
+        self.settings_flag = False
+        
     def create_menu(self):
         menu_markup = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True, one_time_keyboard=True)
         button1 = types.KeyboardButton("SEARCHING")
@@ -27,23 +27,30 @@ class TG_CONNECTOR(Configg):
 
     def connector_func(self, bot, message, response_message):
         retry_number = 3
-        decimal = 2
-        message.text = None
+        decimal = 2        
         for i in range(retry_number):
             try:
                 bot.send_message(message.chat.id, response_message)
-                break
+                # print(message.text)
+                return message.text
             except:
-                time.sleep(2 + i*decimal)
-
-        return message.text
-
-
-
+                time.sleep(2 + i*decimal)        
+        return None
+    
+    
 class TG_ASSISTENT(TG_CONNECTOR):
     def __init__(self):
         super().__init__()
-        self.calc_flag = False
+        # self.calc_flag = False
+        # self.settings_flag = False
+
+    def update_market(self, new_market):
+        super().update_market(new_market)
+        self.update_urls()
+
+    def update_test_flag(self, new_test_flag):
+        super().update_test_flag(new_test_flag)
+        self.update_urls()
 
     def run(self):
         bot = self.bot        
@@ -58,21 +65,43 @@ class TG_ASSISTENT(TG_CONNECTOR):
 
         @bot.message_handler(func=lambda message: message.text == "SEARCHING")
         def searching(message):
-            top_updated_coins_list = calc_controllerr.find_the_top_coin()
-            top_updated_coins_list = [str(x)[1:-1] for x in top_updated_coins_list]
+            top_updated_coins_list = self.find_the_top_coin()
+            for i in range(len(top_updated_coins_list)):
+                top_updated_coins_list[i] = f"{top_updated_coins_list[i]['symbol']}: {top_updated_coins_list[i]['side']}"
+
             top_updated_coins_str = '\n'.join(top_updated_coins_list)
             response_message = f"TOP LIST:\n\n{top_updated_coins_str}"
-            message.text = self.connector_func(bot, message, response_message)            
+            message.text = self.connector_func(bot, message, response_message) 
+
+        @bot.message_handler(func=lambda message: message.text == "SETTINGS")
+        def settingss(message):
+            response_message = "Please select a market type:\nSpot: 1;\nFutures: 2;" 
+            message.text = self.connector_func(bot, message, response_message) 
+            self.settings_flag = True
+
+        @bot.message_handler(func=lambda message: message.text == "1"  and self.settings_flag)
+        def set_spot_answer(message): 
+            self.update_market('spot')
+            response_message = f'The market was changed to {self.market.upper()} type'
+            message.text = self.connector_func(bot, message, response_message) 
+            self.settings_flag = False 
+
+        @bot.message_handler(func=lambda message: message.text == "2" and self.settings_flag)
+        def set_futures_answer(message): 
+            self.update_market('futures')
+            response_message = f'The market was changed to {self.market.upper()} type'
+            message.text = self.connector_func(bot, message, response_message) 
+            self.settings_flag = False
 
         @bot.message_handler(func=lambda message: message.text == "BALANCE")
         def balance(message):
-            balance = get_apii.get_balance()
-            response_message = f"Your balance is: {balance}"
+            balance = self.get_balance()
+            response_message = f"Your {self.market} balance is: {balance}"
             message.text = self.connector_func(bot, message, response_message)            
 
         @bot.message_handler(func=lambda message: message.text == "CALC")
         def calc_input(message):
-            response_message = "Please choice the way of calculation:\nDefault: 1;\nCustom: 2;" 
+            response_message = "Please choice a way of calculation:\nDefault: 1;\nCustom: 2;" 
             message.text = self.connector_func(bot, message, response_message)
             self.calc_flag = True
 
@@ -83,7 +112,7 @@ class TG_ASSISTENT(TG_CONNECTOR):
                 symbol = None
                 target = 'default_calc'
                 self.calc_flag = False  
-                symbol, direction, resistance_piv, support_piv, grid_number, tp, sl = calc_controllerr.find_the_best_coin(symbol, target)                
+                symbol, direction, resistance_piv, support_piv, grid_number, tp, sl = self.find_the_best_coin(symbol, target)                
             except:
                 pass
             try:
@@ -105,7 +134,7 @@ class TG_ASSISTENT(TG_CONNECTOR):
             try:                 
                 symbol = message.text                
                 target = 'custom_calc'
-                symbol, direction, resistance_piv, support_piv, grid_number, tp, sl = calc_controllerr.find_the_best_coin(symbol, target)                
+                symbol, direction, resistance_piv, support_piv, grid_number, tp, sl = self.find_the_best_coin(symbol, target)                
             except: 
                 response_message = "Enter a VALID coin (e.g., BTCUSDT)"
                 message.text = self.connector_func(bot, message, response_message)                        

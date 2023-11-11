@@ -1,19 +1,28 @@
 from datetime import datetime
 
-class MAIN_PARAMETRS:
+class MAIN_PARAMETRS():
     def __init__(self):
         self.SOLI_DEO_GLORIA = 'Soli Deo Gloria!'
-        self.MARKET = 'futures'
-        # self.MARKET = 'spot'
-        # self.TEST_FLAG = True # -- test
-        self.TEST_FLAG = False # -- real        
+        # self.market = 'futures'
+        self.market = 'spot'
+        # self.test_flag = True # -- test
+        self.test_flag = False # -- real    
+
+    def update_market(self, new_market):
+        self.market = new_market
+
+    def update_test_flag(self, new_test_flag):
+        self.test_flag = new_test_flag
 
 class URL_TEMPLATES(MAIN_PARAMETRS):
     def __init__(self) -> None:
         super().__init__()
         self.URL_PATTERN_DICT= {}
-        if not self.TEST_FLAG:
-            if self.MARKET == 'spot':                
+        self.update_urls() 
+
+    def update_urls(self):
+        if not self.test_flag:
+            if self.market == 'spot':                
                 self.URL_PATTERN_DICT['all_tikers_url'] = "https://api.binance.com/api/v3/ticker/24hr"
                 self.URL_PATTERN_DICT['create_order_url'] = 'https://api.binance.com/api/v3/order' 
                 self.URL_PATTERN_DICT['exchangeInfo_url'] = 'https://api.binance.com/api/v3/exchangeInfo'
@@ -36,7 +45,7 @@ class URL_TEMPLATES(MAIN_PARAMETRS):
                 self.URL_PATTERN_DICT["klines_url"] = 'https://fapi.binance.com/fapi/v1/klines'
 
         else:
-            if self.MARKET == 'spot':
+            if self.market == 'spot':
                 self.URL_PATTERN_DICT['all_tikers_url'] = "https://testnet.binance.com/v3/ticker/24hr"
                 self.URL_PATTERN_DICT['create_order_url'] = 'https://testnet.binance.vision/api/v3/order' 
                 self.URL_PATTERN_DICT['exchangeInfo_url'] = 'https://testnet.binance.vision/api/v3/exchangeInfo'
@@ -68,10 +77,10 @@ class TIME_TEMPLATES(URL_TEMPLATES):
             "from": 1,
             "to": 3
         }
-        self.KLINE_TIME, self.TIME_FRAME = 1, 'd'
+        self.KLINE_TIME, self.TIME_FRAME = 4, 'h'
         self.INTERVAL = str(self.KLINE_TIME) + self.TIME_FRAME
-        # self.end_date = datetime(2023, 11, 1)
-        self.end_date = None
+        self.end_date = datetime(2023, 11, 2)
+        # self.end_date = None
         self.KLINES_PERIOD = 70        
         # //////////////////////////////////////////////////////////////////////////////
 
@@ -88,8 +97,8 @@ class STRATEGY_SET(INDICATORD_PARAMS):
     def __init__(self) -> None:
         super().__init__()
         self.ind_strategy = 1
-        self.inds_source = 'tv'
-        # self.inds_source = 'ta'         
+        # self.inds_source = 'tv'
+        self.inds_source = 'ta'         
         self.BUNCH_VARIANT = 2
         if self.BUNCH_VARIANT == 1:
             self.current_bunch = ['bband_flag', 'macd_lite_flag', 'engulfing_flag']
@@ -126,6 +135,6 @@ class STRATEGY_SET(INDICATORD_PARAMS):
         # self.QNT_ROUNDING_TYPE = 'floor'
         # //////////////////////////////////////////////////////////////////
 
-my_params = STRATEGY_SET()
+
 
 # python -m pparamss

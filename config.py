@@ -1,4 +1,4 @@
-from pparamss import my_params
+from pparamss import STRATEGY_SET
 import logging, os, inspect
 from dotenv import load_dotenv
 import time
@@ -11,23 +11,24 @@ current_file = os.path.basename(__file__)
 
 load_dotenv()
 
-class Configg():
+class Configg(STRATEGY_SET):
 
     def __init__(self) -> None:
-        if not my_params.TEST_FLAG:
+        super().__init__()
+        self.tg_api_token = os.getenv("TG_API_TOKEN", "")
+
+        if not self.test_flag:
             self.api_key  = os.getenv("BINANCE_API_PUBLIC_KEY_REAL", "")
             self.api_secret = os.getenv("BINANCE_API_PRIVATE_KEY_REAL", "")
 
         else:
-            if my_params.MARKET == 'spot':
-                self.api_key  = os.getenv("BINANCE_API_PUBLIC_KEY_SPOT_TEST", "")
-                self.api_secret = os.getenv("BINANCE_API_PRIVATE_KEY_SPOT_TEST", "")
+            if self.market == 'spot':
+                self.api_key  = os.getenv(f"BINANCE_API_PUBLIC_KEY_{self.market.upper()}_TEST", "")
+                self.api_secret = os.getenv(f"BINANCE_API_PRIVATE_KEY_{self.market.upper()}_TEST", "")
 
-            if my_params.MARKET == 'futures':
-                self.api_key  = os.getenv("BINANCE_API_PUBLIC_KEY_FUTURES_TEST", "")
-                self.api_secret = os.getenv("BINANCE_API_PRIVATE_KEY_FUTURES_TEST", "")
-        self.tg_api_token = os.getenv("TG_API_TOKEN", "")
-        
+            if self.market == 'futures':
+                self.api_key  = os.getenv(f"BINANCE_API_PUBLIC_KEY_{self.market.upper()}_TEST", "")
+                self.api_secret = os.getenv(f"BINANCE_API_PRIVATE_KEY_{self.market.upper()}_TEST", "")    
         
         # print(self.api_key)
         # print(self.api_secret)

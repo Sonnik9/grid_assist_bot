@@ -1,5 +1,4 @@
 from tradingview_ta import *
-from pparamss import my_params
 from tradingview_ta import TA_Handler
 
 class TV_INFO():
@@ -14,7 +13,7 @@ class TV_INFO():
 
         all_coins_indicators = get_multiple_analysis(symbols=symbols,
                             screener='crypto',                    
-                            interval=my_params.INTERVAL)
+                            interval=self.INTERVAL)
         
         return all_coins_indicators
     
@@ -48,17 +47,17 @@ class TV_INFO():
             symbol=the_best_coin,
             exchange='BINANCE',
             screener='crypto',
-            interval=my_params.INTERVAL  
+            interval=self.INTERVAL  
         )
         coin_indicators = handler.get_analysis()
         # print(coin_indicators)
         piv[the_best_coin] = {
-            f'Pivot.M.{my_params.PIVOT_GENERAL_TYPE}.S{my_params.pivot_levels_type}': coin_indicators.indicators[f'Pivot.M.{my_params.PIVOT_GENERAL_TYPE}.S{my_params.pivot_levels_type}'],
-            f'Pivot.M.{my_params.PIVOT_GENERAL_TYPE}.R{my_params.pivot_levels_type}': coin_indicators.indicators[f'Pivot.M.{my_params.PIVOT_GENERAL_TYPE}.R{my_params.pivot_levels_type}']      
+            f'Pivot.M.{self.PIVOT_GENERAL_TYPE}.S{self.pivot_levels_type}': coin_indicators.indicators[f'Pivot.M.{self.PIVOT_GENERAL_TYPE}.S{self.pivot_levels_type}'],
+            f'Pivot.M.{self.PIVOT_GENERAL_TYPE}.R{self.pivot_levels_type}': coin_indicators.indicators[f'Pivot.M.{self.PIVOT_GENERAL_TYPE}.R{self.pivot_levels_type}']      
         }
 
         return piv
     
-tv_infoo = TV_INFO()
+# tv_infoo = TV_INFO()
 
 # python -m IND.tv_inds

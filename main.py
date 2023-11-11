@@ -1,4 +1,3 @@
-from pparamss import my_params
 from TG.tg_main import main_tg_func
 # from config import Configg
 

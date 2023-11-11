@@ -98,7 +98,7 @@ class TA_INDSS():
             print(f"Error in calculate_stochastic_oscillator: {ex}")
         return slow_k, slow_d
     
-ta_iindss = TA_INDSS()
+# ta_iindss = TA_INDSS()
 
 # symbol = 'BTCUSDT'
 # data = get_apii.get_klines(symbol)
