@@ -2,25 +2,23 @@ from datetime import datetime
 
 class MAIN_PARAMETRS():
     def __init__(self):
-        self.SOLI_DEO_GLORIA = 'Soli Deo Gloria!'
-        # self.market = 'futures'
+        self.SOLI_DEO_GLORIA = 'Soli Deo Gloria!'        
         self.market = 'spot'
-        # self.test_flag = True # -- test
         self.test_flag = False # -- real    
+        # self.market = 'futures'
+        # self.test_flag = True # -- test        
 
-    def update_market(self, new_market):
+    def update_main_params(self, new_market, new_test_flag=False):
         self.market = new_market
-
-    def update_test_flag(self, new_test_flag):
         self.test_flag = new_test_flag
 
 class URL_TEMPLATES(MAIN_PARAMETRS):
     def __init__(self) -> None:
         super().__init__()
         self.URL_PATTERN_DICT= {}
-        self.update_urls() 
+        self.init_urls() 
 
-    def update_urls(self):
+    def init_urls(self):
         if not self.test_flag:
             if self.market == 'spot':                
                 self.URL_PATTERN_DICT['all_tikers_url'] = "https://api.binance.com/api/v3/ticker/24hr"
@@ -72,34 +70,77 @@ class TIME_TEMPLATES(URL_TEMPLATES):
    
     def __init__(self) -> None:
         super().__init__()
-        # self.TERMINATE_TIMER_FLAG = False        
         self.REST_TIME = {
             "from": 1,
             "to": 3
         }
         self.KLINE_TIME, self.TIME_FRAME = 4, 'h'
         self.INTERVAL = str(self.KLINE_TIME) + self.TIME_FRAME
-        self.end_date = datetime(2023, 11, 2)
-        # self.end_date = None
-        self.KLINES_PERIOD = 70        
-        # //////////////////////////////////////////////////////////////////////////////
+        self.end_date = None
+        self.KLINES_PERIOD = 100         
+    # ///////////////////////////////////////////////
+    def update_time_temps(self, new_rest_time, new_kline_time, new_time_frame, new_end_date, new_klines_period): 
+        self.REST_TIME = dict(new_rest_time)
+
+        self.KLINE_TIME, self.TIME_FRAME = int(new_kline_time), new_time_frame.strip().lower()
+        self.INTERVAL = str(self.KLINE_TIME) + self.TIME_FRAME
+        new_end_date = tuple(new_end_date)
+        self.end_date = datetime(new_end_date[0], new_end_date[1], new_end_date[2])        
+        self.KLINES_PERIOD = int(new_klines_period)    
+        # ///////////////////////////////////////////////////////////////////////////
 
 class INDICATORD_PARAMS(TIME_TEMPLATES):
     def __init__(self) -> None:
         super().__init__()
         self.b_bband_q, self.s_bband_q = 1, 1
-        self.b_rsi_lev, self.s_rsi_lev = 45, 55 
+        self.b_rsi_lev, self.s_rsi_lev = 33, 67
         self.b_macd__q, self.s_macd_q = 1, 1
         self.b_stoch_q, self.s_stoch_q = 23, 77
+        
+    def update_ind_params(self, new_b_bband_q, new_s_bband_q, new_b_rsi_lev, new_s_rsi_lev, new_b_macd__q, new_s_macd_q, new_b_stoch_q, new_s_stoch_q):
+        self.b_bband_q, self.s_bband_q = new_b_bband_q, new_s_bband_q
+        self.b_rsi_lev, self.s_rsi_lev = new_b_rsi_lev, new_s_rsi_lev
+        self.b_macd__q, self.s_macd_q = new_b_macd__q, new_s_macd_q
+        self.b_stoch_q, self.s_stoch_q = new_b_stoch_q, new_s_stoch_q
 
+class FILTER_SET(INDICATORD_PARAMS):
+    def __init__(self) -> None:
+        super().__init__()
+        self.SLICE_VOLUME_PAIRS = 21 # volums
+        self.SLICE_VOLATILITY = 19 # volatility
+        self.MIN_FILTER_PRICE = 0.01 # min price
+        self.MAX_FILTER_PRICE = 3000000 # max price
+        self.problem_pairs = ['SOLUSDT', 'ZECUSDT', 'MKRUSDT', 'COMPUSDT', 'ORDIUSDT'] # problem coins list
 
-class STRATEGY_SET(INDICATORD_PARAMS):
+    def update_filter_set(self, new_slice_volun_pairs, new_slice_volatility, new_min_filter_price, new_max_filter_price, new_problem_pairs):       
+        self.SLICE_VOLUME_PAIRS = new_slice_volun_pairs
+        self.SLICE_VOLATILITY = new_slice_volatility
+        self.MIN_FILTER_PRICE = new_min_filter_price 
+        self.MAX_FILTER_PRICE = new_max_filter_price 
+        self.problem_pairs = new_problem_pairs 
+
+class STRATEGY_SET(FILTER_SET):
     def __init__(self) -> None:
         super().__init__()
         self.ind_strategy = 1
-        # self.inds_source = 'tv'
-        self.inds_source = 'ta'         
+        self.inds_source = 'tv'
+        # self.inds_source = 'ta'         
         self.BUNCH_VARIANT = 2
+        self.PIVOT_GENERAL_TYPE = 'Classic'
+        # self.PIVOT_GENERAL_TYPE = 'Fibonacci'
+        self.pivot_levels_type = 1
+        self.grid_decimal = 10
+        self.init_strategy_set()
+
+    def update_strategy_set(self, new_ind_strategy, new_inds_source, new_BUNCH_VARIANT, new_pivot_gen_type, new_pivot_levels_type, new_grid_decimal):
+        self.ind_strategy = new_ind_strategy       
+        self.inds_source = new_inds_source         
+        self.BUNCH_VARIANT = new_BUNCH_VARIANT
+        self.PIVOT_GENERAL_TYPE = new_pivot_gen_type
+        self.pivot_levels_type = new_pivot_levels_type
+        self.grid_decimal = new_grid_decimal
+
+    def init_strategy_set(self):
         if self.BUNCH_VARIANT == 1:
             self.current_bunch = ['bband_flag', 'macd_lite_flag', 'engulfing_flag']
         if self.BUNCH_VARIANT == 2:
@@ -113,28 +154,6 @@ class STRATEGY_SET(INDICATORD_PARAMS):
         elif self.BUNCH_VARIANT == 6:
             self.current_bunch = ['bband_flag'] 
         elif self.BUNCH_VARIANT == 7:
-            self.current_bunch = ['rsi_flag'] 
-
-        self.PIVOT_GENERAL_TYPE = 'Classic'
-        # self.PIVOT_GENERAL_TYPE = 'Fibonacci'
-        self.pivot_levels_type = 1
-        self.grid_decimal = 10
-
-        # //////////////////////// coins filter params //////////////////////
-        self.SLICE_VOLUME_PAIRS = 12 # volums
-        self.SLICE_CHANGINGPRICES_PAIRS = 11 # volatility
-        # self.SLICE_MARKET_CAP_RANK = 10 #stakan
-        # self.SLICE_SENTIMENTE_DATA_30D = 9 # ??
-        self.MIN_FILTER_PRICE = 0.1 # min price
-        self.MAX_FILTER_PRICE = 3000000 # max price
-        self.problem_pairs = ['SOLUSDT', 'ZECUSDT', 'MKRUSDT', 'COMPUSDT', 'ORDIUSDT'] 
-
-        #/////////////////////////////// other params//////////////////////
-        # self.QNT_ROUNDING_TYPE = 'ceil'
-        self.QNT_ROUNDING_TYPE = 'round'
-        # self.QNT_ROUNDING_TYPE = 'floor'
-        # //////////////////////////////////////////////////////////////////
-
-
+            self.current_bunch = ['rsi_flag']
 
 # python -m pparamss

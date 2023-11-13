@@ -6,7 +6,6 @@ class IND_STRATEGY_1():
         # super().__init__()
         pass
 
-
     def sigmals_handler_one(self, all_coins_indicators):
 
         signals_stek = []
@@ -31,8 +30,8 @@ class IND_STRATEGY_1():
                     signals_stek.append({'symbol': symboll, 'side': 'SELL'})            
                 except:
                     pass
-            else:
-                signals_stek.append({'symbol': symboll, 'side': 'NEUTRAL'})
+            # else:
+            #     signals_stek.append({'symbol': symboll, 'side': 'NEUTRAL'})
 
         return signals_stek 
 

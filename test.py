@@ -96,17 +96,23 @@
 # print(b)
 # print(c)
 
-import requests
+# import requests
 
-spot_klines_url = 'https://api.binance.com/api/v3/klines'
-symbol = 'BTCUSDT'
-interval = '1m'
+# spot_klines_url = 'https://api.binance.com/api/v3/klines'
+# symbol = 'BTCUSDT'
+# interval = '1m'
 
-params = {
-    'symbol': symbol,
-    'interval': interval
-}
+# params = {
+#     'symbol': symbol,
+#     'interval': interval
+# }
 
-response = requests.get(spot_klines_url, params=params)
-klines_data = response.json()
-print(klines_data)
+# response = requests.get(spot_klines_url, params=params)
+# klines_data = response.json()
+# print(klines_data)
+text = f"Please change the options:\nmarket = spot\ntest_flag = False"  
+new_market = text.split('=')[1].split('\n')[0].strip()
+new_test_flag = text.split('=')[2].strip().lower() == 'true'
+# new_test_flag = bool(new_test_flag_str)
+# print(new_market)
+# print(new_test_flag)

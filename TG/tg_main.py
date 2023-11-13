@@ -44,13 +44,9 @@ class TG_ASSISTENT(TG_CONNECTOR):
         # self.calc_flag = False
         # self.settings_flag = False
 
-    def update_market(self, new_market):
-        super().update_market(new_market)
-        self.update_urls()
-
-    def update_test_flag(self, new_test_flag):
-        super().update_test_flag(new_test_flag)
-        self.update_urls()
+    def update_main_paramss(self, new_market):
+        super().update_main_params(new_market)
+        self.init_urls()
 
     def run(self):
         bot = self.bot        
@@ -81,14 +77,14 @@ class TG_ASSISTENT(TG_CONNECTOR):
 
         @bot.message_handler(func=lambda message: message.text == "1"  and self.settings_flag)
         def set_spot_answer(message): 
-            self.update_market('spot')
+            self.update_main_paramss('spot')
             response_message = f'The market was changed to {self.market.upper()} type'
             message.text = self.connector_func(bot, message, response_message) 
             self.settings_flag = False 
 
         @bot.message_handler(func=lambda message: message.text == "2" and self.settings_flag)
         def set_futures_answer(message): 
-            self.update_market('futures')
+            self.update_main_paramss('futures')
             response_message = f'The market was changed to {self.market.upper()} type'
             message.text = self.connector_func(bot, message, response_message) 
             self.settings_flag = False

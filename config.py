@@ -20,6 +20,7 @@ class Configg(STRATEGY_SET):
         if not self.test_flag:
             self.api_key  = os.getenv("BINANCE_API_PUBLIC_KEY_REAL", "")
             self.api_secret = os.getenv("BINANCE_API_PRIVATE_KEY_REAL", "")
+            # print(self.api_key, self.api_secret)
 
         else:
             if self.market == 'spot':

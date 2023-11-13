@@ -27,7 +27,7 @@ class UTILS_FOR_ORDERS(DELETEE_API):
 
             # Filter and sort by priceChangePercent
             sorted_by_price_change_data = sorted(sorted_by_volume_data, key=lambda x: float(x['priceChangePercent']), reverse=True)
-            sorted_by_price_change_data = sorted_by_price_change_data[:self.SLICE_CHANGINGPRICES_PAIRS]
+            sorted_by_price_change_data = sorted_by_price_change_data[:self.SLICE_VOLATILITY]
 
             top_pairs = [x['symbol'] for x in sorted_by_price_change_data if x['symbol'] not in self.problem_pairs]
 

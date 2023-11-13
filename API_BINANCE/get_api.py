@@ -47,6 +47,7 @@ class GETT_API(Configg):
         if self.market == 'spot':
             # print('hi spot')
             current_balance = dict(current_balance)
+            # print(current_balance)
             current_balanceE = current_balance['balances']
             current_balance = [(x['free'], x['locked']) for x in current_balanceE if x['asset'] == 'USDT'][0]          
         if self.market == 'futures':

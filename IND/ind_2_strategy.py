@@ -42,7 +42,7 @@ class IND_STRATEGY_2(UTILS_FOR_ORDERS, TA_INDSS):
             except Exception as ex:
                 print(ex)
 
-        if 'rsi_flag' in current_bunch:   
+        if 'rsi_strong_flag' in current_bunch:   
             if self.inds_source == 'ta':
                 # print('hello rsi_flag')
                 rsi = self.calculate_rsi(kline_data)  
@@ -52,6 +52,18 @@ class IND_STRATEGY_2(UTILS_FOR_ORDERS, TA_INDSS):
                 # print(self.s_rsi_lev)
                 sell_rsi_signal = rsi >= self.s_rsi_lev
                 # print(sell_rsi_signal)
+                signals_sum.append((buy_rsi_signal, sell_rsi_signal))
+            except Exception as ex:
+                print(ex)
+
+        if 'rsi_lite_flag' in current_bunch:   
+            if self.inds_source == 'ta':                
+                rsi = self.calculate_rsi(kline_data)               
+            try:   
+                if 'U' in current_bunch:       
+                    buy_rsi_signal = (rsi < self.s_rsi_lev) and (rsi > self.b_rsi_lev)
+                elif 'D' in current_bunch:
+                    sell_rsi_signal = (rsi < self.s_rsi_lev) and (rsi > self.b_rsi_lev)
                 signals_sum.append((buy_rsi_signal, sell_rsi_signal))
             except Exception as ex:
                 print(ex)
@@ -95,8 +107,8 @@ class IND_STRATEGY_2(UTILS_FOR_ORDERS, TA_INDSS):
         if 'U' in current_bunch:
             if buy_signals_counter == len(signals_sum):
                 total_signal = 'BUY'
-            else:
-                total_signal = 'NEUTRAL'
+            # else:
+            #     total_signal = 'NEUTRAL'
 
         if 'D'in current_bunch:
             if sell_signals_counter == len(signals_sum):
@@ -108,8 +120,8 @@ class IND_STRATEGY_2(UTILS_FOR_ORDERS, TA_INDSS):
                 total_signal = 'F_BUY'
             elif sell_signals_counter == len(signals_sum):
                 total_signal = 'F_SELL'
-            else:
-                total_signal = 'F_NEUTRAL'
+            # else:
+            #     total_signal = 'F_NEUTRAL'
 
         return total_signal
 
