@@ -135,6 +135,7 @@ class CALC_MANAGER(UTILS_FOR_ORDERS, CALC_PIV, IND_STRATEGY_1, TV_INFO):
         elif self.inds_source == 'ta':
             data_analysis = None            
             direction = self.ind_strategy_2.sigmals_handler_two(assets, data_analysis)
+            # print(direction)
             direction = direction[0]['side'] 
             piv_info_repl = self.finta_pivot_with_period(symbol, data)
             self.pivot_levels_type = 4

@@ -30,8 +30,8 @@ class IND_STRATEGY_1():
                     signals_stek.append({'symbol': symboll, 'side': 'SELL'})            
                 except:
                     pass
-            # else:
-            #     signals_stek.append({'symbol': symboll, 'side': 'NEUTRAL'})
+            else:
+                signals_stek.append({'symbol': symboll, 'side': 'NEUTRAL'})
 
         return signals_stek 
 

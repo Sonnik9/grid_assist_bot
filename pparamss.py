@@ -3,9 +3,9 @@ from datetime import datetime
 class MAIN_PARAMETRS():
     def __init__(self):
         self.SOLI_DEO_GLORIA = 'Soli Deo Gloria!'        
-        self.market = 'spot'
+        # self.market = 'spot'
         self.test_flag = False # -- real    
-        # self.market = 'futures'
+        self.market = 'futures'
         # self.test_flag = True # -- test        
 
     def update_main_params(self, new_market, new_test_flag=False):
@@ -94,6 +94,7 @@ class INDICATORD_PARAMS(TIME_TEMPLATES):
         super().__init__()
         self.b_bband_q, self.s_bband_q = 1, 1
         self.b_rsi_lev, self.s_rsi_lev = 33, 67
+        self.b_rsi_lite_lev, self.s_rsi_lite_lev = 36, 64
         self.b_macd__q, self.s_macd_q = 1, 1
         self.b_stoch_q, self.s_stoch_q = 23, 77
         
@@ -110,7 +111,8 @@ class FILTER_SET(INDICATORD_PARAMS):
         self.SLICE_VOLATILITY = 19 # volatility
         self.MIN_FILTER_PRICE = 0.01 # min price
         self.MAX_FILTER_PRICE = 3000000 # max price
-        self.problem_pairs = ['SOLUSDT', 'ZECUSDT', 'MKRUSDT', 'COMPUSDT', 'ORDIUSDT'] # problem coins list
+        # self.problem_pairs = ['SOLUSDT', 'ZECUSDT', 'MKRUSDT', 'COMPUSDT', 'ORDIUSDT']
+        self.problem_pairs = ['DOGEUSDT'] # problem coins list
 
     def update_filter_set(self, new_slice_volun_pairs, new_slice_volatility, new_min_filter_price, new_max_filter_price, new_problem_pairs):       
         self.SLICE_VOLUME_PAIRS = new_slice_volun_pairs
@@ -122,14 +124,14 @@ class FILTER_SET(INDICATORD_PARAMS):
 class STRATEGY_SET(FILTER_SET):
     def __init__(self) -> None:
         super().__init__()
-        self.ind_strategy = 1
-        self.inds_source = 'tv'
-        # self.inds_source = 'ta'         
+        # self.ind_strategy = 2
+        # self.inds_source = 'tv'
+        self.inds_source = 'ta'         
         self.BUNCH_VARIANT = 2
         self.PIVOT_GENERAL_TYPE = 'Classic'
         # self.PIVOT_GENERAL_TYPE = 'Fibonacci'
         self.pivot_levels_type = 1
-        self.grid_decimal = 10
+        self.grid_decimal = 5
         self.init_strategy_set()
 
     def update_strategy_set(self, new_ind_strategy, new_inds_source, new_BUNCH_VARIANT, new_pivot_gen_type, new_pivot_levels_type, new_grid_decimal):
@@ -143,17 +145,15 @@ class STRATEGY_SET(FILTER_SET):
     def init_strategy_set(self):
         if self.BUNCH_VARIANT == 1:
             self.current_bunch = ['bband_flag', 'macd_lite_flag', 'engulfing_flag']
-        if self.BUNCH_VARIANT == 2:
-            self.current_bunch = ['bband_flag', 'macd_lite_flag']
+        elif self.BUNCH_VARIANT == 2:
+            self.current_bunch = ['bband_flag', 'macd_lite_flag', 'rsi_lite_flag']
         elif self.BUNCH_VARIANT == 3:
-            self.current_bunch = ['bband_flag', 'macd_strong_flag']
+            self.current_bunch = ['bband_flag', 'macd_lite_flag']
         elif self.BUNCH_VARIANT == 4:
-            self.current_bunch = ['bband_flag', 'macd_lite_flag', 'rsi_flag']
+            self.current_bunch = ['bband_flag', 'macd_strong_flag']
         elif self.BUNCH_VARIANT == 5:
-            self.current_bunch = ['bband_flag', 'rsi_flag'] 
+            self.current_bunch = ['bband_flag', 'macd_lite_flag', 'rsi_flag']
         elif self.BUNCH_VARIANT == 6:
-            self.current_bunch = ['bband_flag'] 
-        elif self.BUNCH_VARIANT == 7:
-            self.current_bunch = ['rsi_flag']
+            self.current_bunch = ['bband_flag', 'rsi_strong_flag'] 
 
 # python -m pparamss

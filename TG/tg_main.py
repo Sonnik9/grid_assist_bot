@@ -101,7 +101,7 @@ class TG_ASSISTENT(TG_CONNECTOR):
             message.text = self.connector_func(bot, message, response_message)
             self.calc_flag = True
 
-        @bot.message_handler(func=lambda message: message.text == "1" and self.calc_flag)
+        @bot.message_handler(func=lambda message: message.text.strip() == "1" and self.calc_flag)
         def default_calc(message):
             symbol, direction, resistance_piv, support_piv, grid_number, sl, tp = None, None, None, None, None, None, None
             try:
@@ -118,7 +118,7 @@ class TG_ASSISTENT(TG_CONNECTOR):
             except Exception as ex:
                 print(ex)            
 
-        @bot.message_handler(func=lambda message: message.text == "2" and self.calc_flag)
+        @bot.message_handler(func=lambda message: message.text.strip() == "2" and self.calc_flag)
         def custom_calc_redirect(message):
             response_message = "Please enter a coin (e.g., BTCUSDT)"
             message.text = self.connector_func(bot, message, response_message)            
@@ -128,7 +128,7 @@ class TG_ASSISTENT(TG_CONNECTOR):
         def custom_calc(message):
             symbol, direction, resistance_piv, support_piv, grid_number, sl, tp = None, None, None, None, None, None, None
             try:                 
-                symbol = message.text                
+                symbol = message.text.strip().upper()               
                 target = 'custom_calc'
                 symbol, direction, resistance_piv, support_piv, grid_number, tp, sl = self.find_the_best_coin(symbol, target)                
             except: 
