@@ -70,18 +70,12 @@ class TIME_TEMPLATES(URL_TEMPLATES):
    
     def __init__(self) -> None:
         super().__init__()
-        self.REST_TIME = {
-            "from": 1,
-            "to": 3
-        }
         self.KLINE_TIME, self.TIME_FRAME = 4, 'h'
         self.INTERVAL = str(self.KLINE_TIME) + self.TIME_FRAME
         self.end_date = None
         self.KLINES_PERIOD = 100         
     # ///////////////////////////////////////////////
-    def update_time_temps(self, new_rest_time, new_kline_time, new_time_frame, new_end_date, new_klines_period): 
-        self.REST_TIME = dict(new_rest_time)
-
+    def update_time_temps(self, new_kline_time, new_time_frame, new_end_date, new_klines_period): 
         self.KLINE_TIME, self.TIME_FRAME = int(new_kline_time), new_time_frame.strip().lower()
         self.INTERVAL = str(self.KLINE_TIME) + self.TIME_FRAME
         new_end_date = tuple(new_end_date)
@@ -124,8 +118,6 @@ class FILTER_SET(INDICATORD_PARAMS):
 class STRATEGY_SET(FILTER_SET):
     def __init__(self) -> None:
         super().__init__()
-        # self.ind_strategy = 2
-        # self.inds_source = 'tv'
         self.inds_source = 'ta'         
         self.BUNCH_VARIANT = 2
         self.PIVOT_GENERAL_TYPE = 'Classic'

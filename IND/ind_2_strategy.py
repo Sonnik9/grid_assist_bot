@@ -1,8 +1,9 @@
 
-from API_BINANCE.utils_api import UTILS_FOR_ORDERS
+from API_BINANCE.utils_api import UTILSS_API
 from IND.ta_inds import TA_INDSS
+from pparamss import STRATEGY_SET
 
-class IND_STRATEGY_2(UTILS_FOR_ORDERS, TA_INDSS):
+class IND_STRATEGY_2(UTILSS_API, TA_INDSS):
     def __init__(self) -> None:
         super().__init__()
 
@@ -11,13 +12,11 @@ class IND_STRATEGY_2(UTILS_FOR_ORDERS, TA_INDSS):
         buy_signals_counter = 0
         sell_signals_counter = 0    
         total_signal = None
-        # print(f"str14: {current_bunch}")
-
+       
         if 'bband_flag' in current_bunch:            
-            # buy_bband_signal, sell_bband_signal = False, False
-            if self.inds_source == 'ta': 
-                upper, lower = None, None
-                upper, lower = self.calculate_bollinger_bands(kline_data)
+            buy_bband_signal, sell_bband_signal = False, False            
+            upper, lower = None, None
+            upper, lower = self.calculate_bollinger_bands(kline_data)
             # print(upper, lower)
             try:                     
                 buy_bband_signal = close_price >= lower * self.b_bband_q
@@ -27,11 +26,9 @@ class IND_STRATEGY_2(UTILS_FOR_ORDERS, TA_INDSS):
                 print(ex)
 
         if 'macd_lite_flag' in current_bunch:            
-            # buy_lite_macd_signal, sell_lite_macd_signal = False, False
-            # print(self.inds_source)
-            if self.inds_source == 'ta': 
-                macd, signal = None, None
-                macd, signal = self.calculate_macd(kline_data)
+            buy_lite_macd_signal, sell_lite_macd_signal = False, False                      
+            macd, signal = None, None
+            macd, signal = self.calculate_macd(kline_data)
             # print(macd, signal)
             try:                      
                 buy_lite_macd_signal = macd > signal * self.b_macd__q
@@ -40,9 +37,8 @@ class IND_STRATEGY_2(UTILS_FOR_ORDERS, TA_INDSS):
             except Exception as ex:
                 print(ex)
 
-        if 'macd_strong_flag' in current_bunch:
-            if self.inds_source == 'ta': 
-                macd, signal = self.calculate_macd(kline_data)
+        if 'macd_strong_flag' in current_bunch:            
+            macd, signal = self.calculate_macd(kline_data)
             try:                        
                 buy_strong_macd_signal = (macd > signal * self.b_macd__q) & (macd < 0)
                 sell_strong_macd_signal = (macd < signal * self.s_macd_q) & (macd > 0)
@@ -50,9 +46,9 @@ class IND_STRATEGY_2(UTILS_FOR_ORDERS, TA_INDSS):
             except Exception as ex:
                 print(ex)
 
-        if 'rsi_strong_flag' in current_bunch:   
-            if self.inds_source == 'ta':                
-                rsi = self.calculate_rsi(kline_data)                
+        if 'rsi_strong_flag' in current_bunch:  
+            buy_rsi_signal, sell_rsi_signal = False, False                        
+            rsi = self.calculate_rsi(kline_data)                
             try:           
                 buy_rsi_signal = rsi <= self.b_rsi_lev                
                 sell_rsi_signal = rsi >= self.s_rsi_lev                
@@ -61,10 +57,9 @@ class IND_STRATEGY_2(UTILS_FOR_ORDERS, TA_INDSS):
                 print(ex)
 
         if 'rsi_lite_flag' in current_bunch:            
-            buy_rsi_signal, sell_rsi_signal = False, False
-            if self.inds_source == 'ta': 
-                rsi = None                
-                rsi = self.calculate_rsi(kline_data)               
+            buy_rsi_signal, sell_rsi_signal = False, False            
+            rsi = None                
+            rsi = self.calculate_rsi(kline_data)               
             try:   
                 if 'U' in current_bunch or 'F' in current_bunch:       
                     buy_rsi_signal = rsi < self.s_rsi_lite_lev
@@ -75,10 +70,9 @@ class IND_STRATEGY_2(UTILS_FOR_ORDERS, TA_INDSS):
                 print(ex)
 
         if 'stoch_flag' in current_bunch:            
-            # buy_stoch_signal, sell_stoch_signal = False, False
-            if self.inds_source == 'ta':
-                fastk, slowk = None, None
-                fastk, slowk = self.calculate_stochastic_oscillator(kline_data)
+            buy_stoch_signal, sell_stoch_signal = False, False            
+            fastk, slowk = None, None
+            fastk, slowk = self.calculate_stochastic_oscillator(kline_data)
             try:
                 buy_stoch_signal = (fastk > slowk) & (fastk < self.b_stoch_q)
                 sell_stoch_signal = (fastk < slowk) & (fastk > self.s_stoch_q)
@@ -87,8 +81,7 @@ class IND_STRATEGY_2(UTILS_FOR_ORDERS, TA_INDSS):
                 print(ex)
 
         if 'engulfing_flag' in current_bunch:
-            if self.inds_source == 'ta':
-                engulfing = self.calculate_engulfing_patterns(kline_data)
+            buy_engulfing_signal, sell_engulfing_signal = False, False
             try:
                 buy_engulfing_signal = engulfing > 0
                 sell_engulfing_signal = engulfing < 0
@@ -97,8 +90,7 @@ class IND_STRATEGY_2(UTILS_FOR_ORDERS, TA_INDSS):
                 print(ex)
 
         if 'doji_flag' in current_bunch:
-            if self.inds_source == 'ta':
-                doji = self.calculate_doji(kline_data)  
+            buy_doji_signal, sell_doji_signal = False, False
             try:
                 buy_doji_signal = doji != 0
                 sell_doji_signal = doji != 0
@@ -144,31 +136,23 @@ class IND_STRATEGY_2(UTILS_FOR_ORDERS, TA_INDSS):
         except:
             return None
 
-    def sigmals_handler_two(self, coins_list, data_analysis): 
+    def sigmals_handler_two(self, coins_list): 
         # print('ksfbvkfbvfk')
         orders_stek = []
 
         for i in range(len(coins_list)):
             close_price, upper, lower, macd, signal, rsi, fastk, slowk, engulfing, doji = None, None, None, None, None, None, None, None, None, None
             total_signal = None
-            current_bunch = []
-            if self.inds_source == 'tv':
-                kline_data = None
-                try:
-                    symboll, close_price, adx, sma20, upper, lower, macd, signal, rsi, fastk, slowk = data_analysis[i][0], data_analysis[i][1], data_analysis[i][2], data_analysis[i][3], data_analysis[i][4], data_analysis[i][5], data_analysis[i][6], data_analysis[i][7], data_analysis[i][8], data_analysis[i][9], data_analysis[i][10]
-                except:
-                    continue
-
-            if self.inds_source == 'ta':           
-                symboll = coins_list[i]
-                kline_data = []
-                try:
-                    kline_data = self.get_klines(symboll)
-                    close_price = kline_data['Close'].iloc[-1]
-                    adx = self.calculate_adx(kline_data)
-                    sma20 = self.calculate_sma(kline_data)
-                except:
-                    continue
+            current_bunch = []                    
+            symboll = coins_list[i]
+            kline_data = []
+            try:
+                kline_data = self.get_klines(symboll)
+                close_price = kline_data['Close'].iloc[-1]
+                adx = self.calculate_adx(kline_data)
+                sma20 = self.calculate_sma(kline_data)
+            except:
+                continue
 
             trende_sign = self.trends_defender(close_price, adx, sma20)
             # print(trende_sign)

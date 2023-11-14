@@ -1,6 +1,6 @@
 from API_BINANCE.delete_api import DELETEE_API
 
-class UTILS_FOR_ORDERS(DELETEE_API):
+class UTILSS_API(DELETEE_API):
 
     def __init__(self) -> None:
         super().__init__() 
