@@ -27,7 +27,7 @@ uname -v = #1 SMP PREEMPT_DYNAMIC Debian 6.0.7-1kali1 (2022-11-07)
 /usr/bin/oslevel       = unknown
 /bin/universe          = unknown
 
-PATH: /home/kali/Desktop/ALL_PROJECT/TREADING/GRiD_ASSISTENT_BOT/.venv/bin
+PATH: /home/kali/Desktop/ALL_PROJECT/TREADING/ALERT_BOT_2.0/.venv/bin
 PATH: /usr/local/sbin
 PATH: /usr/sbin
 PATH: /sbin
@@ -688,8 +688,8 @@ configure:20557: $? = 0
 configure:20575: result: yes
 configure:20582: checking for _doprnt
 configure:20638: gcc -o conftest -g -O2   conftest.c -lpthread -ldl  >&5
-/usr/bin/ld: /tmp/ccZseg0t.o: in function `main':
-/home/kali/Desktop/ALL_PROJECT/TREADING/GRiD_ASSISTENT_BOT/ta-lib/conftest.c:74:(.text.startup+0x7): undefined reference to `_doprnt'
+/usr/bin/ld: /tmp/cc1ciIyJ.o: in function `main':
+/home/kali/Desktop/ALL_PROJECT/TREADING/ALERT_BOT_2.0/ta-lib/conftest.c:74:(.text.startup+0x7): undefined reference to `_doprnt'
 collect2: error: ld returned 1 exit status
 configure:20644: $? = 1
 configure: failed program was:
@@ -779,8 +779,8 @@ conftest.c:63:6: warning: conflicting types for built-in function 'floor'; expec
 conftest.c:51:1: note: 'floor' is declared in header '<math.h>'
    50 | # include <limits.h>
    51 | #else
-/usr/bin/ld: /tmp/cc9bpoel.o: in function `main':
-/home/kali/Desktop/ALL_PROJECT/TREADING/GRiD_ASSISTENT_BOT/ta-lib/conftest.c:74:(.text.startup+0x7): undefined reference to `floor'
+/usr/bin/ld: /tmp/cc6HqHYg.o: in function `main':
+/home/kali/Desktop/ALL_PROJECT/TREADING/ALERT_BOT_2.0/ta-lib/conftest.c:74:(.text.startup+0x7): undefined reference to `floor'
 collect2: error: ld returned 1 exit status
 configure:20757: $? = 1
 configure: failed program was:
@@ -915,8 +915,8 @@ conftest.c:69:6: warning: conflicting types for built-in function 'pow'; expecte
 conftest.c:57:1: note: 'pow' is declared in header '<math.h>'
    56 | # include <limits.h>
    57 | #else
-/usr/bin/ld: /tmp/ccVxn2pf.o: in function `main':
-/home/kali/Desktop/ALL_PROJECT/TREADING/GRiD_ASSISTENT_BOT/ta-lib/conftest.c:80:(.text.startup+0x7): undefined reference to `pow'
+/usr/bin/ld: /tmp/ccyRcHmQ.o: in function `main':
+/home/kali/Desktop/ALL_PROJECT/TREADING/ALERT_BOT_2.0/ta-lib/conftest.c:80:(.text.startup+0x7): undefined reference to `pow'
 collect2: error: ld returned 1 exit status
 configure:20757: $? = 1
 configure: failed program was:
@@ -1012,8 +1012,8 @@ conftest.c:69:6: warning: conflicting types for built-in function 'sqrt'; expect
 conftest.c:57:1: note: 'sqrt' is declared in header '<math.h>'
    56 | # include <limits.h>
    57 | #else
-/usr/bin/ld: /tmp/ccOTaALj.o: in function `main':
-/home/kali/Desktop/ALL_PROJECT/TREADING/GRiD_ASSISTENT_BOT/ta-lib/conftest.c:80:(.text.startup+0x7): undefined reference to `sqrt'
+/usr/bin/ld: /tmp/ccricHek.o: in function `main':
+/home/kali/Desktop/ALL_PROJECT/TREADING/ALERT_BOT_2.0/ta-lib/conftest.c:80:(.text.startup+0x7): undefined reference to `sqrt'
 collect2: error: ld returned 1 exit status
 configure:20757: $? = 1
 configure: failed program was:
@@ -1323,15 +1323,15 @@ lt_lt_cv_sys_global_symbol_to_cdecl='"sed -n -e '\''s/^. .* \\(.*\\)\$/extern in
 ## Output variables. ##
 ## ----------------- ##
 
-ACLOCAL='${SHELL} /home/kali/Desktop/ALL_PROJECT/TREADING/GRiD_ASSISTENT_BOT/ta-lib/missing --run aclocal-1.10'
+ACLOCAL='${SHELL} /home/kali/Desktop/ALL_PROJECT/TREADING/ALERT_BOT_2.0/ta-lib/missing --run aclocal-1.10'
 AMDEPBACKSLASH='\'
 AMDEP_FALSE='#'
 AMDEP_TRUE=''
-AMTAR='${SHELL} /home/kali/Desktop/ALL_PROJECT/TREADING/GRiD_ASSISTENT_BOT/ta-lib/missing --run tar'
+AMTAR='${SHELL} /home/kali/Desktop/ALL_PROJECT/TREADING/ALERT_BOT_2.0/ta-lib/missing --run tar'
 AR='ar'
-AUTOCONF='${SHELL} /home/kali/Desktop/ALL_PROJECT/TREADING/GRiD_ASSISTENT_BOT/ta-lib/missing --run autoconf'
-AUTOHEADER='${SHELL} /home/kali/Desktop/ALL_PROJECT/TREADING/GRiD_ASSISTENT_BOT/ta-lib/missing --run autoheader'
-AUTOMAKE='${SHELL} /home/kali/Desktop/ALL_PROJECT/TREADING/GRiD_ASSISTENT_BOT/ta-lib/missing --run automake-1.10'
+AUTOCONF='${SHELL} /home/kali/Desktop/ALL_PROJECT/TREADING/ALERT_BOT_2.0/ta-lib/missing --run autoconf'
+AUTOHEADER='${SHELL} /home/kali/Desktop/ALL_PROJECT/TREADING/ALERT_BOT_2.0/ta-lib/missing --run autoheader'
+AUTOMAKE='${SHELL} /home/kali/Desktop/ALL_PROJECT/TREADING/ALERT_BOT_2.0/ta-lib/missing --run automake-1.10'
 AWK='gawk'
 CC='gcc'
 CCDEPMODE='depmode=gcc3'
@@ -1364,7 +1364,7 @@ LIBS='-lpthread -ldl '
 LIBTOOL='$(SHELL) $(top_builddir)/libtool'
 LN_S='ln -s'
 LTLIBOBJS=''
-MAKEINFO='${SHELL} /home/kali/Desktop/ALL_PROJECT/TREADING/GRiD_ASSISTENT_BOT/ta-lib/missing --run makeinfo'
+MAKEINFO='${SHELL} /home/kali/Desktop/ALL_PROJECT/TREADING/ALERT_BOT_2.0/ta-lib/missing --run makeinfo'
 OBJEXT='o'
 PACKAGE='ta-lib'
 PACKAGE_BUGREPORT='http://sourceforge.net/tracker/?group_id=8903&atid=108903'
@@ -1412,7 +1412,7 @@ host_vendor='unknown'
 htmldir='${docdir}'
 includedir='${prefix}/include'
 infodir='${datarootdir}/info'
-install_sh='$(SHELL) /home/kali/Desktop/ALL_PROJECT/TREADING/GRiD_ASSISTENT_BOT/ta-lib/install-sh'
+install_sh='$(SHELL) /home/kali/Desktop/ALL_PROJECT/TREADING/ALERT_BOT_2.0/ta-lib/install-sh'
 libdir='${exec_prefix}/lib'
 libexecdir='${exec_prefix}/libexec'
 localedir='${datarootdir}/locale'

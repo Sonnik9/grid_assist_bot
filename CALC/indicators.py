@@ -9,6 +9,14 @@ class OTHERS_CALC(UTILSS_API):
     def __init__(self) -> None:
         super().__init__()
 
+    def calculate_pandas_atr(self, data, period=14):        
+        data.sort_index(ascending=True, inplace=True) 
+        atr = ta.atr(data['High'], data['Low'], data['Close'], timeperiod=period)  
+        # atr = atr.iloc[-1]      
+        atr = atr.dropna()
+        atr = atr.rolling(window=period).mean().iloc[-1]
+        return atr
+
     def calculate_pivot(self, symbol, data, period=10):
         # finta
         dataa = data.copy()
@@ -161,7 +169,7 @@ class TALIB_INDSS():
             print(f"Error in calculate_macd: {ex}")
         return macd, signal
 
-    def calculate_atr(self, data, period=14):
+    def calculate_talib_atr(self, data, period=14):
         atr = None
         try:
             atr = talib.ATR(data['High'], data['Low'], data['Close'], timeperiod=period)
@@ -191,10 +199,26 @@ class TALIB_INDSS():
     
 # ta_iindss = TA_INDSS()
 
-# symbol = 'XRPUSDT'
+# symbol = 'BIGTIMEUSDT'
+# symbol = 'BTCUSDT'
+# # symbol = 'XRPUSDT'
 # get_apii = GETT_API()
 # data = get_apii.get_klines(symbol)
 # other_calcc = OTHERS_CALC()
+# talib_inds = TALIB_INDSS()
+
+# atr2 = other_calcc.calculate_pandas_atr(data)
+# print(atr2)
+# # atr1 = other_calcc.calculate_finta_atr(data)
+# # print(atr1)
+# atr3 = talib_inds.calculate_talib_atr(data)
+# print(atr3)
+# atr = (atr2+atr3) / 2
+# print(atr)
+
+
+
+
 # a = other_calcc.calculate_heikin_ashi(data)
 # print(a)
 # a, b = other_calcc.calculate_ema_s(data)
@@ -220,9 +244,6 @@ class TALIB_INDSS():
 
 
 
-# # atr1 = calc_controllerr.calculate_atr(data)
-# # print(atr1)
-# atr2 = ta_iindss.calculate_atr(data)
-# print(atr2)
+
 
 # python -m CALC.indicators

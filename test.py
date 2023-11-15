@@ -110,9 +110,9 @@
 # response = requests.get(spot_klines_url, params=params)
 # klines_data = response.json()
 # print(klines_data)
-text = f"Please change the options:\nmarket = spot\ntest_flag = False"  
-new_market = text.split('=')[1].split('\n')[0].strip()
-new_test_flag = text.split('=')[2].strip().lower() == 'true'
+# text = f"Please change the options:\nmarket = spot\ntest_flag = False"  
+# new_market = text.split('=')[1].split('\n')[0].strip()
+# new_test_flag = text.split('=')[2].strip().lower() == 'true'
 # new_test_flag = bool(new_test_flag_str)
 # print(new_market)
 # print(new_test_flag)

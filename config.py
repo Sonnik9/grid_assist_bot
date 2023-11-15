@@ -16,24 +16,8 @@ class Configg(STRATEGY_SET):
     def __init__(self) -> None:
         super().__init__()
         self.tg_api_token = os.getenv("TG_API_TOKEN", "")
-
-        if not self.test_flag:
-            self.api_key  = os.getenv("BINANCE_API_PUBLIC_KEY_REAL", "")
-            self.api_secret = os.getenv("BINANCE_API_PRIVATE_KEY_REAL", "")
-            # print(self.api_key, self.api_secret)
-
-        else:
-            if self.market == 'spot':
-                self.api_key  = os.getenv(f"BINANCE_API_PUBLIC_KEY_{self.market.upper()}_TEST", "")
-                self.api_secret = os.getenv(f"BINANCE_API_PRIVATE_KEY_{self.market.upper()}_TEST", "")
-
-            if self.market == 'futures':
-                self.api_key  = os.getenv(f"BINANCE_API_PUBLIC_KEY_{self.market.upper()}_TEST", "")
-                self.api_secret = os.getenv(f"BINANCE_API_PRIVATE_KEY_{self.market.upper()}_TEST", "")    
-        
-        # print(self.api_key)
-        # print(self.api_secret)
-        # print(self.tg_api_token)
+        self.api_key  = os.getenv("BINANCE_API_PUBLIC_KEY_REAL", "")
+        self.api_secret = os.getenv("BINANCE_API_PRIVATE_KEY_REAL", "")
         self.header = {
             'X-MBX-APIKEY': self.api_key
         }

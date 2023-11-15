@@ -25,7 +25,7 @@ pytz==2023.3.post1
 requests==2.31.0
 schedule==1.2.1
 six==1.16.0
-TA-Lib==0.4.28
+# TA-Lib==0.4.28
 tradingview-ta==3.3.0
 typing_extensions==4.7.1
 tzdata==2023.3

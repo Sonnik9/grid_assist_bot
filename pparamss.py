@@ -3,10 +3,10 @@ from datetime import datetime
 class MAIN_PARAMETRS():
     def __init__(self):
         self.SOLI_DEO_GLORIA = 'Soli Deo Gloria!'        
-        self.market = 'spot'
-        self.test_flag = False # -- real    
+        self.market = 'futures'
+        # self.test_flag = False # -- real    
         # self.market = 'futures'
-        # self.test_flag = True # -- test        
+        self.test_flag = True # -- test        
 
     def update_main_params(self, new_market, new_test_flag=False):
         self.market = new_market
@@ -45,14 +45,14 @@ class TIME_TEMPLATES(URL_TEMPLATES):
    
     def __init__(self) -> None:
         super().__init__()
-        self.KLINE_TIME, self.TIME_FRAME = 1, 'h'
+        self.KLINE_TIME, self.TIME_FRAME = 4, 'h'
         self.INTERVAL = str(self.KLINE_TIME) + self.TIME_FRAME
-        self.KLINES_PERIOD = 200   
+        self.KLINES_PERIOD = 160   
         self.init_time()        
 
     def init_time(self):  
         if self.test_flag:
-            self.end_date = datetime(2023, 11, 1)
+            self.end_date = datetime(2023, 11, 14)
         else:
             self.end_date = None
     # ///////////////////////////////////////////////
@@ -70,7 +70,7 @@ class INDICATORD_PARAMS(TIME_TEMPLATES):
         self.b_bband_q, self.s_bband_q = 1, 1
         self.b_rsi_lev, self.s_rsi_lev = 33, 67   
         self.b_rsi_diver_lev = 50 
-        self.rsi_period = 12    
+        self.rsi_period = 14   
         self.b_macd_q, self.s_macd_q = 1, 1
         self.b_stoch_q, self.s_stoch_q = 23, 77
         
@@ -99,13 +99,13 @@ class FILTER_SET(INDICATORD_PARAMS):
 
 class STRATEGY_SET(FILTER_SET):
     def __init__(self) -> None:
-        super().__init__()
-        self.inds_source = 'ta'         
+        super().__init__()        
         self.BUNCH_VARIANT = 7
         self.strong_trande_sign = True
-        self.PIVOT_GENERAL_TYPE = 'Classic'
-        # self.PIVOT_GENERAL_TYPE = 'Fibonacci'
-        self.pivot_levels_type = 1
+        # self.strong_trande_sign = False
+        # self.PIVOT_GENERAL_TYPE = 'Classic'
+        self.PIVOT_GENERAL_TYPE = 'Fibonacci'
+        self.pivot_levels_type = 4
         self.grid_decimal = 5
         self.init_strategy_set()
 
@@ -135,6 +135,6 @@ class STRATEGY_SET(FILTER_SET):
         if self.BUNCH_VARIANT == 8:
             self.current_bunch = ['bband_flag', 'macd_lite_flag']
         elif self.BUNCH_VARIANT == 9:
-            self.current_bunch = ['bband_flag', 'macd_lite_flag', 'ma_99_checkin_flag', 'rsi_diver_flag'] 
+            self.current_bunch = ['bband_flag', 'macd_lite_flag', 'ma_crossover_flag', 'rsi_diver_flag'] 
 
 # python -m pparamss

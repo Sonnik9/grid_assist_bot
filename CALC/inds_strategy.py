@@ -29,11 +29,11 @@ class IND_STRATEGY_(OTHERS_CALC, TALIB_INDSS):
                 sell_strong_macd_signal = (macd < signal * self.s_macd_q) and (macd > 0)
                 signals_sum.append((buy_strong_macd_signal, sell_strong_macd_signal))
 
-            if 'ma_99_checkin_flag' in current_bunch:
-                _, _, ma_99 = self.calculate_ma_s(kline_data)
-                buy_ma_crossover_signal = close_price > ma_99
-                sell_ma_crossover_signal = close_price < ma_99
-                signals_sum.append((buy_ma_crossover_signal, sell_ma_crossover_signal))
+            if 'ma_crossover_flag' in current_bunch:
+                ma_7, ma_25, ma_99 = self.calculate_ma_s(kline_data)
+                buy_ma_crossover_signal = ma_7 > ma_25 and ma_25 > ma_99
+                sell_ma_crossover_signal = ma_7 < ma_25 and ma_25 < ma_99
+                signals_sum.append((buy_ma_crossover_signal, sell_ma_crossover_signal))                
 
             if 'rsi_diver_flag' in current_bunch:
                 rsi = self.calculate_rsi(kline_data)

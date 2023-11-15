@@ -1,4 +1,4 @@
-#!/home/kali/Desktop/ALL_PROJECT/TREADING/GRiD_ASSISTENT_BOT/.venv/bin/python3
+#!/home/kali/Desktop/ALL_PROJECT/TREADING/ALERT_BOT_2.0/.venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

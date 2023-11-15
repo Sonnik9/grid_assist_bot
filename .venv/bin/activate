@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/kali/Desktop/ALL_PROJECT/TREADING/GRiD_ASSISTENT_BOT/.venv"
+VIRTUAL_ENV="/home/kali/Desktop/ALL_PROJECT/TREADING/ALERT_BOT_2.0/.venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
