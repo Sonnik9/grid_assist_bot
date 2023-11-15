@@ -557,4 +557,357 @@
 #             pass
 
 #     return klines_data
+
+        # atr = None
+        # try:
+        #     atr = talib.ATR(data['High'], data['Low'], data['Close'], timeperiod=period)
+        #     atr = atr.dropna()            
+        #     atr = atr.rolling(window=period).mean().iloc[-1]            
+        # except Exception as ex:
+        #     print(f"Error in calculate_atr: {ex}")
+        # return atr
+
+
+    # def calculate_pandas_atr(self, data, period=20):
+    #     # data = data.copy() 
+    #     data.sort_index(ascending=True, inplace=True) 
+    #     atr = ta.atr(data['High'], data['Low'], data['Close'], timeperiod=period)        
+    #     atr = atr.dropna()
+    #     atr = atr.rolling(window=period).mean().iloc[-1]
+    #     return atr
+
+    # def calculate_finta_atr(self, data, period=20):
+    #     # data = data.copy() 
+    #     data.sort_index(ascending=True, inplace=True)  
+    #     atr = TA.ATR(data, period=period)
+    #     atr = atr.dropna()
+    #     atr = atr.rolling(window=period).mean().iloc[-1]
+    #     return atr  
+
+
+    # def calculate_heikin_ashi(self, data):
+    #     data['Heiken_Close'] = (data['Open'] + data['Close'] + data['High'] + data['Low']) / 4
+    #     data['Heiken_Open'] = data['Open']
+    #     for i in range(1, len(data)):
+    #         data['Heiken_Open'].iloc[i] = (data['Heiken_Open'].iloc[i-1] + data['Heiken_Close'].iloc[i-1]) / 2
+
+    #     data['Heiken_High'] = data[['High', 'Heiken_Open', 'Heiken_Close']].max(axis=1)
+    #     data['Heiken_Low'] = data[['Low', 'Heiken_Open', 'Heiken_Close']].min(axis=1)
+    #     data.dropna(inplace=True)
+    #     data.head(10)
+    #     PreviousHeikenBody = math.fabs(data['Heiken_Open'].iloc[-2] - data['Heiken_Close'].iloc[-2])
+    #     ratio = 1.5
+    #     if (
+    #         (data['Heiken_High'].iloc[-2] - max(data['Heiken_Open'].iloc[-2], data['Heiken_Close'].iloc[-2]))
+    #         / PreviousHeikenBody > ratio and
+    #         (min(data['Heiken_Open'].iloc[-2], data['Heiken_Close'].iloc[-2]) - data['Heiken_Low'].iloc[-2])
+    #         / PreviousHeikenBody > ratio and
+    #         (data['Heiken_Open'].iloc[-1] < data['Heiken_Close'].iloc[-1] and data['Heiken_Low'].iloc[-1] >= data['Heiken_Open'].iloc[-1])
+    #     ):
+    #         return 1            
+
+    #     elif (
+    #         (data['Heiken_High'].iloc[-2] - max(data['Heiken_Open'].iloc[-2], data['Heiken_Close'].iloc[-2]))
+    #         / PreviousHeikenBody > ratio > ratio and
+    #         (min(data['Heiken_Open'].iloc[-2], data['Heiken_Close'].iloc[-2]) - data['Heiken_Low'].iloc[-2])
+    #         / PreviousHeikenBody > ratio > ratio and
+    #         (data['Heiken_Open'].iloc[-1] > data['Heiken_Close'].iloc[-1] and data['Heiken_High'].iloc[-1] <= data['Heiken_Open'].iloc[-1])
+    #     ):
+    #         return -1
+
+    #     else:
+    #         return 0        
     
+
+        # if 'heikin_ashi_flag' in current_bunch:
+        #     try:
+        #         buy_heikin_ashi_signal, sell_heikin_ashi_signal = False, False
+        #         heiken_close, heiken_open, heiken_signal = None, None, 0
+        #         ema_10, ema_30 = None, None
+        #         rsi_12 = None
+            
+        #         ema_10, ema_30 = self.calculate_ema_s(kline_data)
+        #         # print(ema_10, ema_30)
+        #         rsi_12 = self.calculate_rsi_12(kline_data)
+        #         # print(rsi_12)
+        #         heiken_close, heiken_open, heiken_signal = self.calculate_heikin_ashi(kline_data)
+        #         # print(heiken_close, heiken_open, heiken_signal)
+        #         buy_heikin_ashi_signal = (ema_10 > ema_30) and (heiken_open < ema_10) and (heiken_close > ema_10) and (heiken_signal == 1) and (rsi_12 > 50)           
+        #         sell_heikin_ashi_signal = (ema_10 < ema_30) and (heiken_open > ema_10) and (heiken_close < ema_10) and (heiken_signal == -1) and (rsi_12 < 50)
+        #         if buy_heikin_ashi_signal:
+        #             return 'BUY'
+        #         if sell_heikin_ashi_signal: 
+        #             return 'SELL'
+        #     except Exception as ex:
+        #         print(ex)            
+
+        #     return total_signal
+
+
+    # def calculate_heikin_ashi(self, data, ratio=1.5):
+    #     heiken_close, heiken_open, heiken_signal = None, None, 0
+
+    #     data['Heiken_Close'] = (data['Open'] + data['Close'] + data['High'] + data['Low']) / 4
+    #     heiken_close = data['Heiken_Close'].iloc[-1]
+
+    #     data['Heiken_Open'] = data['Open']
+    #     heiken_open = data['Heiken_Open'].iloc[-1]
+
+    #     for i in range(1, len(data)):
+    #         data.loc[i, 'Heiken_Open'] = (data['Heiken_Open'].iloc[i-1] + data['Heiken_Close'].iloc[i-1]) / 2
+
+    #     data['Heiken_High'] = data[['High', 'Heiken_Open', 'Heiken_Close']].max(axis=1)
+    #     data['Heiken_Low'] = data[['Low', 'Heiken_Open', 'Heiken_Close']].min(axis=1)
+    #     data.dropna(inplace=True)
+
+    #     PreviousHeikenBody = abs(data['Heiken_Open'].iloc[-2] - data['Heiken_Close'].iloc[-2])
+
+    #     if (
+    #         (data['Heiken_High'].iloc[-2] - max(data['Heiken_Open'].iloc[-2], data['Heiken_Close'].iloc[-2])) /
+    #         PreviousHeikenBody > ratio and
+    #         (min(data['Heiken_Open'].iloc[-2], data['Heiken_Close'].iloc[-2]) - data['Heiken_Low'].iloc[-2]) /
+    #         PreviousHeikenBody > ratio and
+    #         (data['Heiken_Close'].iloc[-1] > data['Heiken_Open'].iloc[-1])
+    #     ):
+    #         heiken_signal = 1
+    #     elif (
+    #         (data['Heiken_High'].iloc[-2] - max(data['Heiken_Open'].iloc[-2], data['Heiken_Close'].iloc[-2])) /
+    #         PreviousHeikenBody > ratio and
+    #         (min(data['Heiken_Open'].iloc[-2], data['Heiken_Close'].iloc[-2]) - data['Heiken_Low'].iloc[-2]) /
+    #         PreviousHeikenBody > ratio and
+    #         (data['Heiken_Close'].iloc[-1] < data['Heiken_Open'].iloc[-1])
+    #     ):
+    #         heiken_signal = -1
+    #     else:
+    #         heiken_signal = 0
+
+    #     return heiken_close, heiken_open, heiken_signal
+
+# def calculate_heikin_ashi(self, data, ratio=1.2):
+#     heiken_close, heiken_open, heiken_signal = None, None, 0
+
+#     data['Heiken_Close'] = (data['Open'] + data['Close'] + data['High'] + data['Low']) / 4
+#     heiken_close = data['Heiken_Close'].iloc[-1]
+
+#     data['Heiken_Open'] = data['Open']
+#     heiken_open = data['Heiken_Open'].iloc[-1]
+
+#     for i in range(1, len(data)):
+#         data.loc[i, 'Heiken_Open'] = (data['Heiken_Open'].iloc[i-1] + data['Heiken_Close'].iloc[i-1]) / 2
+
+#     data['Heiken_High'] = data[['High', 'Heiken_Open', 'Heiken_Close']].max(axis=1)
+#     data['Heiken_Low'] = data[['Low', 'Heiken_Open', 'Heiken_Close']].min(axis=1)
+#     data.dropna(inplace=True)
+
+#     PreviousHeikenBody = abs(data['Heiken_Open'].iloc[-2] - data['Heiken_Close'].iloc[-2])
+
+#     if (
+#         (data['Heiken_High'].iloc[-2] - max(data['Heiken_Open'].iloc[-2], data['Heiken_Close'].iloc[-2])) /
+#         PreviousHeikenBody > ratio and
+#         (min(data['Heiken_Open'].iloc[-2], data['Heiken_Close'].iloc[-2]) - data['Heiken_Low'].iloc[-2]) /
+#         PreviousHeikenBody > ratio and
+#         (data['Heiken_Open'].iloc[-1] < data['Heiken_Close'].iloc[-1] and
+#          data['Heiken_Low'].iloc[-1] >= data['Heiken_Open'].iloc[-1])
+#     ):
+#         heiken_signal = 1
+#     elif (
+#         (data['Heiken_High'].iloc[-2] - max(data['Heiken_Open'].iloc[-2], data['Heiken_Close'].iloc[-2])) /
+#         PreviousHeikenBody > ratio and
+#         (min(data['Heiken_Open'].iloc[-2], data['Heiken_Close'].iloc[-2]) - data['Heiken_Low'].iloc[-2]) /
+#         PreviousHeikenBody > ratio and
+#         (data['Heiken_Open'].iloc[-1] > data['Heiken_Close'].iloc[-1] and
+#          data['Heiken_High'].iloc[-1] <= data['Heiken_Open'].iloc[-1])
+#     ):
+#         heiken_signal = -1
+#     else:
+#         heiken_signal = 0
+
+#     return heiken_close, heiken_open, heiken_signal
+
+    # def calculate_heikin_ashi(self, data):
+    #     data['Heiken_Close'] = (data['Open'] + data['Close'] + data['High'] + data['Low']) / 4
+    #     data['Heiken_Open'] = data['Open']
+    #     for i in range(1, len(data)):
+    #         data['Heiken_Open'].iloc[i] = (data['Heiken_Open'].iloc[i-1] + data['Heiken_Close'].iloc[i-1]) / 2
+
+    #     data['Heiken_High'] = data[['High', 'Heiken_Open', 'Heiken_Close']].max(axis=1)
+    #     data['Heiken_Low'] = data[['Low', 'Heiken_Open', 'Heiken_Close']].min(axis=1)
+    #     data.dropna(inplace=True)
+    #     data.head(10)
+    #     PreviousHeikenBody = math.fabs(data['Heiken_Open'].iloc[-2] - data['Heiken_Close'].iloc[-2])
+    #     ratio = 1.5
+    #     if (
+    #         (data['Heiken_High'].iloc[-2] - max(data['Heiken_Open'].iloc[-2], data['Heiken_Close'].iloc[-2]))
+    #         / PreviousHeikenBody > ratio and
+    #         (min(data['Heiken_Open'].iloc[-2], data['Heiken_Close'].iloc[-2]) - data['Heiken_Low'].iloc[-2])
+    #         / PreviousHeikenBody > ratio and
+    #         (data['Heiken_Open'].iloc[-1] < data['Heiken_Close'].iloc[-1] and data['Heiken_Low'].iloc[-1] >= data['Heiken_Open'].iloc[-1])
+    #     ):
+    #         return 1            
+
+    #     elif (
+    #         (data['Heiken_High'].iloc[-2] - max(data['Heiken_Open'].iloc[-2], data['Heiken_Close'].iloc[-2]))
+    #         / PreviousHeikenBody > ratio > ratio and
+    #         (min(data['Heiken_Open'].iloc[-2], data['Heiken_Close'].iloc[-2]) - data['Heiken_Low'].iloc[-2])
+    #         / PreviousHeikenBody > ratio > ratio and
+    #         (data['Heiken_Open'].iloc[-1] > data['Heiken_Close'].iloc[-1] and data['Heiken_High'].iloc[-1] <= data['Heiken_Open'].iloc[-1])
+    #     ):
+    #         return -1
+
+    #     else:
+    #         return 0   
+
+
+        # if 'heikin_ashi_flag' in current_bunch:
+        #     print('heikin_ashi_flag')
+        #     try:
+        #         buy_heikin_ashi_signal, sell_heikin_ashi_signal = False, False
+        #         heiken_signal = 0
+        #         _, _, heiken_signal = self.calculate_heikin_ashi(kline_data)   
+        #         print(heiken_signal)             
+        #         buy_heikin_ashi_signal = heiken_signal == 1
+        #         sell_heikin_ashi_signal = heiken_signal == -1
+        #         signals_sum.append((buy_heikin_ashi_signal, sell_heikin_ashi_signal))
+        #     except Exception as ex:
+        #         print(ex) 
+
+
+    # def calculate_rsi(self, data, period=14):
+    #     rsi = None
+    #     try:
+    #         rsi = talib.RSI(data['Close'], timeperiod=period)
+    #         rsi.interpolate(method='linear', inplace=True)
+    #         rsi = rsi.to_numpy()[-1]
+    #     except Exception as ex:
+    #         print(f"Error in calculate_rsi: {ex}")
+    #     return rsi
+
+
+        # if self.BUNCH_VARIANT == 7:
+        #     if len(signals_sum) != 0:
+        #         if buy_signals_counter == len(signals_sum):
+        #             total_signal = 'BUY'
+        #         elif sell_signals_counter == len(signals_sum):
+        #             total_signal = 'SELL'
+
+
+    # def calculate_engulfing_patterns(self, data):
+    #     engulfing = None
+    #     try:
+    #         engulfing = talib.CDLENGULFING(data['Open'], data['High'], data['Low'], data['Close'])
+    #         engulfing = engulfing.to_numpy()[-1]
+    #     except Exception as ex:
+    #         print(f"Error in calculate_engulfing_patterns: {ex}")
+    #     return engulfing
+
+                # if close_price > sma25 and close_price > sma7 and doji == 0:
+                #     if self.strong_trande_sign:
+                #         close_price > sma99
+                #         return "U"
+                #     else:
+                #         return "U"
+                # elif close_price < sma25 and close_price < sma7 and doji == 0:
+                #     return "D"
+                # else:
+                #     return "F"
+
+
+    # def calculate_sma(self, data, period=20):
+    #     sma = None
+    #     num_std = 2
+    #     try:
+    #         _, sma, _ = talib.BBANDS(data['Close'], timeperiod=period, nbdevup=num_std, nbdevdn=num_std)
+    #         sma = sma.to_numpy()[-1]
+    #     except Exception as ex:
+    #         print(ex)
+    #     return sma
+
+# def calculate_heikin_ashi(self, data, ratio=1.2):
+#     heiken_close, heiken_open, heiken_signal = None, None, 0
+
+#     data['Heiken_Close'] = (data['Open'] + data['Close'] + data['High'] + data['Low']) / 4
+#     heiken_close = data['Heiken_Close'].iat[-1]
+
+#     data['Heiken_Open'] = data['Open']
+#     heiken_open = data['Heiken_Open'].iat[-1]
+
+#     for i in range(1, len(data)):
+#         data.loc[i, 'Heiken_Open'] = (data['Heiken_Open'].iat[i-1] + data['Heiken_Close'].iat[i-1]) / 2
+
+#     data['Heiken_High'] = data[['High', 'Heiken_Open', 'Heiken_Close']].max(axis=1)
+#     data['Heiken_Low'] = data[['Low', 'Heiken_Open', 'Heiken_Close']].min(axis=1)
+#     data.dropna(inplace=True)
+
+#     if len(data) < 2:
+#         return None, None, 0
+
+#     PreviousHeikenBody = abs(data['Heiken_Open'].iat[-2] - data['Heiken_Close'].iat[-2])
+
+#     condition_up = (
+#         (data['Heiken_High'].iat[-2] - max(data['Heiken_Open'].iat[-2], data['Heiken_Close'].iat[-2])) /
+#         PreviousHeikenBody > ratio and
+#         (min(data['Heiken_Open'].iat[-2], data['Heiken_Close'].iat[-2]) - data['Heiken_Low'].iat[-2]) /
+#         PreviousHeikenBody > ratio and
+#         (data['Heiken_Open'].iat[-1] < data['Heiken_Close'].iat[-1] and
+#         data['Heiken_Low'].iat[-1] >= data['Heiken_Open'].iat[-1])
+#     )
+
+#     condition_down = (
+#         (data['Heiken_High'].iat[-2] - max(data['Heiken_Open'].iat[-2], data['Heiken_Close'].iat[-2])) /
+#         PreviousHeikenBody > ratio and
+#         (min(data['Heiken_Open'].iat[-2], data['Heiken_Close'].iat[-2]) - data['Heiken_Low'].iat[-2]) /
+#         PreviousHeikenBody > ratio and
+#         (data['Heiken_Open'].iat[-1] > data['Heiken_Close'].iat[-1] and
+#         data['Heiken_High'].iat[-1] <= data['Heiken_Open'].iat[-1])
+#     )
+
+#     if condition_up:
+#         heiken_signal = 1
+#     elif condition_down:
+#         heiken_signal = -1
+#     else:
+#         heiken_signal = 0
+
+#     return heiken_close, heiken_open, heiken_signal
+
+     
+    # def calculate_heikin_ashi(self, data, ratio=1.2):
+    #     heiken_close, heiken_open, heiken_signal = None, None, 0
+
+    #     data['Heiken_Close'] = (data['Open'] + data['Close'] + data['High'] + data['Low']) / 4
+    #     heiken_close = data['Heiken_Close'].iloc[-1]
+
+    #     data['Heiken_Open'] = data['Open']
+    #     heiken_open = data['Heiken_Open'].iloc[-1]
+
+    #     for i in range(1, len(data)):
+    #         data.loc[i, 'Heiken_Open'] = (data['Heiken_Open'].iloc[i-1] + data['Heiken_Close'].iloc[i-1]) / 2
+
+    #     data['Heiken_High'] = data[['High', 'Heiken_Open', 'Heiken_Close']].max(axis=1)
+    #     data['Heiken_Low'] = data[['Low', 'Heiken_Open', 'Heiken_Close']].min(axis=1)
+    #     data.dropna(inplace=True)
+
+    #     PreviousHeikenBody = abs(data['Heiken_Open'].iloc[-2] - data['Heiken_Close'].iloc[-2])
+
+    #     if (
+    #         (data['Heiken_High'].iloc[-2] - max(data['Heiken_Open'].iloc[-2], data['Heiken_Close'].iloc[-2])) /
+    #         PreviousHeikenBody > ratio and
+    #         (min(data['Heiken_Open'].iloc[-2], data['Heiken_Close'].iloc[-2]) - data['Heiken_Low'].iloc[-2]) /
+    #         PreviousHeikenBody > ratio and
+    #         (data['Heiken_Open'].iloc[-1] < data['Heiken_Close'].iloc[-1] and
+    #         data['Heiken_Low'].iloc[-1] >= data['Heiken_Open'].iloc[-1])
+    #     ):
+    #         heiken_signal = 1
+    #     elif (
+    #         (data['Heiken_High'].iloc[-2] - max(data['Heiken_Open'].iloc[-2], data['Heiken_Close'].iloc[-2])) /
+    #         PreviousHeikenBody > ratio and
+    #         (min(data['Heiken_Open'].iloc[-2], data['Heiken_Close'].iloc[-2]) - data['Heiken_Low'].iloc[-2]) /
+    #         PreviousHeikenBody > ratio and
+    #         (data['Heiken_Open'].iloc[-1] > data['Heiken_Close'].iloc[-1] and
+    #         data['Heiken_High'].iloc[-1] <= data['Heiken_Open'].iloc[-1])
+    #     ):
+    #         heiken_signal = -1
+    #     else:
+    #         heiken_signal = 0
+
+    #     return heiken_close, heiken_open, heiken_signal
