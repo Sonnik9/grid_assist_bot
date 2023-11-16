@@ -10,14 +10,131 @@ class OTHERS_CALC(UTILSS_API):
         super().__init__()
 
     def calculate_pandas_atr(self, data, period=14):        
-        data.sort_index(ascending=True, inplace=True) 
-        atr = ta.atr(data['High'], data['Low'], data['Close'], timeperiod=period)  
-        # atr = atr.iloc[-1]      
-        atr = atr.dropna()
-        atr = atr.rolling(window=period).mean().iloc[-1]
-        return atr
+        data.sort_index(ascending=True, inplace=True)       
+        atr_data = ta.atr(data['High'], data['Low'], data['Close'], timeperiod=period)                          
+        atr_data = atr_data.dropna()
+        last_atr = atr_data.iloc[-1]        
+        return last_atr
 
-    def calculate_pivot(self, symbol, data, period=10):
+    def calculate_pandas_atr_for_pivot_type(self, data):        
+        data.sort_index(ascending=True, inplace=True) 
+        atr_data_data = []
+        for i in range(40, len(data)):
+            atr_data = ta.atr(data['High'].iloc[:i], data['Low'].iloc[:i], data['Close'].iloc[:i], timeperiod=i)                          
+            atr_data = atr_data.dropna()
+            last_atr = float(atr_data.iloc[-1])
+            atr_data_data.append(last_atr)
+        return atr_data_data
+    
+    def determine_pivot_type(self, atr_list, last_atr):
+        pivot_type = None
+        sorted_atr = sorted(atr_list)
+        len_sorted_atr = len(sorted_atr)
+        sort_grade = len_sorted_atr/3
+        atr_index = [i for i, item in enumerate(sorted_atr) if float(item) == float(last_atr)][0]
+        pivot_type = atr_index / sort_grade    
+        pivot_type = math.floor((pivot_type * 10) / 10) + 3     
+        return pivot_type
+    
+    def calculate_fibonacci_pivot_points(self, symbol, data):
+        data = data.iloc[-30:] 
+        latest_pivot_dict = {}
+        piv_repl = {}
+        try:
+            high = data['High']
+            low = data['Low']
+            close = data['Close']
+            
+            pivot = (high + low + close) / 3
+            support1 = pivot - 0.382 * (high - low)
+            support2 = pivot - 0.618 * (high - low)
+            support3 = pivot - (high - low)
+            support4 = pivot - 1.382 * (high - low)  # New line for S4
+            support5 = pivot - 1.618 * (high - low)  # New line for S5
+            resistance1 = pivot + 0.382 * (high - low)
+            resistance2 = pivot + 0.618 * (high - low)
+            resistance3 = pivot + (high - low)
+            resistance4 = pivot + 1.382 * (high - low)  # New line for R4
+            resistance5 = pivot + 1.618 * (high - low)  # New line for R5
+            
+            latest_pivot_dict = {
+                'pp': pivot.iloc[-1],
+                'S1': support1.iloc[-1],
+                'S2': support2.iloc[-1],
+                'S3': support3.iloc[-1],
+                'S4': support4.iloc[-1],  # New line for S4
+                'S5': support5.iloc[-1],  # New line for S5
+                'R1': resistance1.iloc[-1],
+                'R2': resistance2.iloc[-1],
+                'R3': resistance3.iloc[-1],
+                'R4': resistance4.iloc[-1],  # New line for R4
+                'R5': resistance5.iloc[-1]   # New line for R5
+            }
+            # self.pivot_levels_type = 4  # Update the number of pivot levels
+            piv_repl[symbol] = {
+                f'Pivot.M.{self.PIVOT_GENERAL_TYPE}.S{self.pivot_levels_type}': latest_pivot_dict[f'S{self.pivot_levels_type}'],
+                f'Pivot.M.{self.PIVOT_GENERAL_TYPE}.R{self.pivot_levels_type}': latest_pivot_dict[f'R{self.pivot_levels_type}']
+            }
+        except Exception as ex:
+            print(ex)
+
+        return piv_repl
+
+
+    def calculate_classic_pivot_points(self, symbol, data):
+        latest_pivot_dict = {}
+        piv_repl = {} 
+        try:
+            high = data['High']
+            low = data['Low']
+            close = data['Close']
+
+            pivot = (high + low + close) / 3
+            support1 = (2 * pivot) - high
+            support2 = pivot - (high - low)
+            support3 = pivot - 2 * (high - low)
+            support4 = pivot - 3 * (high - low)  # New line for S4
+            support5 = pivot - 4 * (high - low)  # New line for S5
+            resistance1 = (2 * pivot) - low
+            resistance2 = pivot + (high - low)
+            resistance3 = pivot + 2 * (high - low)
+            resistance4 = pivot + 3 * (high - low)  # New line for R4
+            resistance5 = pivot + 4 * (high - low)  # New line for R5
+            
+            latest_pivot_dict = {
+                'pp': pivot.iloc[-1],
+                'S1': support1.iloc[-1],
+                'S2': support2.iloc[-1],
+                'S3': support3.iloc[-1],
+                'S4': support4.iloc[-1],  # New line for S4
+                'S5': support5.iloc[-1],  # New line for S5
+                'R1': resistance1.iloc[-1],
+                'R2': resistance2.iloc[-1],
+                'R3': resistance3.iloc[-1],
+                'R4': resistance4.iloc[-1],  # New line for R4
+                'R5': resistance5.iloc[-1]   # New line for R5
+            }
+            # self.pivot_levels_type = 4  # Update the number of pivot levels
+            piv_repl[symbol] = {
+                f'Pivot.M.{self.PIVOT_GENERAL_TYPE}.S{self.pivot_levels_type}': latest_pivot_dict[f'S{self.pivot_levels_type}'],
+                f'Pivot.M.{self.PIVOT_GENERAL_TYPE}.R{self.pivot_levels_type}': latest_pivot_dict[f'R{self.pivot_levels_type}']
+            }
+        except Exception as ex:
+            print(f"str31: {ex}")
+
+        return piv_repl
+
+
+    def calculate_manualy_pivot(self, symbol, data):
+        piv = None
+        if self.PIVOT_GENERAL_TYPE == 'Classic':
+            piv = self.calculate_classic_pivot_points(symbol, data)
+        elif self.PIVOT_GENERAL_TYPE == 'Fibonacci':
+            piv = self.calculate_fibonacci_pivot_points(symbol, data)
+
+        return piv
+
+    def calculate_finta_pivot(self, symbol, data, period=10):
         # finta
         dataa = data.copy()
         piv_repl = {}
@@ -43,7 +160,6 @@ class OTHERS_CALC(UTILSS_API):
             'R4': pivot_mean['r4']            
         }
         self.pivot_levels_type = 4
-
         piv_repl[symbol] = {
             f'Pivot.M.{self.PIVOT_GENERAL_TYPE}.S{self.pivot_levels_type}': latest_pivot_dict[f'S{self.pivot_levels_type}'],
             f'Pivot.M.{self.PIVOT_GENERAL_TYPE}.R{self.pivot_levels_type}': latest_pivot_dict[f'R{self.pivot_levels_type}']
@@ -200,49 +316,18 @@ class TALIB_INDSS():
 # ta_iindss = TA_INDSS()
 
 # symbol = 'BIGTIMEUSDT'
+# import pandas as pd
+# import numpy as np
 # symbol = 'BTCUSDT'
-# # symbol = 'XRPUSDT'
+# # # symbol = 'XRPUSDT'
 # get_apii = GETT_API()
-# data = get_apii.get_klines(symbol)
+# data = get_apii.get_klines(symbol, custom_period=1000)
 # other_calcc = OTHERS_CALC()
 # talib_inds = TALIB_INDSS()
-
-# atr2 = other_calcc.calculate_pandas_atr(data)
-# print(atr2)
-# # atr1 = other_calcc.calculate_finta_atr(data)
-# # print(atr1)
-# atr3 = talib_inds.calculate_talib_atr(data)
-# print(atr3)
-# atr = (atr2+atr3) / 2
-# print(atr)
-
-
-
-
-# a = other_calcc.calculate_heikin_ashi(data)
-# print(a)
-# a, b = other_calcc.calculate_ema_s(data)
-# print(a,b)
-# a, b, c = other_calcc.calculate_ma_s(data)
-# rsi_12 = other_calcc.calculate_rsi_12(data)
-# print(rsi_12)
-# print(a,b,c)
-
-
-
-# f, s = ta_iindss.calculate_stochastic_oscillator(data)
-# print(f, s)
-# rsi = None
-# rsi = ta_iindss.calculate_rsi(data)
-# macd = ta_iindss.calculate_macd(data)
-# engulfing = ta_iindss.calculate_engulfing_patterns(data)
-# doji = ta_iindss.calculate_doji(data)
-# print(rsi)
-# print(macd)
-# print(engulfing)
-# print(doji)
-
-
+# piv_finta = other_calcc.calculate_finta_pivot(symbol, data)
+# piv_manualy = other_calcc.calculate_manualy_pivot(symbol, data)
+# print(piv_finta)
+# print(piv_manualy)
 
 
 

@@ -45,7 +45,7 @@ class TIME_TEMPLATES(URL_TEMPLATES):
    
     def __init__(self) -> None:
         super().__init__()
-        self.KLINE_TIME, self.TIME_FRAME = 4, 'h'
+        self.KLINE_TIME, self.TIME_FRAME = 1, 'h'
         self.INTERVAL = str(self.KLINE_TIME) + self.TIME_FRAME
         self.KLINES_PERIOD = 160   
         self.init_time()        
@@ -105,7 +105,8 @@ class STRATEGY_SET(FILTER_SET):
         # self.strong_trande_sign = False
         # self.PIVOT_GENERAL_TYPE = 'Classic'
         self.PIVOT_GENERAL_TYPE = 'Fibonacci'
-        self.pivot_levels_type = 4
+        self.pivot_levels_type = 5
+        self.kline_period_for_piv = 30
         self.grid_decimal = 5
         self.init_strategy_set()
 

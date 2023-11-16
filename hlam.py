@@ -948,3 +948,57 @@
     #     # atr = atr.dropna()
     #     # atr = atr.rolling(window=period).mean().iloc[-1]
     #     return atr 
+
+
+# atr2 = other_calcc.calculate_pandas_atr(data)
+# print(atr2)
+# # atr1 = other_calcc.calculate_finta_atr(data)
+# # print(atr1)
+# atr3 = talib_inds.calculate_talib_atr(data)
+# print(atr3)
+# atr = (atr2+atr3) / 2
+# print(atr)
+
+
+# Применяем функции
+
+# pivot_levels = calculate_pivot_levels(atr_values)
+# last_atr = atr_values.iloc[-1]
+
+# pivot_type = determine_pivot_type(last_atr, pivot_levels)
+
+# print(f"ATR Values:\n{atr_values}\n")
+# print(f"Pivot Levels:\n{pivot_levels}\n")
+# print(f"Last ATR: {last_atr}\n")
+# print(f"Determined Pivot Type: {pivot_type}")
+
+
+
+
+
+
+
+# a = other_calcc.calculate_heikin_ashi(data)
+# print(a)
+# a, b = other_calcc.calculate_ema_s(data)
+# print(a,b)
+# a, b, c = other_calcc.calculate_ma_s(data)
+# rsi_12 = other_calcc.calculate_rsi_12(data)
+# print(rsi_12)
+# print(a,b,c)
+
+
+
+# f, s = ta_iindss.calculate_stochastic_oscillator(data)
+# print(f, s)
+# rsi = None
+# rsi = ta_iindss.calculate_rsi(data)
+# macd = ta_iindss.calculate_macd(data)
+# engulfing = ta_iindss.calculate_engulfing_patterns(data)
+# doji = ta_iindss.calculate_doji(data)
+# print(rsi)
+# print(macd)
+# print(engulfing)
+# print(doji)
+
+

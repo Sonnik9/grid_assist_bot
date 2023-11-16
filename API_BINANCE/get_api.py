@@ -69,24 +69,21 @@ class GETT_API(Configg):
 
         return positions
     
-    def get_klines(self, symbol, end_date=Configg().end_date):
+    def get_klines(self, symbol, custom_period, end_date=Configg().end_date):
         method = 'GET'
+        params = {}
         klines = None
         data = None
-        url = self.URL_PATTERN_DICT["klines_url"]
-        # print(url)
-
-        params = {}
+        url = self.URL_PATTERN_DICT["klines_url"]        
         params["symbol"] = symbol
         params["interval"] = self.INTERVAL
 
         if end_date:            
            params["endTime"] = int(end_date.timestamp() * 1000)
-        params["limit"] = self.KLINES_PERIOD + 1
-        # params = self.get_signature(params)
-        # print(params)
+        if custom_period:
+            params["limit"] = custom_period
         klines = self.HTTP_request(url, method=method, headers=self.header, params=params)
-        # print(klines)
+     
         if klines:
             try:
                 data = pd.DataFrame(klines).iloc[:, :6]
@@ -96,7 +93,8 @@ class GETT_API(Configg):
                 data = data.astype(float)
             except:
                 pass
-        
+        len_data = len(data)
+        print(f"len data: {len_data}")
         return data
     
 # ////////////////////////////////////////////////////////////////////////////////////

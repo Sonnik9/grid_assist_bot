@@ -107,7 +107,11 @@ class IND_STRATEGY_(OTHERS_CALC, TALIB_INDSS):
 
         for symbol in coins_list:
             try:
-                kline_data = self.get_klines(symbol)
+                kline_data = None
+                kline_data = self.get_klines(symbol, custom_period=None)  
+                if len(kline_data) == 0:
+                    continue    
+
                 close_price = kline_data['Close'].iloc[-1]
                 adx = self.calculate_adx(kline_data)
                 sma7, sma25, sma99 = self.calculate_ma_s(kline_data)
@@ -115,8 +119,11 @@ class IND_STRATEGY_(OTHERS_CALC, TALIB_INDSS):
             except Exception as ex:
                 print(f"Error processing {symbol} in sigmals_handler_two: {ex}")
                 continue
-
-            trend_sign = self.trends_defender(close_price, adx, sma7, sma25, sma99, doji)
+            try:
+                trend_sign = self.trends_defender(close_price, adx, sma7, sma25, sma99, doji)
+                print(trend_sign)
+            except:
+                continue
             if trend_sign == 'U':
                 current_bunch = self.current_bunch + ['U']
             elif trend_sign == 'D':
@@ -124,9 +131,10 @@ class IND_STRATEGY_(OTHERS_CALC, TALIB_INDSS):
             elif trend_sign == 'F':
                 orders_stek.append({'symbol': symbol, 'side': 'F_NEUTRAL'})
                 continue
-
-            total_signal = self.bunch_handler_func(close_price, current_bunch, kline_data)
-
+            try:
+                total_signal = self.bunch_handler_func(close_price, current_bunch, kline_data)
+            except:
+                continue
             if total_signal:
                 orders_stek.append({'symbol': symbol, 'side': total_signal})
 
