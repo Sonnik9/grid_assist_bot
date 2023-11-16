@@ -2,10 +2,10 @@
 import telebot
 from telebot import types
 from config import Configg
-from CALC.calc_controller import CALC_MANAGER
+from BACKTEST.back_test import BACKTESTT
 import time
 
-class TG_CONNECTOR(CALC_MANAGER):
+class TG_CONNECTOR(BACKTESTT):
     def __init__(self):
         super().__init__()
         self.bot = telebot.TeleBot(Configg().tg_api_token)
@@ -20,9 +20,10 @@ class TG_CONNECTOR(CALC_MANAGER):
         button1 = types.KeyboardButton("SEARCHING")
         button2 = types.KeyboardButton("SETTINGS")
         button3 = types.KeyboardButton("CALC")
-        button4 = types.KeyboardButton("BALANCE")
-        button5 = types.KeyboardButton("RESTART")
-        menu_markup.add(button1, button2, button3, button4, button5)        
+        button4 = types.KeyboardButton("BACKTEST")
+        button5 = types.KeyboardButton("BALANCE")
+        button6 = types.KeyboardButton("RESTART")
+        menu_markup.add(button1, button2, button3, button4, button5, button6)        
         return menu_markup
 
     def connector_func(self, bot, message, response_message):
@@ -35,14 +36,11 @@ class TG_CONNECTOR(CALC_MANAGER):
                 return message.text
             except:
                 time.sleep(2 + i*decimal)        
-        return None
-    
+        return None    
     
 class TG_ASSISTENT(TG_CONNECTOR):
     def __init__(self):
         super().__init__()
-        # self.calc_flag = False
-        # self.settings_flag = False
 
     def update_main_paramss(self, new_market):
         super().update_main_params(new_market)
@@ -96,31 +94,8 @@ class TG_ASSISTENT(TG_CONNECTOR):
             message.text = self.connector_func(bot, message, response_message)            
 
         @bot.message_handler(func=lambda message: message.text == "CALC")
-        def calc_input(message):
-            response_message = "Please choice a way of calculation:\nDefault: 1;\nCustom: 2;" 
-            message.text = self.connector_func(bot, message, response_message)
-            self.calc_flag = True
-
-        @bot.message_handler(func=lambda message: message.text.strip() == "1" and self.calc_flag)
-        def default_calc(message):
-            symbol, direction, resistance_piv, support_piv, grid_number, sl, tp = None, None, None, None, None, None, None
-            try:
-                symbol = None
-                target = 'default_calc'
-                self.calc_flag = False  
-                symbol, direction, resistance_piv, support_piv, grid_number, tp, sl = self.find_the_best_coin(symbol, target)                
-            except:
-                pass
-            try:
-                response_message = f"Symbol: {symbol}\nDirection: {direction}\nResistance_piv: {resistance_piv}\nSupport_piv: {support_piv}\nTake Profit: {tp}\nStop Loss: {sl}\nGrid number: {grid_number}"
-                message.text = self.connector_func(bot, message, response_message)  
-                        
-            except Exception as ex:
-                print(ex)            
-
-        @bot.message_handler(func=lambda message: message.text.strip() == "2" and self.calc_flag)
         def custom_calc_redirect(message):
-            response_message = "Please enter a coin (e.g., BTCUSDT)"
+            response_message = "Please enter a coin (e.g., BTC)"
             message.text = self.connector_func(bot, message, response_message)            
             self.custom_redirect_flag = True
 
@@ -128,25 +103,42 @@ class TG_ASSISTENT(TG_CONNECTOR):
         def custom_calc(message):
             symbol, direction, resistance_piv, support_piv, grid_number, sl, tp = None, None, None, None, None, None, None
             try:                 
-                symbol = message.text.strip().upper()               
-                target = 'custom_calc'
-                symbol, direction, resistance_piv, support_piv, grid_number, tp, sl = self.find_the_best_coin(symbol, target)                
+                symbol = message.text.strip().upper() + 'USDT'               
+                symbol, direction, resistance_piv, support_piv, grid_number, tp, sl = self.find_the_best_coin(symbol)                
             except: 
                 response_message = "Enter a VALID coin (e.g., BTCUSDT)"
-                message.text = self.connector_func(bot, message, response_message)                        
+                message.text = self.connector_func(bot, message, response_message)    
 
             try:
                 response_message = f"Symbol: {symbol}\nDirection: {direction}\nResistance_piv: {resistance_piv}\nSupport_piv: {support_piv}\nTake Profit: {tp}\nStop Loss: {sl}\nGrid number: {grid_number}"
                 message.text = self.connector_func(bot, message, response_message)
-                self.custom_redirect_flag = False
-                self.calc_flag = False        
+                self.custom_redirect_flag = False                
             except Exception as ex:
                 print(ex)
+
+        @bot.message_handler(func=lambda message: message.text == "BACKTEST")
+        def custom_calc_redirect(message):
+            response_message = "Please enter a coin for bbacktesting (e.g., BTC)"
+            message.text = self.connector_func(bot, message, response_message)            
+            self.bt_flag = True
+
+        @bot.message_handler(func=lambda message: self.bt_flag)
+        def custom_calc_redirect(message):
+            symbol = message.text.strip().upper() + 'USDT'
+            bt_repl = self.backtest_main(symbol) 
+            try:
+                response_message = bt_repl
+                # response_message = f"Symbol: {symbol}\nDirection: {direction}\nResistance_piv: {resistance_piv}\nSupport_piv: {support_piv}\nTake Profit: {tp}\nStop Loss: {sl}\nGrid number: {grid_number}"
+                message.text = self.connector_func(bot, message, response_message) 
+            except Exception as ex:
+                print(ex)        
+            self.bt_flag = False
 
         @bot.message_handler(func=lambda message: message.text not in self.reserved_frathes_list)
         def exceptions_input(message):
             response_message = f"Try again and enter a valid option."
-            message.text = self.connector_func(bot, message, response_message)           
+            message.text = self.connector_func(bot, message, response_message)  
+                     
 
         bot.polling()
 

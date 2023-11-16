@@ -37,7 +37,7 @@ class OTHERS_CALC(UTILSS_API):
         return pivot_type
     
     def calculate_fibonacci_pivot_points(self, symbol, data):
-        data = data.iloc[-30:] 
+        data = data.iloc[-100:] 
         latest_pivot_dict = {}
         piv_repl = {}
         try:
@@ -46,31 +46,43 @@ class OTHERS_CALC(UTILSS_API):
             close = data['Close']
             
             pivot = (high + low + close) / 3
-            support1 = pivot - 0.382 * (high - low)
-            support2 = pivot - 0.618 * (high - low)
-            support3 = pivot - (high - low)
-            support4 = pivot - 1.382 * (high - low)  # New line for S4
-            support5 = pivot - 1.618 * (high - low)  # New line for S5
-            resistance1 = pivot + 0.382 * (high - low)
-            resistance2 = pivot + 0.618 * (high - low)
-            resistance3 = pivot + (high - low)
-            resistance4 = pivot + 1.382 * (high - low)  # New line for R4
-            resistance5 = pivot + 1.618 * (high - low)  # New line for R5
+            # support1 = pivot - 0.382 * (high - low)
+            # support2 = pivot - 0.618 * (high - low)
+            # support3 = pivot - (high - low)
+            # support3 = pivot - 1.382 * (high - low) 
+            support1 = pivot - 1.618 * (high - low)
+            support2 = pivot - 2.618 * (high - low)  
+            support3 = pivot - 4.236 * (high - low)
+            support4 = pivot - 6.854 * (high - low)
+            support5 = pivot - 11.090 * (high - low)  
+            # resistance1 = pivot + 0.382 * (high - low)
+            # resistance2 = pivot + 0.618 * (high - low)
+            # resistance3 = pivot + (high - low)
+            # resistance4 = pivot + 1.382 * (high - low) 
+            resistance1 = pivot + 1.618 * (high - low) 
+            resistance2 = pivot + 2.618 * (high - low)
+            resistance3 = pivot + 4.236 * (high - low)  
+            resistance4 = pivot + 6.854 * (high - low)
+            resistance5 = pivot + 11.090 * (high - low)          
             
             latest_pivot_dict = {
                 'pp': pivot.iloc[-1],
                 'S1': support1.iloc[-1],
                 'S2': support2.iloc[-1],
                 'S3': support3.iloc[-1],
-                'S4': support4.iloc[-1],  # New line for S4
-                'S5': support5.iloc[-1],  # New line for S5
+                'S4': support4.iloc[-1], 
+                'S5': support5.iloc[-1],  
+                # 'S6': support6.iloc[-1],
+                # 'S7': support7.iloc[-1],
                 'R1': resistance1.iloc[-1],
                 'R2': resistance2.iloc[-1],
                 'R3': resistance3.iloc[-1],
-                'R4': resistance4.iloc[-1],  # New line for R4
-                'R5': resistance5.iloc[-1]   # New line for R5
+                'R4': resistance4.iloc[-1], 
+                'R5': resistance5.iloc[-1],
+                # 'R6': resistance6.iloc[-1],
+                # 'R7': resistance7.iloc[-1]   
             }
-            # self.pivot_levels_type = 4  # Update the number of pivot levels
+            # self.pivot_levels_type = 6  # Update the number of pivot levels
             piv_repl[symbol] = {
                 f'Pivot.M.{self.PIVOT_GENERAL_TYPE}.S{self.pivot_levels_type}': latest_pivot_dict[f'S{self.pivot_levels_type}'],
                 f'Pivot.M.{self.PIVOT_GENERAL_TYPE}.R{self.pivot_levels_type}': latest_pivot_dict[f'R{self.pivot_levels_type}']
@@ -80,8 +92,8 @@ class OTHERS_CALC(UTILSS_API):
 
         return piv_repl
 
-
     def calculate_classic_pivot_points(self, symbol, data):
+        data = data.iloc[-100:]
         latest_pivot_dict = {}
         piv_repl = {} 
         try:
@@ -90,29 +102,40 @@ class OTHERS_CALC(UTILSS_API):
             close = data['Close']
 
             pivot = (high + low + close) / 3
-            support1 = (2 * pivot) - high
-            support2 = pivot - (high - low)
-            support3 = pivot - 2 * (high - low)
-            support4 = pivot - 3 * (high - low)  # New line for S4
-            support5 = pivot - 4 * (high - low)  # New line for S5
-            resistance1 = (2 * pivot) - low
-            resistance2 = pivot + (high - low)
-            resistance3 = pivot + 2 * (high - low)
-            resistance4 = pivot + 3 * (high - low)  # New line for R4
-            resistance5 = pivot + 4 * (high - low)  # New line for R5
+            # support1 = (2 * pivot) - high
+            # support2 = pivot - (high - low)
+            # support2 = pivot - 2 * (high - low)
+            support1 = pivot - 3 * (high - low)
+            support2 = pivot - 4 * (high - low)  
+            support3 = pivot - 5 * (high - low)
+            support4 = pivot - 6 * (high - low)
+            support5 = pivot - 7 * (high - low)  
+            # resistance1 = (2 * pivot) - low
+            # resistance2 = pivot + (high - low)
+            # resistance3 = pivot + 2 * (high - low)
+            # resistance4 = pivot + 3 * (high - low)  
+            resistance1 = pivot + 3 * (high - low)
+            resistance2 = pivot + 4 * (high - low)
+            resistance3 = pivot + 5 * (high - low)
+            resistance4 = pivot + 6 * (high - low)
+            resistance5 = pivot + 7 * (high - low)  
             
             latest_pivot_dict = {
                 'pp': pivot.iloc[-1],
                 'S1': support1.iloc[-1],
                 'S2': support2.iloc[-1],
                 'S3': support3.iloc[-1],
-                'S4': support4.iloc[-1],  # New line for S4
-                'S5': support5.iloc[-1],  # New line for S5
+                'S4': support4.iloc[-1], 
+                'S5': support5.iloc[-1],  
+                # 'S6': support6.iloc[-1],
+                # 'S7': support7.iloc[-1],
                 'R1': resistance1.iloc[-1],
                 'R2': resistance2.iloc[-1],
                 'R3': resistance3.iloc[-1],
-                'R4': resistance4.iloc[-1],  # New line for R4
-                'R5': resistance5.iloc[-1]   # New line for R5
+                'R4': resistance4.iloc[-1], 
+                'R5': resistance5.iloc[-1],
+                # 'R6': resistance6.iloc[-1],
+                # 'R7': resistance7.iloc[-1]   
             }
             # self.pivot_levels_type = 4  # Update the number of pivot levels
             piv_repl[symbol] = {
@@ -134,7 +157,7 @@ class OTHERS_CALC(UTILSS_API):
 
         return piv
 
-    def calculate_finta_pivot(self, symbol, data, period=10):
+    def calculate_finta_pivot(self, symbol, data, period=50):
         # finta
         dataa = data.copy()
         piv_repl = {}

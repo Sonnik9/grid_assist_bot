@@ -4,9 +4,9 @@ class MAIN_PARAMETRS():
     def __init__(self):
         self.SOLI_DEO_GLORIA = 'Soli Deo Gloria!'        
         self.market = 'futures'
-        # self.test_flag = False # -- real    
+        self.test_flag = False # -- real    
         # self.market = 'futures'
-        self.test_flag = True # -- test        
+        # self.test_flag = True # -- test        
 
     def update_main_params(self, new_market, new_test_flag=False):
         self.market = new_market
@@ -50,11 +50,10 @@ class TIME_TEMPLATES(URL_TEMPLATES):
         self.KLINES_PERIOD = 160   
         self.init_time()        
 
-    def init_time(self):  
-        if self.test_flag:
-            self.end_date = datetime(2023, 11, 14)
-        else:
-            self.end_date = None
+    def init_time(self):
+        # self.end_date = datetime(2023, 10, 31)
+        self.end_date = None
+
     # ///////////////////////////////////////////////
     def update_time_temps(self, new_kline_time, new_time_frame, new_end_date, new_klines_period): 
         self.KLINE_TIME, self.TIME_FRAME = int(new_kline_time), new_time_frame.strip().lower()
@@ -97,12 +96,18 @@ class FILTER_SET(INDICATORD_PARAMS):
         self.MAX_FILTER_PRICE = new_max_filter_price 
         self.problem_pairs = new_problem_pairs 
 
-class STRATEGY_SET(FILTER_SET):
+class BACKTEST_PARAMS(FILTER_SET):
+    def __init__(self) -> None:
+        super().__init__()
+        self.bt_data = None 
+        self.bt_flag = False
+
+class STRATEGY_SET(BACKTEST_PARAMS):
     def __init__(self) -> None:
         super().__init__()        
         self.BUNCH_VARIANT = 7
-        self.strong_trande_sign = True
-        # self.strong_trande_sign = False
+        # self.strong_trande_sign = True
+        self.strong_trande_sign = False
         # self.PIVOT_GENERAL_TYPE = 'Classic'
         self.PIVOT_GENERAL_TYPE = 'Fibonacci'
         self.pivot_levels_type = 5
@@ -136,6 +141,6 @@ class STRATEGY_SET(FILTER_SET):
         if self.BUNCH_VARIANT == 8:
             self.current_bunch = ['bband_flag', 'macd_lite_flag']
         elif self.BUNCH_VARIANT == 9:
-            self.current_bunch = ['bband_flag', 'macd_lite_flag', 'ma_crossover_flag', 'rsi_diver_flag'] 
+            self.current_bunch = ['bband_flag', 'macd_lite_flag', 'ma_crossover_flag'] 
 
 # python -m pparamss

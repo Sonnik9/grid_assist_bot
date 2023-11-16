@@ -102,13 +102,13 @@ class IND_STRATEGY_(OTHERS_CALC, TALIB_INDSS):
             print(f"Error in trends_defender: {ex}")
             return None
 
-    def sigmals_handler_two(self, coins_list):
+    def sigmals_handler_two(self, coins_list, kline_data):
         orders_stek = []
-
+        print(kline_data)
         for symbol in coins_list:
             try:
-                kline_data = None
-                kline_data = self.get_klines(symbol, custom_period=None)  
+                # kline_data = None
+                # kline_data = self.get_klines(symbol, custom_period=None)  
                 if len(kline_data) == 0:
                     continue    
 

@@ -1002,3 +1002,35 @@
 # print(doji)
 
 
+
+        # # Print or use the values and flags as needed
+        # print("Max High:", max_high)
+        # print("Min Low:", min_low)
+        # print("Max High Flag:", max_high_flag)
+        # print("Min Low Flag:", min_low_flag)
+
+        # # Continue with your code...
+
+        # @bot.message_handler(func=lambda message: message.text == "CALC")
+        # def calc_input(message):
+        #     response_message = "Please choice a way of calculation:\nDefault: 1;\nCustom: 2;" 
+        #     message.text = self.connector_func(bot, message, response_message)
+        #     self.calc_flag = True
+
+        # @bot.message_handler(func=lambda message: message.text.strip() == "1" and self.calc_flag)
+        # def default_calc(message):
+        #     symbol, direction, resistance_piv, support_piv, grid_number, sl, tp = None, None, None, None, None, None, None
+        #     try:
+        #         symbol = None
+        #         target = 'default_calc'
+        #         self.calc_flag = False  
+        #         symbol, direction, resistance_piv, support_piv, grid_number, tp, sl = self.find_the_best_coin(symbol, target)                
+        #     except:
+        #         pass
+        #     try:
+        #         response_message = f"Symbol: {symbol}\nDirection: {direction}\nResistance_piv: {resistance_piv}\nSupport_piv: {support_piv}\nTake Profit: {tp}\nStop Loss: {sl}\nGrid number: {grid_number}"
+        #         message.text = self.connector_func(bot, message, response_message)  
+                        
+        #     except Exception as ex:
+        #         print(ex)  
+
