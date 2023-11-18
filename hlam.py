@@ -1034,3 +1034,108 @@
         #     except Exception as ex:
         #         print(ex)  
 
+
+    # # ///////////////////////////////////////////////
+    # def update_time_temps(self, new_kline_time, new_time_frame, new_end_date, new_klines_period): 
+    #     self.KLINE_TIME, self.TIME_FRAME = int(new_kline_time), new_time_frame.strip().lower()
+    #     self.INTERVAL = str(self.KLINE_TIME) + self.TIME_FRAME
+    #     new_end_date = tuple(new_end_date)
+    #     self.end_date = datetime(new_end_date[0], new_end_date[1], new_end_date[2])        
+    #     self.KLINES_PERIOD = int(new_klines_period)    
+    #     # ///////////////////////////////////////////////////////////////////////////
+
+        
+    # def update_ind_params(self, new_b_bband_q, new_s_bband_q, new_b_rsi_lev, new_s_rsi_lev, new_b_macd__q, new_s_macd_q, new_b_stoch_q, new_s_stoch_q):
+    #     self.b_bband_q, self.s_bband_q = new_b_bband_q, new_s_bband_q
+    #     self.b_rsi_lev, self.s_rsi_lev = new_b_rsi_lev, new_s_rsi_lev
+    #     self.b_macd_q, self.s_macd_q = new_b_macd__q, new_s_macd_q
+    #     self.b_stoch_q, self.s_stoch_q = new_b_stoch_q, new_s_stoch_q
+
+
+    # def update_filter_set(self, new_slice_volun_pairs, new_slice_volatility, new_min_filter_price, new_max_filter_price, new_problem_pairs):       
+    #     self.SLICE_VOLUME_PAIRS = new_slice_volun_pairs
+    #     self.SLICE_VOLATILITY = new_slice_volatility
+    #     self.MIN_FILTER_PRICE = new_min_filter_price 
+    #     self.MAX_FILTER_PRICE = new_max_filter_price 
+    #     self.problem_pairs = new_problem_pairs 
+
+    # def trends_defender(self, close_price, adx, sma7, sma25, sma99, doji):
+    #     try:
+    #         u_conditions = [close_price > sma7, close_price > sma25, doji == 0]
+    #         d_conditions = [close_price < sma7, close_price < sma25, doji == 0]
+    #         if self.strong_trande_sign:
+    #             u_conditions.append(close_price > sma99)
+    #             d_conditions.append(close_price < sma99)
+
+    #         if adx > 25:
+    #             u_condition_met = all(u_conditions)
+    #             d_condition_met = all(d_conditions)
+
+    #             if u_condition_met:
+    #                 return "U"
+    #             elif d_condition_met:
+    #                 return "D"
+    #             else:
+    #                 return "F"
+    #         else:
+    #             return "F"
+    #     except Exception as ex:
+    #         print(f"Error in trends_defender: {ex}")
+    #         return None
+
+    # def update_strategy_set(self, new_ind_strategy, new_inds_source, new_BUNCH_VARIANT, new_pivot_gen_type, new_pivot_levels_type, new_grid_decimal):
+    #     self.ind_strategy = new_ind_strategy       
+    #     self.inds_source = new_inds_source         
+    #     self.BUNCH_VARIANT = new_BUNCH_VARIANT
+    #     self.PIVOT_GENERAL_TYPE = new_pivot_gen_type
+    #     self.pivot_levels_type = new_pivot_levels_type
+    #     self.grid_decimal = new_grid_decimal
+
+
+
+    # def update_main_params(self, new_market, new_test_flag=False):
+    #     self.market = new_market
+    #     self.test_flag = new_test_flag
+
+        # super().update_main_params(new_market)
+        # self.init_urls()
+
+
+# Индикаторы для Бокового Рынка (Флета):
+# Bollinger Bands (Полосы Боллинджера): В боковом рынке цена часто колеблется между верхней и нижней полосами, что может предоставить сигналы о возможных точках разворота.
+
+# RSI (Индекс относительной силы): RSI может помочь идентифицировать перекупленные или перепроданные условия. В боковом рынке цены могут часто возвращаться к среднему значению RSI.
+
+# Moving Averages (Скользящие средние): Когда рынок находится в флете, цена может пересекать скользящие средние, что может служить сигналом о возможном развороте или продолжении флета.
+
+# MACD (Схождение/Расхождение скользящих средних): В боковом рынке, когда цена не имеет явного тренда, сигналы MACD о схождении и расхождении могут быть особенно важными.
+
+# Индикаторы для Трендового Рынка:
+# Трендовые линии и каналы: В трендовом рынке важно отмечать и рисовать уровни поддержки и сопротивления, которые могут помочь определить тренд.
+
+# Parabolic SAR (Параболическая SAR): Этот индикатор может предоставить сигналы о направлении тренда и моментах его изменения.
+
+# ADX (Средний индикатор направленности): Индикатор ADX может использоваться для измерения силы тренда.
+
+# Ichimoku Cloud (Облако Ишимоку): Помогает определить направление тренда и области поддержки/сопротивления.
+
+# Осцилляторы Momentum (например, ROC): Могут предоставить сигналы о силе текущего тренда.
+
+
+
+
+
+            # if 'macd_strong_flag' in current_bunch:
+            #     # print('mskrjbgv')
+            #     macd, signal = self.calculate_macd(kline_data)
+            #     buy_strong_macd_signal = (macd > signal * self.b_macd_q) and (macd < 0)
+            #     sell_strong_macd_signal = (macd < signal * self.s_macd_q) and (macd > 0)
+            #     signals_sum.append((buy_strong_macd_signal, sell_strong_macd_signal))
+
+
+            # if 'stoch_flag' in current_bunch:
+            #     fastk, slowk = self.calculate_stochastic_oscillator(kline_data)
+            #     buy_stoch_signal = (fastk > slowk) and (fastk < self.b_stoch_q)
+            #     sell_stoch_signal = (fastk < slowk) and (fastk > self.s_stoch_q)
+            #     signals_sum.append((buy_stoch_signal, sell_stoch_signal))
+

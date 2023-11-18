@@ -2,6 +2,7 @@ import talib
 import pandas_ta as ta
 from finta import TA
 import math
+import numpy as np
 from API_BINANCE.utils_api import UTILSS_API
 from API_BINANCE.get_api import GETT_API
 
@@ -239,21 +240,45 @@ class OTHERS_CALC(UTILSS_API):
         return heiken_close, heiken_open, heiken_signal 
     
     def calculate_ma_s(self, data):
+        ma_7, ma_20, ma_25, ma_50, ma_99 = None, None, None, None, None
         data.dropna(inplace=True)
         # data.head(10) 
         data["MA7"] = ta.sma(data['Close'], length=7)
         ma_7 = data["MA7"].iloc[-1]
+
+        data["MA20"] = ta.sma(data['Close'], length=25)
+        ma_20 = data["MA20"].iloc[-1]
+
         data["MA25"] = ta.sma(data['Close'], length=25)
         ma_25 = data["MA25"].iloc[-1]
+
+        data["MA50"] = ta.sma(data['Close'], length=99)
+        ma_50 = data["MA50"].iloc[-1]
+
         data["MA99"] = ta.sma(data['Close'], length=99)
         ma_99 = data["MA99"].iloc[-1]
         # data.dropna(inplace=True)
-        return ma_7, ma_25, ma_99
+        return ma_7, ma_20, ma_25, ma_50, ma_99
+    
+    def detect_rsi_divergence(self, closes, rsi_values):  
+        print(closes, rsi_values)  
+        if np.mean(rsi_values) > 50 and rsi_values[-1] < 60 and np.mean(rsi_values[-4:-2]) < np.mean(rsi_values[-2:]):       
+            if closes[-1] > np.mean(closes[:-1]):
+                return 1
+            else:
+                return 0    
+        elif np.mean(rsi_values) < 50 and rsi_values[-1] > 40 and np.mean(rsi_values[-4:-2]) > np.mean(rsi_values[-2:]):        
+            if closes[-1] < np.mean(closes[:-1]):
+                return -1  
+            else:
+                
+                return 0  
+        else:       
+            return 0  
     
     def calculate_rsi(self, data):
         data['RSI'] = ta.rsi(data['Close'], length=self.rsi_period)
-        rsi = data["RSI"].iloc[-1]
-        return rsi
+        return data['RSI']
     
     def calculate_ema_s(self, data):
         data.dropna(inplace=True)
@@ -336,7 +361,12 @@ class TALIB_INDSS():
             print(f"Error in calculate_stochastic_oscillator: {ex}")
         return slow_k, slow_d
     
-# ta_iindss = TA_INDSS()
+# iinds = OTHERS_CALC()
+# get_apii = GETT_API()
+# symbol = 'BTCUSDT'
+# data = get_apii.get_klines(symbol, custom_period=None)
+# rsi6, rsi5, rsi4, rsi3, rsi2, rsi1 = iinds.calculate_rsi(data)
+# print(rsi6, rsi5, rsi4, rsi3, rsi2, rsi1)
 
 # symbol = 'BIGTIMEUSDT'
 # import pandas as pd

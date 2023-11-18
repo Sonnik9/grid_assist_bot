@@ -1,4 +1,4 @@
-from pparamss import STRATEGY_SET
+from pparamss import INIT_PARAMS
 import logging, os, inspect
 from dotenv import load_dotenv
 import time
@@ -11,7 +11,7 @@ current_file = os.path.basename(__file__)
 
 load_dotenv()
 
-class Configg(STRATEGY_SET):
+class Configg(INIT_PARAMS):
 
     def __init__(self) -> None:
         super().__init__()

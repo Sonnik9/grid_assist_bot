@@ -116,3 +116,148 @@
 # new_test_flag = bool(new_test_flag_str)
 # print(new_market)
 # print(new_test_flag)
+
+# from datetime import datetime
+
+# date_string = '2023-10-31'
+# date_format = '%Y-%m-%d'
+
+# # Преобразование строки в объект datetime
+# date_object = datetime.strptime(date_string, date_format)
+
+# print(type(date_object))
+
+# def detect_rsi_divergence(closes, rsi_values):
+#     # Проверяем, является ли последнее значение RSI больше 50
+#     if rsi_values[-1] > 50:
+#         # Проверяем, была ли цена на новом высоком уровне
+#         if closes[-1] > max(closes[:-1]):
+#             print("Бычья дивергенция: RSI не подтверждает новый высокий в цене.")
+#             # В этом месте можно вставить код или логику для принятия решения о покупке
+#             return 1  # Сигнал на покупку
+#         else:
+#             print("Бычья дивергенция отсутствует.")
+#             return 0  # Отсутствие сигнала
+#     # Проверяем, является ли последнее значение RSI меньше 50
+#     elif rsi_values[-1] < 50:
+#         # Проверяем, была ли цена на новом низком уровне
+#         if closes[-1] < min(closes[:-1]):
+#             print("Медвежья дивергенция: RSI не подтверждает новый низкий в цене.")
+#             # В этом месте можно вставить код или логику для принятия решения о продаже
+#             return -1  # Сигнал на продажу
+#         else:
+#             print("Медвежья дивергенция отсутствует.")
+#             return 0  # Отсутствие сигнала
+#     else:
+#         print("RSI находится в нейтральной зоне.")
+#         return 0  # Отсутствие сигнала
+
+# # Пример использования
+# closes = [10, 12, 15, 14, 16, 18]
+# rsi_values = [38.509508614672285, 37.02042485106416, 52.988250909750924, 52.1602916222665, 48.154229288370445, 52.12705647174558]
+# signal = detect_rsi_divergence(closes, rsi_values)
+# print("Сигнал:", signal)
+
+# def detect_rsi_divergence(closes, rsi_values):
+#     # Проверяем, является ли последнее значение RSI выше 50
+#     if rsi_values[-1] > 50:
+#         # Проверяем, была ли цена на новом высоком уровне
+#         if closes[-1] > max(closes[:-1]):
+#             print("Бычья дивергенция: RSI не подтверждает новый высокий в цене.")
+#             # В этом месте можно вставить код или логику для принятия решения о покупке
+#             return 1  # Сигнал на покупку
+#         else:
+#             print("Бычья дивергенция отсутствует.")
+#             return 0  # Отсутствие сигнала
+#     # Проверяем, является ли последнее значение RSI ниже 50
+#     elif rsi_values[-1] < 50:
+#         # Проверяем, была ли цена на новом низком уровне
+#         if closes[-1] < min(closes[:-1]):
+#             print("Медвежья дивергенция: RSI не подтверждает новый низкий в цене.")
+#             # В этом месте можно вставить код или логику для принятия решения о продаже
+#             return -1  # Сигнал на продажу
+#         else:
+#             print("Медвежья дивергенция отсутствует.")
+#             return 0  # Отсутствие сигнала
+#     else:
+#         print("RSI находится в нейтральной зоне.")
+#         return 0  # Отсутствие сигнала
+
+# # Пример использования
+# closes = [10, 12, 15, 14, 16, 18]
+# rsi_values = [38.509508614672285, 37.02042485106416, 52.988250909750924, 52.1602916222665, 48.154229288370445, 52.12705647174558]
+# signal = detect_rsi_divergence(closes, rsi_values)
+# print("Сигнал:", signal)
+
+# import numpy as np
+
+# def detect_rsi_divergence(closes, rsi_values):    
+#     if np.mean(rsi_values[-4:]) > 50:       
+#         if closes[-1] > max(closes[:-1]):
+#             return 1
+#         else:
+#             return 0    
+#     elif np.mean(rsi_values[-4:]) < 50:        
+#         if closes[-1] < min(closes[:-1]):
+#             return -1  
+#         else:
+            
+#             return 0  
+#     else:       
+#         return 0  
+
+# # Пример использования
+# closes = [10, 12, 15, 14, 16, 18]
+# rsi_values = [38.509508614672285, 37.02042485106416, 52.988250909750924, 52.1602916222665, 48.154229288370445, 52.12705647174558]
+# signal = detect_rsi_divergence(closes, rsi_values)
+# print("Сигнал:", signal)
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Sample data (replace this with your own OHLC data)
+data = {
+    'Date': ['2023-01-01', '2023-01-02', '2023-01-03', '2023-01-04', '2023-01-05'],
+    'Open': [100, 102, 98, 104, 101],
+    'High': [105, 108, 100, 110, 103],
+    'Low': [98, 100, 95, 101, 99],
+    'Close': [102, 105, 97, 108, 100]
+}
+
+df = pd.DataFrame(data)
+df['Date'] = pd.to_datetime(df['Date'])
+df.set_index('Date', inplace=True)
+
+# Calculate Heikin Ashi candles
+df['HA_Close'] = (df['Open'] + df['High'] + df['Low'] + df['Close']) / 4
+df['HA_Open'] = (df['Open'].shift(1) + df['Close'].shift(1)) / 2
+df['HA_High'] = df[['High', 'HA_Open', 'HA_Close']].max(axis=1)
+df['HA_Low'] = df[['Low', 'HA_Open', 'HA_Close']].min(axis=1)
+
+# Detect Doji patterns
+df['Body'] = abs(df['Open'] - df['Close'])
+df['UpperShadow'] = df['High'] - df[['Open', 'Close']].max(axis=1)
+df['LowerShadow'] = df[['Open', 'Close']].min(axis=1) - df['Low']
+
+# Define a function to identify Doji candles
+def is_doji(row):
+    return (row['Body'] < 0.1 * (row['High'] - row['Low'])) and (row['UpperShadow'] > 2 * row['Body']) and (row['LowerShadow'] > 2 * row['Body'])
+
+df['IsDoji'] = df.apply(is_doji, axis=1)
+
+# Generate signals based on Heikin Ashi and Doji
+df['Buy_Signal'] = (df['HA_Open'] < df['HA_Close']) & df['IsDoji']
+df['Sell_Signal'] = (df['HA_Open'] > df['HA_Close']) & df['IsDoji']
+
+# Plotting
+plt.figure(figsize=(10, 5))
+plt.plot(df.index, df['HA_Close'], label='Heikin Ashi Close', color='blue')
+plt.scatter(df[df['Buy_Signal']].index, df[df['Buy_Signal']]['HA_Close'], label='Buy Signal', marker='^', color='green')
+plt.scatter(df[df['Sell_Signal']].index, df[df['Sell_Signal']]['HA_Close'], label='Sell Signal', marker='v', color='red')
+plt.title('Heikin Ashi with Doji Signals')
+plt.legend()
+plt.show()
+
+
+
+

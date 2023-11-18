@@ -1,14 +1,13 @@
 from config import Configg
 import pandas as pd
 from pparamss import STRATEGY_SET
+from datetime import datetime
 
 class GETT_API(Configg):
     
     def __init__(self) -> None:
         super().__init__()  
-        self.end_date = 3
         
-
     def get_all_tickers(self):
         method = 'GET'
 
@@ -69,21 +68,22 @@ class GETT_API(Configg):
 
         return positions
     
-    def get_klines(self, symbol, custom_period, end_date=Configg().end_date):
+    def get_klines(self, symbol, custom_period):
         method = 'GET'
         params = {}
         klines = None
         data = None
-        url = self.URL_PATTERN_DICT["klines_url"]        
+        url = self.URL_PATTERN_DICT["klines_url"]
         params["symbol"] = symbol
         params["interval"] = self.INTERVAL
 
-        if end_date:            
-           params["endTime"] = int(end_date.timestamp() * 1000)
+        if self.end_date and isinstance(self.end_date, datetime):
+            params["endTime"] = int(self.end_date.timestamp() * 1000)
         if custom_period:
             params["limit"] = custom_period
+        # params = self.get_signature(params)
         klines = self.HTTP_request(url, method=method, headers=self.header, params=params)
-     
+
         if klines:
             try:
                 data = pd.DataFrame(klines).iloc[:, :6]
@@ -91,11 +91,13 @@ class GETT_API(Configg):
                 data = data.set_index('Time')
                 data.index = pd.to_datetime(data.index, unit='ms')
                 data = data.astype(float)
-            except:
-                pass
-        len_data = len(data)
-        print(f"len data: {len_data}")
+            except Exception as e:
+                print(f"Error processing klines: {e}")
+
+        # len_data = len(data) if data is not None else 0
+        # print(f"len data: {len_data}")
         return data
+
     
 # ////////////////////////////////////////////////////////////////////////////////////
 
