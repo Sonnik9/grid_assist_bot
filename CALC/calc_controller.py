@@ -15,21 +15,25 @@ class CALC_MANAGER(IND_STRATEGY_):
         custom_period = None
         assets = []         
         assets.append(symbol)
-        try:
-            data = self.get_klines(symbol, custom_period)  
-            print(f"klines_data: {data}")
-        except Exception as ex:
-            print(f"25control: {ex}")
-            return symbol, direction, resistance_piv, support_piv, grid_number, tp, sl        
+
+        
         direction = self.sigmals_handler_two(assets)        
         direction = direction[0]['side']
         print(direction)
         # ///////////////////////////////////////////////////////////// 
-        # spec_kline_data = self.get_klines(symbol, custom_period=1000)
-        # atr_data = self.calculate_pandas_atr_for_pivot_type(spec_kline_data)
-        # last_atr = atr_data[-1]
-        # self.pivot_levels_type = self.determine_pivot_type(atr_data, last_atr)
+        spec_kline_data = self.get_klines(symbol, custom_period=1000)
+        atr_data = self.calculate_pandas_atr_for_pivot_type(spec_kline_data)
+        last_atr = atr_data[-1]
+        print(f"atr:  {last_atr}")
+        self.pivot_levels_type = self.determine_pivot_type(atr_data, last_atr)
         print(f"pivot_tipe: {self.pivot_levels_type}")
+        try:
+            data = self.get_klines(symbol, custom_period)  
+            # print(f"klines_data: {data}")
+        except Exception as ex:
+            print(f"25control: {ex}")
+            return symbol, direction, resistance_piv, support_piv, grid_number, tp, sl        
+        
         piv_info_repl = self.calculate_manualy_pivot(symbol, data)
         # piv_info_repl = self.calculate_finta_pivot(symbol, data)        
         resistance_piv, support_piv = piv_info_repl[symbol][f'Pivot.M.{self.PIVOT_GENERAL_TYPE}.R{self.pivot_levels_type}'], piv_info_repl[symbol][f'Pivot.M.{self.PIVOT_GENERAL_TYPE}.S{self.pivot_levels_type}']

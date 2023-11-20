@@ -34,7 +34,8 @@ class OTHERS_CALC(UTILSS_API):
         sort_grade = len_sorted_atr/3
         atr_index = [i for i, item in enumerate(sorted_atr) if float(item) == float(last_atr)][0]
         pivot_type = atr_index / sort_grade    
-        pivot_type = math.floor((pivot_type * 10) / 10) + 3     
+        pivot_type = math.ceil((pivot_type * 10) / 10) + 2 
+        if pivot_type > 5: pivot_type = 5
         return pivot_type
     
     def calculate_fibonacci_pivot_points(self, symbol, data):
@@ -191,7 +192,7 @@ class OTHERS_CALC(UTILSS_API):
 
         return piv_repl
 
-    def calculate_heikin_ashi(self, data, ratio=1.2):
+    def calculate_heikin_ashi(self, data, ratio=1.0):
         heiken_close, heiken_open, heiken_signal = None, None, 0
 
         data['Heiken_Close'] = (data['Open'] + data['Close'] + data['High'] + data['Low']) / 4
@@ -261,7 +262,7 @@ class OTHERS_CALC(UTILSS_API):
         return ma_7, ma_20, ma_25, ma_50, ma_99
     
     def detect_rsi_divergence(self, closes, rsi_values):  
-        print(closes, rsi_values)  
+        # print(closes, rsi_values)  
         if np.mean(rsi_values) > 50 and rsi_values[-1] < 60 and np.mean(rsi_values[-4:-2]) < np.mean(rsi_values[-2:]):       
             if closes[-1] > np.mean(closes[:-1]):
                 return 1

@@ -5,7 +5,8 @@ class BASIC_PARAMETRS():
         # super().__init__()
         self.SOLI_DEO_GLORIA = 'Soli Deo Gloria!'        
         self.market = 'futures'
-        self.test_flag = False # -- real    
+        self.test_flag = False # -- real  
+        self.bt_flag = False  
         # self.market = 'futures'
         # self.test_flag = True # -- test            
 
@@ -40,7 +41,7 @@ class URL_TEMPLATES(BASIC_PARAMETRS):
 class TIME_TEMPLATES(URL_TEMPLATES):   
     def __init__(self) -> None:
         super().__init__()
-        self.KLINE_TIME, self.TIME_FRAME = 1, 'h'
+        self.KLINE_TIME, self.TIME_FRAME = 1, 'd'
         self.INTERVAL = str(self.KLINE_TIME) + self.TIME_FRAME
         self.KLINES_PERIOD = 160   
         self.end_date = None      
@@ -70,7 +71,7 @@ class STRATEGY_SET(FILTER_SET):
         super().__init__()  
         self.BUNCH_DICT = {}      
         self.T_BUNCH_VARIANT = 1
-        self.F_BUNCH_VARIANT = 1      
+        self.F_BUNCH_VARIANT = 1  
         # self.PIVOT_GENERAL_TYPE = 'Classic'
         self.PIVOT_GENERAL_TYPE = 'Fibonacci'
         self.pivot_levels_type = 5
@@ -83,11 +84,11 @@ class STRATEGY_SET(FILTER_SET):
 
     def init_strategy_set(self):
         self.BUNCH_DICT['T'] = [
-            self.SOLI_DEO_GLORIA,     
-            ['rsi_diver_pattern_flag', 'ma_crossover_strong_flag'],      
-            ['bband_flag', 'macd_lite_flag', 'ma_crossover_strong_flag'], 
-            
-            ['bband_flag', 'heikin_ashi_flag'],    
+            self.SOLI_DEO_GLORIA,  
+            ['bband_flag', 'doji_strong_flag'],     
+            ['rsi_pattern_flag', 'ma_crossover_strong_flag'],      
+            ['bband_flag', 'macd_lite_flag', 'ma_crossover_strong_flag'],                         
+            ['heikin_ashi_flag'],    
             ['bband_flag', 'macd_lite_flag'],                   
             ['bband_flag', 'rsi_overtrading_flag'], 
             # ['bband_flag', 'macd_strong_flag'],
@@ -96,10 +97,10 @@ class STRATEGY_SET(FILTER_SET):
             # ['ma_crossover_lite_flag']            
         ]
         self.BUNCH_DICT['F'] = [
-            self.SOLI_DEO_GLORIA,
-            ['rsi_diver_pattern_flag', 'ma_crossover_lite_flag'],
-            ['bband_flag', 'rsi_diver_pattern_flag'], 
-            # ['bband_flag', 'macd_lite_flag'],                     
+            self.SOLI_DEO_GLORIA,            
+            ['rsi_pattern_flag', 'ma_crossover_lite_flag'],
+            ['bband_flag', 'rsi_pattern_flag'], 
+                             
             # ['bband_flag', 'rsi_overtrading_flag'],
             ['macd_lite_flag', 'ma_crossover_lite_flag'],
             

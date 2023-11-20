@@ -39,15 +39,16 @@ class IND_STRATEGY_(OTHERS_CALC, TALIB_INDSS):
                 sell_ma_crossover_signal = (ma_7 < ma_25 and ma_25 < ma_99) and (close_price < ma_7 and close_price < ma_25 and close_price < ma_99)
                 signals_sum.append((buy_ma_crossover_signal, sell_ma_crossover_signal))                
 
-            if 'rsi_diver_pattern_flag' in current_bunch:
+            if 'rsi_pattern_flag' in current_bunch:
                 # print(signals_sum)
                 buy_rsi_diver_signal, sell_rsi_diver_signal = False, False 
-                data_rsi = self.calculate_rsi(kline_data)
+                data_rsi = self.calculate_rsi(kline_data)                
+                last_rsi = data_rsi.iloc[-1]
                 data_rsi = data_rsi.iloc[-4:].to_list()
                 data_close_price = kline_data['Close'].iloc[-4:].to_list()
                 detect_rsi = self.detect_rsi_divergence(data_close_price, data_rsi)
-                buy_rsi_diver_signal = detect_rsi == 1
-                sell_rsi_diver_signal = detect_rsi == -1
+                buy_rsi_diver_signal = (detect_rsi == 1) or (last_rsi < 31)
+                sell_rsi_diver_signal = (detect_rsi == -1) or (last_rsi > 69)
                 signals_sum.append((buy_rsi_diver_signal, sell_rsi_diver_signal))
                 # print(signals_sum)
 
@@ -60,11 +61,20 @@ class IND_STRATEGY_(OTHERS_CALC, TALIB_INDSS):
 
             if 'heikin_ashi_strategy_flag' in current_bunch:
                 ema_10, ema_30 = self.calculate_ema_s(kline_data)
+                doji = self.calculate_doji(kline_data)
                 heiken_close, heiken_open, heiken_signal = self.calculate_heikin_ashi(kline_data)
-                buy_heikin_ashi_signal = (ema_10 > ema_30) and (heiken_open < ema_10) and (heiken_close > ema_10) and (heiken_signal == 1)
-                sell_heikin_ashi_signal = (ema_10 < ema_30) and (heiken_open > ema_10) and (heiken_close < ema_10) and (heiken_signal == -1)
+                buy_heikin_ashi_signal = (ema_10 > ema_30) and (heiken_open < ema_10) and (heiken_close > ema_10) and (heiken_signal == 1) and (doji == 0)
+                sell_heikin_ashi_signal = (ema_10 < ema_30) and (heiken_open > ema_10) and (heiken_close < ema_10) and (heiken_signal == -1) and (doji == 0)
                 signals_sum.append((buy_heikin_ashi_signal, sell_heikin_ashi_signal))
-           
+            
+            if 'doji_strong_flag' in current_bunch:
+                doji = None
+                buy_doji_signal, sell_doji_signal = False, False
+                doji = self.calculate_doji(kline_data)
+                buy_doji_signal = sell_doji_signal = doji == 100
+                # sell_doji_signal = doji == -100
+                signals_sum.append((buy_doji_signal, sell_doji_signal))
+            
             for buy_signal, sell_signal in signals_sum:
                 if buy_signal:
                     buy_signals_counter += 1
@@ -80,11 +90,11 @@ class IND_STRATEGY_(OTHERS_CALC, TALIB_INDSS):
         
         return total_signal
 
-    def trends_defender(self, adx, doji):
+    def trends_defender(self, adx):
         try:
-            if adx > 25 and doji == 0:
+            if adx > 25:
                 return "T"
-            elif adx < 25 and doji != 0:
+            elif adx < 25:
                 return "F"            
         except Exception as ex:
             print(f"Error in trends_defender: {ex}")
@@ -98,13 +108,12 @@ class IND_STRATEGY_(OTHERS_CALC, TALIB_INDSS):
             try:                
                 kline_data = self.get_klines(symbol, custom_period=None)  
                 close_price = kline_data['Close'].iloc[-1]
-                adx = self.calculate_adx(kline_data)                
-                doji = self.calculate_doji(kline_data)
+                adx = self.calculate_adx(kline_data)               
             except Exception as ex:
                 print(f"Error processing {symbol} in sigmals_handler_two: {ex}")
                 continue
             try:
-                trend_sign = self.trends_defender(adx, doji)
+                trend_sign = self.trends_defender(adx)
                 # print(trend_sign)
             except:
                 continue
