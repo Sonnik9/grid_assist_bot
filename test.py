@@ -258,7 +258,71 @@
 # plt.legend()
 # plt.show()
 
-doji = 0
+# doji = 0
 
-buy_doji_signal = sell_doji_signal = doji == 0
-print(buy_doji_signal, sell_doji_signal)
+# buy_doji_signal = sell_doji_signal = doji == 0
+# print(buy_doji_signal, sell_doji_signal)
+
+
+# import pandas as pd
+# import yfinance as yf
+# import pandas_ta as ta
+# import talib
+
+# # Fetch historical data for the S&P 500 index
+# symbol = '^GSPC'
+# start_date = '2022-01-01'
+# end_date = '2022-12-31'
+# data = yf.download(symbol, start=start_date, end=end_date)
+
+# # Function to detect doji candlestick patterns
+# def detect_doji(data):
+#     data['is_doji'] = ta.cdl_doji(data['Open'], data['High'], data['Low'], data['Close'])
+#     return data
+
+# # Apply the doji detection function
+# sp500_data = detect_doji(data)
+
+# # Analyze the doji patterns
+# doji_signals = sp500_data[sp500_data['is_doji'] != 0]
+
+# # Print the DataFrame with doji signals
+# print(doji_signals)
+
+import talib 
+import pandas as pd
+import yfinance as yf
+
+def calculate_doji(data):
+    try:
+        data['Doji'] = talib.CDLDOJI(data['Open'], data['High'], data['Low'], data['Close'])        
+    except Exception as ex:
+        print(f"Error in calculate_doji: {ex}")
+    return data
+
+def get_historical_data(symbol='BTC-USD'):
+    start= "2022-01-1"
+    end="2023-11-19"
+    # start = "2020-1-1"
+    # end = "2023-11-19"
+    data = yf.download(symbol, start=start, end=end, interval='1h')
+    try:
+        data.drop(['Dividends'], axis=1, inplace=True)
+        data.drop(['Stock Splits'], axis=1, inplace=True)     
+    except:
+        pass   
+    data.reset_index(inplace=True)   
+    try:
+        data['Date'] = data['Date'].dt.strftime('%Y-%m-%d %H:%M:%S')   
+    except:
+        pass  
+    try:
+        data['Date'] = data['Datetime'].dt.strftime('%Y-%m-%d %H:%M:%S')
+    except:
+        pass
+    return data
+
+
+data = get_historical_data()
+data = calculate_doji(data)
+print(data['Doji'].to_list())

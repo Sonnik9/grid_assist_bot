@@ -10,14 +10,7 @@ class OTHERS_CALC(UTILSS_API):
     def __init__(self) -> None:
         super().__init__()
 
-    def calculate_pandas_atr(self, data, period=14):        
-        data.sort_index(ascending=True, inplace=True)       
-        atr_data = ta.atr(data['High'], data['Low'], data['Close'], timeperiod=period)                          
-        atr_data = atr_data.dropna()
-        last_atr = atr_data.iloc[-1]        
-        return last_atr
-
-    def calculate_pandas_atr_for_pivot_type(self, data):        
+    def calculate_pandas_steck_atr(self, data):        
         data.sort_index(ascending=True, inplace=True) 
         atr_data_data = []
         for i in range(40, len(data)):
@@ -31,10 +24,10 @@ class OTHERS_CALC(UTILSS_API):
         pivot_type = None
         sorted_atr = sorted(atr_list)
         len_sorted_atr = len(sorted_atr)
-        sort_grade = len_sorted_atr/3
+        sort_grade = len_sorted_atr/4
         atr_index = [i for i, item in enumerate(sorted_atr) if float(item) == float(last_atr)][0]
         pivot_type = atr_index / sort_grade    
-        pivot_type = math.ceil((pivot_type * 10) / 10) + 2 
+        pivot_type = math.ceil((pivot_type * 10) / 10) + 1
         if pivot_type > 5: pivot_type = 5
         return pivot_type
     
@@ -192,7 +185,7 @@ class OTHERS_CALC(UTILSS_API):
 
         return piv_repl
 
-    def calculate_heikin_ashi(self, data, ratio=1.0):
+    def calculate_heikin_ashi(self, data, ratio=0.9):
         heiken_close, heiken_open, heiken_signal = None, None, 0
 
         data['Heiken_Close'] = (data['Open'] + data['Close'] + data['High'] + data['Low']) / 4
@@ -232,66 +225,23 @@ class OTHERS_CALC(UTILSS_API):
         )
 
         if condition_up:
-            heiken_signal = 1
+            heiken_signal = 2
         elif condition_down:
-            heiken_signal = -1
+            heiken_signal = 1
         else:
             heiken_signal = 0
 
-        return heiken_close, heiken_open, heiken_signal 
+        return heiken_close, heiken_open, heiken_signal   
+
     
-    def calculate_ma_s(self, data):
-        ma_7, ma_20, ma_25, ma_50, ma_99 = None, None, None, None, None
-        data.dropna(inplace=True)
-        # data.head(10) 
-        data["MA7"] = ta.sma(data['Close'], length=7)
-        ma_7 = data["MA7"].iloc[-1]
-
-        data["MA20"] = ta.sma(data['Close'], length=25)
-        ma_20 = data["MA20"].iloc[-1]
-
-        data["MA25"] = ta.sma(data['Close'], length=25)
-        ma_25 = data["MA25"].iloc[-1]
-
-        data["MA50"] = ta.sma(data['Close'], length=99)
-        ma_50 = data["MA50"].iloc[-1]
-
-        data["MA99"] = ta.sma(data['Close'], length=99)
-        ma_99 = data["MA99"].iloc[-1]
-        # data.dropna(inplace=True)
-        return ma_7, ma_20, ma_25, ma_50, ma_99
-    
-    def detect_rsi_divergence(self, closes, rsi_values):  
+    def detect_rsi_divergence(self, close_price_list, rsi_values):  
         # print(closes, rsi_values)  
-        if np.mean(rsi_values) > 50 and rsi_values[-1] < 60 and np.mean(rsi_values[-4:-2]) < np.mean(rsi_values[-2:]):       
-            if closes[-1] > np.mean(closes[:-1]):
-                return 1
-            else:
-                return 0    
-        elif np.mean(rsi_values) < 50 and rsi_values[-1] > 40 and np.mean(rsi_values[-4:-2]) > np.mean(rsi_values[-2:]):        
-            if closes[-1] < np.mean(closes[:-1]):
-                return -1  
-            else:
-                
-                return 0  
+        if np.mean(rsi_values[-4:-2]) < 50 and  np.mean(rsi_values[-2:] > 50 and rsi_values[-1] < 60) and np.mean(close_price_list[-4:-2]) < np.mean(close_price_list[-2:]):        
+            return 2 
+        elif np.mean(rsi_values[-4:-2]) > 50 and  np.mean(rsi_values[-2:] < 50 and rsi_values[-1] > 40) and np.mean(close_price_list[-4:-2]) > np.mean(close_price_list[-2:]):
+            return 1
         else:       
-            return 0  
-    
-    def calculate_rsi(self, data):
-        data['RSI'] = ta.rsi(data['Close'], length=self.rsi_period)
-        return data['RSI']
-    
-    def calculate_ema_s(self, data):
-        data.dropna(inplace=True)
-        # data.head(10) 
-        data["EMA10"] = ta.ema(data['Close'], length=10)
-        ema_10 = data["EMA10"].iloc[-1]
-        data["EMA30"] = ta.ema(data['Close'], length=30)
-        ema_30 = data["EMA30"].iloc[-1]
-        data.dropna(inplace=True)
-        # return data
-        # print(ema_10, ema_30)
-        return ema_10, ema_30
+            return 0   
 
     def calculate_grid_number(self, resistance, support, atr):
         pivot_substract = abs(resistance - support)
@@ -299,75 +249,96 @@ class OTHERS_CALC(UTILSS_API):
         grid_number = int(pivot_substract/atr_decimal) + 1
         return grid_number    
 
-class TALIB_INDSS():
+class PANDAS_TA_INDSS():
     def __init__(self) -> None:
         pass
 
-    def calculate_adx(self, data, period=14):
+    def calculate_bollinger_bands(self, data):
+        dataBB_382 = ta.bbands(data.Close, length=30, std=1.382) 
+        dataBB_382.dropna(inplace=True)
+        dataBB_618 = ta.bbands(data.Close, length=30, std=1.618) 
+        dataBB_618.dropna(inplace=True)
+        data = data.join(dataBB_382)
+        data = data.join(dataBB_618)
+        # data.columns
+        data.dropna(inplace=True)
+        return data
 
+    def calculate_rsi(self, data):
+        data['RSI12'] = ta.rsi(data.Close, length=12)
+        data.dropna(inplace=True)        
+        return data
+    
+    def calculate_ema_s(self, data):
+        data["EMA10"] = ta.ema(data['Close'], length=10)
+        data.dropna(inplace=True)
+        data["EMA30"] = ta.ema(data['Close'], length=30)        
+        data.dropna(inplace=True)
+        return data
+    
+    def calculate_pandas_atr(self, data, period=14):        
+        data.sort_index(ascending=True, inplace=True)       
+        data["ATR_PANDAS"] = ta.atr(data['High'], data['Low'], data['Close'], timeperiod=period)                          
+        data = data.dropna()
+        # last_atr = atr_data.iloc[-1]        
+        return data
+    
+    def calculate_talib_atr(self, data, period=14):        
         try:
-            adx = talib.ADX(data['High'], data['Low'], data['Close'], timeperiod=period)
-        except Exception as ex:
-            print(ex)
-
-        last_adx = adx.iloc[-1]
-        
-        return last_adx
-
-    def calculate_bollinger_bands(self, data, period=20, num_std=2):
-        upper_band, _, lower_band = None, None, None
-        try:
-            upper_band, _, lower_band = talib.BBANDS(data['Close'], timeperiod=period, nbdevup=num_std, nbdevdn=num_std)
-            upper_band = upper_band.to_numpy()[-1]
-            lower_band = lower_band.to_numpy()[-1]
-        except Exception as ex:
-            print(f"Error in calculate_bollinger_bands: {ex}")
-        return upper_band, lower_band
-
-    def calculate_macd(self, data, fast_period=12, slow_period=26, signal_period=9):
-        macd, signal = None, None
-        try:
-            macd, signal, _ = talib.MACD(data['Close'], fastperiod=fast_period, slowperiod=slow_period, signalperiod=signal_period)
-            macd = macd.to_numpy()[-1]
-            signal = signal.to_numpy()[-1]
-        except Exception as ex:
-            print(f"Error in calculate_macd: {ex}")
-        return macd, signal
-
-    def calculate_talib_atr(self, data, period=14):
-        atr = None
-        try:
-            atr = talib.ATR(data['High'], data['Low'], data['Close'], timeperiod=period)
-            atr = atr.to_numpy()[-1]
+            data["ATR_TALIB"] = talib.ATR(data['High'], data['Low'], data['Close'], timeperiod=period)
+            # atr = atr.to_numpy()[-1]
         except Exception as ex:
             print(f"Error in calculate_atr: {ex}")
-        return atr
+        return data
 
+    def calculate_adx(self, data, period=14):
+        data['ADX'] = talib.ADX(data['High'], data['Low'], data['Close'], timeperiod=period)       
+        return data
+
+    def calculate_ma_s(self, data):
+        # data.head(10) 
+        data["MA7"] = ta.sma(data['Close'], length=7)
+        data.dropna(inplace=True)     
+
+        data["MA20"] = ta.sma(data['Close'], length=25)
+        data.dropna(inplace=True)
+
+        data["MA25"] = ta.sma(data['Close'], length=25)
+        data.dropna(inplace=True)
+
+        data["MA50"] = ta.sma(data['Close'], length=99)
+        data.dropna(inplace=True)
+
+        data["MA99"] = ta.sma(data['Close'], length=99)
+        data.dropna(inplace=True)
+        
+        return data
+
+    def calculate_macd(self, data):
+        data_macd = ta.macd(data.Close, fastperiod=12, slowperiod=26, signalperiod=9)
+        data_macd.dropna(inplace=True)
+        data = data.join(data_macd)
+        return data
+    
     def calculate_doji(self, data):
-        doji = None
         try:
-            doji = talib.CDLDOJI(data['Open'], data['High'], data['Low'], data['Close'])
-            doji = doji.to_numpy()[-1]
+            data['Doji'] = talib.CDLDOJI(data['Open'], data['High'], data['Low'], data['Close'])
+            # doji = doji.to_numpy()[-1]
         except Exception as ex:
             print(f"Error in calculate_doji: {ex}")
-        return doji
+        return data
 
-    def calculate_stochastic_oscillator(self, data, k_period=14, d_period=3):
-        slow_k, slow_d = None, None
-        try:
-            slow_k, slow_d = talib.STOCH(data['High'], data['Low'], data['Close'], fastk_period=k_period, slowk_period=k_period, slowd_period=d_period)
-            slow_k = slow_k.to_numpy()[-1]
-            slow_d = slow_d.to_numpy()[-1]
-        except Exception as ex:
-            print(f"Error in calculate_stochastic_oscillator: {ex}")
-        return slow_k, slow_d
+
     
 # iinds = OTHERS_CALC()
+# iinds = TALIB_INDSS()
 # get_apii = GETT_API()
 # symbol = 'BTCUSDT'
 # data = get_apii.get_klines(symbol, custom_period=None)
-# rsi6, rsi5, rsi4, rsi3, rsi2, rsi1 = iinds.calculate_rsi(data)
-# print(rsi6, rsi5, rsi4, rsi3, rsi2, rsi1)
+# # rsi6, rsi5, rsi4, rsi3, rsi2, rsi1 = iinds.calculate_rsi(data)
+# # print(rsi6, rsi5, rsi4, rsi3, rsi2, rsi1)
+# boll = iinds.calculate_bollinger_bands(data)
+# print(boll)
 
 # symbol = 'BIGTIMEUSDT'
 # import pandas as pd

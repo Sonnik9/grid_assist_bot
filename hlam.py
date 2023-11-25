@@ -1139,3 +1139,38 @@
             #     sell_stoch_signal = (fastk < slowk) and (fastk > self.s_stoch_q)
             #     signals_sum.append((buy_stoch_signal, sell_stoch_signal))
 
+        # upper_band, _, lower_band = None, None, None
+        # try:
+        #     upper_band, _, lower_band = talib.BBANDS(data['Close'], timeperiod=period, nbdevup=num_std, nbdevdn=num_std)
+        #     upper_band = upper_band.to_numpy()[-1]
+        #     lower_band = lower_band.to_numpy()[-1]
+        # except Exception as ex:
+        #     print(f"Error in calculate_bollinger_bands: {ex}")
+        # return upper_band, lower_band
+        # macd, signal = None, None
+        # try:
+        #     macd, signal, _ = talib.MACD(data['Close'], fastperiod=fast_period, slowperiod=slow_period, signalperiod=signal_period)
+        #     macd = macd.to_numpy()[-1]
+        #     signal = signal.to_numpy()[-1]
+        # except Exception as ex:
+        #     print(f"Error in calculate_macd: {ex}")
+        # return macd, signal
+
+    # def calculate_talib_atr(self, data, period=14):
+    #     atr = None
+    #     try:
+    #         atr = talib.ATR(data['High'], data['Low'], data['Close'], timeperiod=period)
+    #         atr = atr.to_numpy()[-1]
+    #     except Exception as ex:
+    #         print(f"Error in calculate_atr: {ex}")
+    #     return atr
+
+    # def calculate_stochastic_oscillator(self, data, k_period=14, d_period=3):
+    #     slow_k, slow_d = None, None
+    #     try:
+    #         slow_k, slow_d = talib.STOCH(data['High'], data['Low'], data['Close'], fastk_period=k_period, slowk_period=k_period, slowd_period=d_period)
+    #         slow_k = slow_k.to_numpy()[-1]
+    #         slow_d = slow_d.to_numpy()[-1]
+    #     except Exception as ex:
+    #         print(f"Error in calculate_stochastic_oscillator: {ex}")
+    #     return slow_k, slow_d

@@ -50,7 +50,7 @@ class INDICATORD_PARAMS(TIME_TEMPLATES):
     def __init__(self) -> None:
         super().__init__()
         self.b_bband_q, self.s_bband_q = 1, 1
-        self.b_rsi_lev, self.s_rsi_lev = 37, 63 
+        self.b_rsi_lev, self.s_rsi_lev = 33, 67
         self.b_rsi_diver_lev = 50 
         self.rsi_period = 14   
         self.b_macd_q, self.s_macd_q = 1, 1
@@ -85,7 +85,7 @@ class STRATEGY_SET(FILTER_SET):
     def init_strategy_set(self):
         self.BUNCH_DICT['T'] = [
             self.SOLI_DEO_GLORIA,  
-            ['bband_flag', 'doji_strong_flag'],     
+            ['bb_fib2_doji_pattern_flag'],     
             ['rsi_pattern_flag', 'ma_crossover_strong_flag'],      
             ['bband_flag', 'macd_lite_flag', 'ma_crossover_strong_flag'],                         
             ['heikin_ashi_flag'],    
@@ -98,7 +98,7 @@ class STRATEGY_SET(FILTER_SET):
         ]
         self.BUNCH_DICT['F'] = [
             self.SOLI_DEO_GLORIA,            
-            ['rsi_pattern_flag', 'ma_crossover_lite_flag'],
+            ['rsi_pattern_flag', 'ma_lite_flag'],
             ['bband_flag', 'rsi_pattern_flag'], 
                              
             # ['bband_flag', 'rsi_overtrading_flag'],
