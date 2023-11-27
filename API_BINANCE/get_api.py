@@ -32,27 +32,29 @@ class GETT_API(Configg):
     
     def get_balance(self):
         method = 'GET'
-
-        current_balance = None  
-         
-        locked_balance = None  
-        un_pNl_balance = None   
+        current_balance = None 
         url = self.URL_PATTERN_DICT['balance_url']
+        # print(url)
         params = {}
-        params['recvWindow'] = 5000
-        params = self.get_signature(params)
-        current_balance = self.HTTP_request(url, method=method, headers=self.header, params=params)
-        # print(current_balance)
-        if self.market == 'spot':
-            # print('hi spot')
-            current_balance = dict(current_balance)
+        
+        if not self.test_flag:
+            params['recvWindow'] = 5000
+            params = self.get_signature(params)
+            current_balance = self.HTTP_request(url, method=method, headers=self.header, params=params)
+            
+            if self.market == 'spot':                
+                current_balance = dict(current_balance)                
+                current_balanceE = current_balance['balances']
+                current_balance = [(x['free'], x['locked']) for x in current_balanceE if x['asset'] == 'USDT'][0]          
+            if self.market == 'futures':                
+                current_balanceE = list(current_balance)
+                current_balance = [(x['balance'], x['crossUnPnl']) for x in current_balanceE if x['asset'] == 'USDT'][0]
+        else:
+            params = self.get_signature(params)
+            current_balance = self.HTTP_request(url, method=method, headers=self.header, params=params)
+            current_balance = float([x['balance'] for x in current_balance if x['asset'] == 'USDT'][0])  
             # print(current_balance)
-            current_balanceE = current_balance['balances']
-            current_balance = [(x['free'], x['locked']) for x in current_balanceE if x['asset'] == 'USDT'][0]          
-        if self.market == 'futures':
-            # print('hi futures')
-            current_balanceE = list(current_balance)
-            current_balance = [(x['balance'], x['crossUnPnl']) for x in current_balanceE if x['asset'] == 'USDT'][0]
+            
         return current_balance
     
     def get_position_price(self, symbol):
@@ -76,6 +78,7 @@ class GETT_API(Configg):
         url = self.URL_PATTERN_DICT["klines_url"]
         params["symbol"] = symbol
         params["interval"] = self.INTERVAL
+        print(self.INTERVAL)
 
         if self.end_date and isinstance(self.end_date, datetime):
             params["endTime"] = int(self.end_date.timestamp() * 1000)

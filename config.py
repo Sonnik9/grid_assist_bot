@@ -1,6 +1,5 @@
 from pparamss import INIT_PARAMS
 import logging, os, inspect
-from dotenv import load_dotenv
 import time
 import hmac
 import hashlib
@@ -9,18 +8,12 @@ import requests
 logging.basicConfig(filename='config_log.log', level=logging.ERROR)
 current_file = os.path.basename(__file__)
 
-load_dotenv()
-
 class Configg(INIT_PARAMS):
 
     def __init__(self) -> None:
         super().__init__()
-        self.tg_api_token = os.getenv("TG_API_TOKEN", "")
-        self.api_key  = os.getenv("BINANCE_API_PUBLIC_KEY_REAL", "")
-        self.api_secret = os.getenv("BINANCE_API_PRIVATE_KEY_REAL", "")
-        self.header = {
-            'X-MBX-APIKEY': self.api_key
-        }
+
+
 
     def get_signature(self, params):
         try:

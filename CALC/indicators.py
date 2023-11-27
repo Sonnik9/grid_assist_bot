@@ -24,15 +24,16 @@ class OTHERS_CALC(UTILSS_API):
         pivot_type = None
         sorted_atr = sorted(atr_list)
         len_sorted_atr = len(sorted_atr)
-        sort_grade = len_sorted_atr/4
+        sort_grade = len_sorted_atr / 5
         atr_index = [i for i, item in enumerate(sorted_atr) if float(item) == float(last_atr)][0]
         pivot_type = atr_index / sort_grade    
-        pivot_type = math.ceil((pivot_type * 10) / 10) + 1
+        pivot_type = math.ceil((pivot_type * 10) / 10)
         if pivot_type > 5: pivot_type = 5
+        if pivot_type < 1: pivot_type = 1
         return pivot_type
     
     def calculate_fibonacci_pivot_points(self, symbol, data):
-        data = data.iloc[-100:] 
+        data = data.iloc[-30:] 
         latest_pivot_dict = {}
         piv_repl = {}
         try:
@@ -88,7 +89,7 @@ class OTHERS_CALC(UTILSS_API):
         return piv_repl
 
     def calculate_classic_pivot_points(self, symbol, data):
-        data = data.iloc[-100:]
+        data = data.iloc[-30:]
         latest_pivot_dict = {}
         piv_repl = {} 
         try:
@@ -236,9 +237,9 @@ class OTHERS_CALC(UTILSS_API):
     
     def detect_rsi_divergence(self, close_price_list, rsi_values):  
         # print(closes, rsi_values)  
-        if np.mean(rsi_values[-4:-2]) < 50 and  np.mean(rsi_values[-2:] > 50 and rsi_values[-1] < 60) and np.mean(close_price_list[-4:-2]) < np.mean(close_price_list[-2:]):        
+        if np.mean(rsi_values[-4:-2]) < 50 and  np.mean(rsi_values[-2:]) > 50 and rsi_values[-1] < 60 and np.mean(close_price_list[-4:-2]) < np.mean(close_price_list[-2:]):        
             return 2 
-        elif np.mean(rsi_values[-4:-2]) > 50 and  np.mean(rsi_values[-2:] < 50 and rsi_values[-1] > 40) and np.mean(close_price_list[-4:-2]) > np.mean(close_price_list[-2:]):
+        elif np.mean(rsi_values[-4:-2]) > 50 and  np.mean(rsi_values[-2:]) < 50 and rsi_values[-1] > 40 and np.mean(close_price_list[-4:-2]) > np.mean(close_price_list[-2:]):
             return 1
         else:       
             return 0   

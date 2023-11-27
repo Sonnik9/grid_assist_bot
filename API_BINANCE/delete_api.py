@@ -38,5 +38,8 @@ class DELETEE_API(GETT_API):
             # print(cancel_orders)
 
         return 
-    
 # delete_apii = DELETEE_API()
+# asdjkl = delete_apii.cancel_all_orders_for_position(['1000LUNCUSDT'])
+# print(asdjkl)
+
+# python -m API_BINANCE.delete_api
